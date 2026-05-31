@@ -3,37 +3,175 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// =============================================
+// PUBLIC ROUTES — CrisisHub
+// =============================================
+
+// Home / Landing Page
 Route::get('/', function () {
-    return redirect('/dashboard');
+    return view('welcome');
+})->name('home');
+
+// About Page
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+// Volunteer Page
+Route::get('/volunteer', function () {
+    return view('volunteer');
+})->name('volunteer');
+
+// Donate Public Page (Campaign List)
+Route::get('/donate', function () {
+    return view('donate');
+})->name('donate');
+
+// Donate Campaign Detail
+Route::get('/donate/campaign/{id}', function ($id) {
+    return view('donate');
+})->name('donate.campaign');
+
+// Donation routes (Protected Action)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/donate/form', [\App\Http\Controllers\DonationController::class, 'create'])->name('donate.form');
+    Route::post('/donate/form', [\App\Http\Controllers\DonationController::class, 'store'])->name('donate.store');
+    Route::get('/donate/{id}/receipt', [\App\Http\Controllers\DonationController::class, 'receipt'])->name('donate.receipt');
 });
 
-Route::get('/dashboard', function () {
-    // Jika user yang login adalah Admin, arahkan langsung ke Admin Dashboard
-    if (auth()->check() && auth()->user()->hasRole('Admin')) {
-        return redirect()->route('admin.dashboard');
+// Contact Page
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+// Disaster Detail Page
+Route::get('/disaster/{id}', function ($id) {
+    return view('disaster-detail', ['disasterId' => $id]);
+})->name('disaster.detail');
+
+// News Pages
+Route::get('/news', function () {
+    return view('welcome');
+})->name('news.index');
+
+Route::get('/news/{id}', function ($id) {
+    return view('welcome');
+})->name('news.detail');
+
+// Public Map
+Route::get('/peta-bencana', function () {
+    return view('welcome');
+})->name('peta.bencana');
+
+// Public Analytics
+Route::get('/analytics', function () {
+    return view('welcome');
+})->name('analytics');
+
+// Terms & Privacy
+Route::get('/terms', function () {
+    return view('terms');
+})->name('terms');
+
+Route::get('/privacy', function () {
+    return view('privacy');
+})->name('privacy');
+
+Route::get('/help', function () {
+    return view('contact');
+})->name('help');
+
+// Laporkan Bencana (redirect ke dashboard atau halaman report)
+Route::get('/report', function () {
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
     }
+    return redirect()->route('login');
+})->name('report');
+
+// =============================================
+// AUTH DASHBOARD
+// =============================================
+Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Centers
+    Route::get('/volunteer-center', [\App\Http\Controllers\CenterController::class, 'volunteer'])->middleware('role:Relawan')->name('center.volunteer');
+    Route::get('/organization-center', [\App\Http\Controllers\CenterController::class, 'organization'])->middleware('role:Organisasi Bantuan')->name('center.organization');
+    Route::get('/admin-center', [\App\Http\Controllers\CenterController::class, 'admin'])->middleware('role:Admin')->name('center.admin');
+
+    // Applications
+    Route::get('/apply/volunteer', [\App\Http\Controllers\ApplicationController::class, 'createVolunteer'])->name('apply.volunteer');
+    Route::post('/apply/volunteer', [\App\Http\Controllers\ApplicationController::class, 'storeVolunteer']);
     
-    return view('dashboard');
-})->name('dashboard');
+    Route::get('/apply/organization', [\App\Http\Controllers\ApplicationController::class, 'createOrganization'])->name('apply.organization');
+    Route::post('/apply/organization', [\App\Http\Controllers\ApplicationController::class, 'storeOrganization']);
+
+    Route::post('/report/store', [\App\Http\Controllers\ReportController::class, 'store'])->name('report.store');
+});
 
 // Admin Routes
-Route::middleware(['auth', 'role:Admin'])->group(function () {
-    Route::get('/admin/dashboard', [\App\Http\Controllers\AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/peta', [\App\Http\Controllers\AdminDashboardController::class, 'peta'])->name('admin.peta');
-    Route::get('/admin/laporan', [\App\Http\Controllers\AdminDashboardController::class, 'laporan'])->name('admin.laporan');
-    Route::get('/admin/kebutuhan', [\App\Http\Controllers\AdminDashboardController::class, 'kebutuhan'])->name('admin.kebutuhan');
-    Route::get('/admin/donasi', [\App\Http\Controllers\AdminDashboardController::class, 'donasi'])->name('admin.donasi');
-    Route::get('/admin/relawan', [\App\Http\Controllers\AdminDashboardController::class, 'relawan'])->name('admin.relawan');
-    Route::get('/admin/penugasan', [\App\Http\Controllers\AdminDashboardController::class, 'penugasan'])->name('admin.penugasan');
-    Route::get('/admin/notifikasi', [\App\Http\Controllers\AdminDashboardController::class, 'notifikasi'])->name('admin.notifikasi');
-    
-    // Menu Lainnya
-    Route::get('/admin/komunikasi', [\App\Http\Controllers\AdminDashboardController::class, 'komunikasi'])->name('admin.komunikasi');
-    Route::get('/admin/verifikasi', [\App\Http\Controllers\AdminDashboardController::class, 'verifikasi'])->name('admin.verifikasi');
-    Route::get('/admin/analitik', [\App\Http\Controllers\AdminDashboardController::class, 'analitik'])->name('admin.analitik');
-    Route::get('/admin/pengguna', [\App\Http\Controllers\AdminDashboardController::class, 'pengguna'])->name('admin.pengguna');
-    Route::get('/admin/pengaturan', [\App\Http\Controllers\AdminDashboardController::class, 'pengaturan'])->name('admin.pengaturan');
+Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
+    $ctrl = \App\Http\Controllers\AdminDashboardController::class;
+
+    // ── Overview ──────────────────────────────────
+    Route::get('/dashboard', [$ctrl, 'index'])->name('dashboard');
+
+    // ── Disaster Reports ──────────────────────────
+    Route::get('/laporan', [$ctrl, 'laporan'])->name('laporan');
+    Route::post('/laporan/{id}/verify', [$ctrl, 'verifyReport'])->name('laporan.verify');
+    Route::get('/laporan/export', [$ctrl, 'exportReports'])->name('laporan.export');
+
+    // ── Verification Center ───────────────────────
+    Route::get('/verifikasi', [$ctrl, 'verifikasi'])->name('verifikasi');
+    Route::post('/apply/volunteer/{id}/verify', [$ctrl, 'verifyVolunteerApplication'])->name('apply.volunteer.verify');
+    Route::post('/apply/organization/{id}/verify', [$ctrl, 'verifyOrganizationApplication'])->name('apply.organization.verify');
+
+    // ── GIS Map ───────────────────────────────────
+    Route::get('/peta', [$ctrl, 'peta'])->name('peta');
+
+    // ── Volunteer Management ──────────────────────
+    Route::get('/relawan', [$ctrl, 'relawan'])->name('relawan');
+    Route::post('/relawan/assign', [$ctrl, 'assignVolunteer'])->name('relawan.assign');
+    Route::get('/penugasan', [$ctrl, 'penugasan'])->name('penugasan');
+
+    // ── Donation Management ───────────────────────
+    Route::get('/donasi', [$ctrl, 'donasi'])->name('donasi');
+    Route::post('/donasi/{id}/verify', [$ctrl, 'verifyDonation'])->name('donasi.verify');
+    Route::get('/donasi/export', [$ctrl, 'exportDonations'])->name('donasi.export');
+
+    // ── Campaign Management ───────────────────────
+    Route::get('/campaign', [$ctrl, 'campaign'])->name('campaign');
+    Route::post('/campaign', [$ctrl, 'campaignStore'])->name('campaign.store');
+    Route::patch('/campaign/{id}', [$ctrl, 'campaignUpdate'])->name('campaign.update');
+    Route::delete('/campaign/{id}', [$ctrl, 'campaignDestroy'])->name('campaign.destroy');
+
+    // ── Aid Distribution ──────────────────────────
+    Route::get('/kebutuhan', [$ctrl, 'kebutuhan'])->name('kebutuhan');
+
+    // ── User Management ───────────────────────────
+    Route::get('/pengguna', [$ctrl, 'pengguna'])->name('pengguna');
+    Route::patch('/pengguna/{id}', [$ctrl, 'updateUser'])->name('pengguna.update');
+    Route::post('/pengguna/{id}/suspend', [$ctrl, 'suspendUser'])->name('pengguna.suspend');
+    Route::delete('/pengguna/{id}', [$ctrl, 'destroyUser'])->name('pengguna.destroy');
+
+    // ── Role Management ───────────────────────────
+    Route::get('/roles', [$ctrl, 'roleManagement'])->name('roles');
+
+    // ── Analytics ─────────────────────────────────
+    Route::get('/analitik', [$ctrl, 'analitik'])->name('analitik');
+
+    // ── Emergency Broadcast ───────────────────────
+    Route::get('/notifikasi', [$ctrl, 'notifikasi'])->name('notifikasi');
+    Route::post('/notifikasi/broadcast', [$ctrl, 'broadcast'])->name('broadcast');
+
+    // ── System Settings ───────────────────────────
+    Route::get('/pengaturan', [$ctrl, 'pengaturan'])->name('pengaturan');
+
+    // ── Legacy ───────────────────────────────────
+    Route::get('/komunikasi', [$ctrl, 'komunikasi'])->name('komunikasi');
 });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

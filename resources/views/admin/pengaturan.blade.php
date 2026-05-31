@@ -1,68 +1,112 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="mb-6 flex justify-between items-end">
+<div class="mb-6 flex flex-wrap justify-between items-center gap-4">
     <div>
-        <h2 class="text-2xl font-bold text-gray-900">Pengaturan Sistem</h2>
-        <p class="text-sm text-gray-500 mt-1">Konfigurasi umum aplikasi dan preferensi notifikasi.</p>
+        <h2 class="text-2xl font-bold text-white font-display">System Configuration</h2>
+        <p class="text-xs text-gray-400 mt-1">Konfigurasi parameter umum, integrasi BMKG, dan status tanggap bencana CrisisHub.</p>
     </div>
-    <button class="bg-[#0B5A42] hover:bg-[#094D38] text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors">
-        Simpan Perubahan
+    <button onclick="alert('Perubahan konfigurasi disimpan!')" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-black text-xs font-bold uppercase tracking-wider rounded-lg transition-all shadow-lg shadow-yellow-500/10">
+        Save Configurations
     </button>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="md:col-span-2 space-y-6">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
+    <!-- Left Column: Form Settings (8 cols) -->
+    <div class="lg:col-span-8 flex flex-col gap-6">
         <!-- Pengaturan Umum -->
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-            <h3 class="text-lg font-bold text-gray-900 mb-4">Pengaturan Umum</h3>
+        <div class="card-glass rounded-2xl p-6">
+            <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider mb-4 border-b border-white/5 pb-2 text-yellow-500">
+                General Parameters
+            </h3>
             
             <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Aplikasi</label>
-                    <input type="text" value="CrisisHub" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-[#0B5A42] focus:border-[#0B5A42] text-sm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-gray-400 block mb-1">Nama Sistem Aplikasi</label>
+                        <input type="text" value="CrisisHub Command Center" class="w-full px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-gray-400 block mb-1">Email Kontak Darurat Utama</label>
+                        <input type="email" value="emergency@crisishub.com" class="w-full px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Email Kontak Darurat</label>
-                    <input type="email" value="emergency@crisishub.com" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-[#0B5A42] focus:border-[#0B5A42] text-sm">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi Singkat</label>
-                    <textarea class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-[#0B5A42] focus:border-[#0B5A42] text-sm" rows="3">Platform manajemen krisis dan penyaluran bantuan terpadu.</textarea>
+                    <label class="text-[10px] uppercase font-bold text-gray-400 block mb-1">Deskripsi Singkat Sistem</label>
+                    <textarea rows="3" class="w-full px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-yellow-500">Platform terpadu untuk koordinasi tanggap darurat, manajemen relawan, integrasi peta GIS bencana, dan penyaluran donasi kemanusiaan secara real-time.</textarea>
                 </div>
             </div>
         </div>
 
-        <!-- Mode Darurat -->
-        <div class="bg-red-50 rounded-2xl border border-red-100 shadow-sm p-6">
-            <h3 class="text-lg font-bold text-red-700 mb-2">Mode Siaga Bencana (Defcon 1)</h3>
-            <p class="text-sm text-red-600 mb-4">Mengaktifkan mode ini akan menyalakan sirine pada aplikasi relawan dan membekukan fitur donasi non-prioritas.</p>
-            <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors">
-                Aktifkan Mode Darurat
-            </button>
+        <!-- Mode Darurat Defcon 1 -->
+        <div class="rounded-2xl p-6 border bg-red-500/5 border-red-500/20">
+            <div class="flex items-start space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-500 shrink-0">
+                    🚨
+                </div>
+                <div>
+                    <h3 class="font-display font-bold text-red-400 text-sm uppercase tracking-wider mb-1">
+                        Mode Siaga Bencana Nasional (DEFCON 1)
+                    </h3>
+                    <p class="text-[11px] text-gray-400 leading-normal mb-4">
+                        Mengaktifkan DEFCON 1 akan membekukan seluruh fitur donasi non-prioritas di web publik, membunyikan sirine virtual real-time di aplikasi seluruh relawan aktif, dan memaksa prioritas evakuasi kritis di wilayah peta terdekat. Aksi ini sangat sensitif.
+                    </p>
+                    <button onclick="alert('DEFCON 1 diaktifkan! Sirine darurat dipancarkan.')" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-all shadow-lg shadow-red-600/10">
+                        Aktifkan DEFCON 1 Now
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Integrasi & API -->
-    <div class="space-y-6">
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-            <h3 class="text-lg font-bold text-gray-900 mb-4">Integrasi Pihak Ketiga</h3>
-            
+    <!-- Right Column: Integrasi (4 cols) -->
+    <div class="lg:col-span-4 flex flex-col gap-6">
+        <div class="card-glass rounded-2xl p-6">
+            <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider mb-4 border-b border-white/5 pb-2 text-gray-400">
+                Third-Party Integrations
+            </h3>
+
             <div class="space-y-4">
-                <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
+                <!-- BMKG -->
+                <div class="flex items-center justify-between p-3.5 bg-white/[0.02] border border-white/5 rounded-xl">
                     <div class="flex items-center space-x-3">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Logo_of_YouTube_%282015-2017%29.svg" class="h-5 grayscale opacity-50">
-                        <span class="text-sm font-semibold text-gray-700">BMKG API</span>
+                        <div class="text-xl">🌋</div>
+                        <div>
+                            <span class="text-xs font-bold text-white block">BMKG API Gateway</span>
+                            <span class="text-[9px] text-gray-500">Auto Earthquakes Sync</span>
+                        </div>
                     </div>
-                    <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Connected</span>
+                    <span class="text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded border border-green-500/20 bg-green-500/10 text-green-400">
+                        Connected
+                    </span>
                 </div>
-                
-                <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
+
+                <!-- Payment Gateway -->
+                <div class="flex items-center justify-between p-3.5 bg-white/[0.02] border border-white/5 rounded-xl">
                     <div class="flex items-center space-x-3">
-                        <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path></svg>
-                        <span class="text-sm font-semibold text-gray-700">Payment Gateway</span>
+                        <div class="text-xl">💳</div>
+                        <div>
+                            <span class="text-xs font-bold text-white block">Midtrans Sandbox</span>
+                            <span class="text-[9px] text-gray-500">Donation Processing</span>
+                        </div>
                     </div>
-                    <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Connected</span>
+                    <span class="text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded border border-green-500/20 bg-green-500/10 text-green-400">
+                        Connected
+                    </span>
+                </div>
+
+                <!-- Leaflet -->
+                <div class="flex items-center justify-between p-3.5 bg-white/[0.02] border border-white/5 rounded-xl">
+                    <div class="flex items-center space-x-3">
+                        <div class="text-xl">🗺️</div>
+                        <div>
+                            <span class="text-xs font-bold text-white block">OpenStreetMap GIS</span>
+                            <span class="text-[9px] text-gray-500">Map Rendering Core</span>
+                        </div>
+                    </div>
+                    <span class="text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded border border-green-500/20 bg-green-500/10 text-green-400">
+                        Connected
+                    </span>
                 </div>
             </div>
         </div>

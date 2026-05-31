@@ -120,6 +120,7 @@ class ReportController extends Controller
      */
     public function verify(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
             'action' => 'required|in:Approved,Rejected,Flagged Duplicate',
             'note' => 'nullable|string',
         ]);
@@ -154,4 +155,5 @@ class ReportController extends Controller
         } catch (\Exception $e) {
             return $this->errorResponse('Failed to verify report. It may not exist.', 404);
         }
+    }
 }

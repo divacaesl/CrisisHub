@@ -1,44 +1,111 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="mb-6 flex justify-between items-end">
-    <div>
-        <h2 class="text-2xl font-bold text-gray-900">Pusat Notifikasi</h2>
-        <p class="text-sm text-gray-500 mt-1">Log pemberitahuan sistem dan pesan peringatan.</p>
-    </div>
+{{-- Flash Messages --}}
+@if(session('success'))
+<div id="flash-toast" class="fixed top-5 right-5 z-50 flex items-center space-x-3 px-5 py-3.5 rounded-xl shadow-2xl text-sm font-semibold text-white" style="background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.4); backdrop-filter: blur(10px);">
+    <svg class="w-4 h-4 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    <span>{{ session('success') }}</span>
+</div>
+<script>setTimeout(() => document.getElementById('flash-toast')?.remove(), 4000)</script>
+@endif
+
+<div class="mb-6">
+    <h2 class="text-2xl font-bold text-white font-display">Emergency Broadcast Center</h2>
+    <p class="text-xs text-gray-400 mt-1">Kirim peringatan darurat seketika ke email seluruh relawan dan warga terdaftar.</p>
 </div>
 
-<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-    <div class="divide-y divide-gray-100">
-        @forelse($messages as $m)
-        <div class="p-5 flex items-start space-x-4 hover:bg-gray-50 transition-colors">
-            <div class="bg-{{ $m->type == 'broadcast' ? 'blue' : 'green' }}-100 text-{{ $m->type == 'broadcast' ? 'blue' : 'green' }}-600 p-2.5 rounded-full shrink-0">
-                @if($m->type == 'broadcast')
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
-                @else
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                @endif
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex justify-between items-center mb-1">
-                    <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wide">{{ $m->type }}</h4>
-                    <span class="text-xs text-gray-400">{{ $m->created_at->diffForHumans() }}</span>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Broadcast Form (7 cols) -->
+    <div class="lg:col-span-5 flex flex-col gap-5">
+        <div class="card-glass rounded-2xl p-6">
+            <h3 class="font-bold text-white font-display text-sm uppercase tracking-wider mb-4 flex items-center gap-2 text-yellow-500">
+                <span>📣</span> Compose Alert
+            </h3>
+            
+            <form method="POST" action="{{ route('admin.broadcast') }}" class="space-y-4">
+                @csrf
+                
+                <div>
+                    <label class="text-[10px] uppercase font-bold text-gray-400 block mb-1">Alert Title</label>
+                    <input name="title" required type="text" placeholder="Peringatan Bencana Banjir..." class="w-full px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                 </div>
-                <p class="text-sm text-gray-600">{{ $m->content }}</p>
-                <div class="mt-2 text-[10px] text-gray-400 font-mono">
-                    Sender: {{ $m->sender->name ?? 'System' }} &bull; Channel: {{ $m->channel ?? 'All' }}
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-gray-400 block mb-1">Severity Level</label>
+                        <select name="severity" required class="w-full px-3 py-2 text-sm bg-[#141714] border border-white/10 rounded-lg text-gray-300 focus:outline-none focus:border-yellow-500">
+                            <option value="info">Info (Standard)</option>
+                            <option value="warning">Warning (Medium)</option>
+                            <option value="critical">Critical (Urgent)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-gray-400 block mb-1">Target Audience</label>
+                        <select name="target" required class="w-full px-3 py-2 text-sm bg-[#141714] border border-white/10 rounded-lg text-gray-300 focus:outline-none focus:border-yellow-500">
+                            <option value="all">Semua Pengguna</option>
+                            <option value="volunteers">Hanya Relawan</option>
+                            <option value="citizens">Hanya Warga (Citizens)</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+
+                <div>
+                    <label class="text-[10px] uppercase font-bold text-gray-400 block mb-1">Message Body</label>
+                    <textarea name="message" required rows="6" placeholder="Ketik rincian instruksi evakuasi atau informasi bantuan secara lengkap di sini..." class="w-full px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-yellow-500"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-2.5 bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-all shadow-lg shadow-red-600/10">
+                    Broadcast Now 🚀
+                </button>
+            </form>
         </div>
-        @empty
-        <div class="p-10 text-center text-gray-400">Belum ada notifikasi baru.</div>
-        @endforelse
     </div>
-    
-    @if($messages->hasPages())
-    <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
-        {{ $messages->links() }}
+
+    <!-- History Logs (7 cols) -->
+    <div class="lg:col-span-7 flex flex-col gap-5">
+        <div class="card-glass rounded-2xl p-6">
+            <h3 class="font-bold text-white font-display text-sm uppercase tracking-wider mb-4 text-gray-400">
+                Broadcast History Logs
+            </h3>
+
+            <div class="divide-y divide-white/5 space-y-4">
+                @forelse($broadcastLogs as $log)
+                <div class="pt-4 first:pt-0 flex flex-col gap-1.5">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-1.5">
+                            @php
+                                $sev = $log->severity;
+                                $color = $sev === 'critical' ? 'bg-red-500/10 border-red-500/20 text-red-400' :
+                                         ($sev === 'warning' ? 'bg-orange-500/10 border-orange-500/20 text-orange-400' :
+                                         'bg-blue-500/10 border-blue-500/20 text-blue-400');
+                            @endphp
+                            <span class="text-[8px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded border {{ $color }}">
+                                {{ $sev }}
+                            </span>
+                            <span class="text-[8px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-400">
+                                Target: {{ $log->target }}
+                            </span>
+                        </div>
+                        <span class="text-[9px] text-gray-500">{{ $log->created_at->diffForHumans() }}</span>
+                    </div>
+
+                    <h4 class="text-xs font-black text-white font-display">{{ $log->title }}</h4>
+                    <p class="text-[11px] text-gray-400 leading-normal">{{ $log->message }}</p>
+
+                    <div class="flex justify-between items-center text-[9px] text-gray-500 mt-1 border-t border-white/5 pt-1.5">
+                        <span>Penerima: <strong>{{ $log->recipients_count }} users</strong></span>
+                        <span>Dikirim pada: {{ $log->created_at->format('d M Y, H:i') }}</span>
+                    </div>
+                </div>
+                @empty
+                <div class="text-center text-xs text-gray-500 py-10">Belum ada riwayat broadcast dikirim.</div>
+                @endforelse
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-4">{{ $broadcastLogs->links() }}</div>
+        </div>
     </div>
-    @endif
 </div>
 @endsection

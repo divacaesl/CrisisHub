@@ -70,4 +70,12 @@ class User extends Authenticatable implements JWTSubject
             'role' => $this->roles->pluck('name')->first(),
         ];
     }
+
+    /**
+     * Get the donations for the user.
+     */
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
 }
