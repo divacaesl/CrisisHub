@@ -3,7 +3,7 @@
 @section('title', 'Detail Bencana — CrisisHub')
 
 @section('content')
-<section class="pt-24 pb-16 min-h-screen" style="background: #0f172a;">
+<section class="hero-dynamic hero-about pt-24 pb-16 min-h-screen">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-6">
             <a href="/" class="inline-flex items-center gap-2 text-slate-400 hover:text-white text-sm transition-colors">
@@ -28,21 +28,21 @@
 
             <!-- Quick Stats -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-red-900/20 rounded-2xl p-4 text-center">
-                    <div class="text-3xl font-black text-red-400">2.847</div>
-                    <div class="text-slate-500 text-xs mt-1">Korban Terdampak</div>
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-500/10 rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-black text-red-600 dark:text-red-400">2.847</div>
+                    <div class="text-slate-600 dark:text-slate-400 text-xs mt-1">Korban Terdampak</div>
                 </div>
-                <div class="bg-orange-900/20 rounded-2xl p-4 text-center">
-                    <div class="text-3xl font-black text-orange-400">94%</div>
-                    <div class="text-slate-500 text-xs mt-1">Tingkat Kerusakan</div>
+                <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-500/10 rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-black text-orange-600 dark:text-orange-400">94%</div>
+                    <div class="text-slate-600 dark:text-slate-400 text-xs mt-1">Tingkat Kerusakan</div>
                 </div>
-                <div class="bg-blue-900/20 rounded-2xl p-4 text-center">
-                    <div class="text-3xl font-black text-blue-400">248</div>
-                    <div class="text-slate-500 text-xs mt-1">Relawan Dikerahkan</div>
+                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-500/10 rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-black text-blue-600 dark:text-blue-400">248</div>
+                    <div class="text-slate-600 dark:text-slate-400 text-xs mt-1">Relawan Dikerahkan</div>
                 </div>
-                <div class="bg-green-900/20 rounded-2xl p-4 text-center">
-                    <div class="text-3xl font-black text-green-400">1.200</div>
-                    <div class="text-slate-500 text-xs mt-1">Bantuan Tersalur</div>
+                <div class="bg-green-50 dark:bg-green-900/20 border border-green-500/10 rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-black text-green-600 dark:text-green-400">1.200</div>
+                    <div class="text-slate-600 dark:text-slate-400 text-xs mt-1">Bantuan Tersalur</div>
                 </div>
             </div>
         </div>

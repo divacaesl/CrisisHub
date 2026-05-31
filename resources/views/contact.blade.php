@@ -5,7 +5,7 @@
 
 @section('content')
 <!-- Contact Hero -->
-<section class="relative min-h-[50vh] flex items-center pt-24 pb-16 overflow-hidden" style="background: linear-gradient(135deg, #0f172a 0%, #0c1a35 50%, #0f172a 100%);">
+<section class="hero-dynamic hero-contact relative min-h-[50vh] flex items-center pt-24 pb-16 overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
         <div class="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/5 rounded-full blur-3xl"></div>
@@ -51,7 +51,7 @@
         </div>
 
         <!-- Emergency Contact -->
-        <div class="relative overflow-hidden rounded-3xl p-10 fade-up" style="background: linear-gradient(135deg, #1a0000 0%, #7f1d1d 50%, #1a0000 100%); border: 1px solid rgba(220,38,38,0.3); box-shadow: 0 0 60px rgba(220,38,38,0.15);">
+        <div class="dark-content relative overflow-hidden rounded-3xl p-10 fade-up" style="background: linear-gradient(135deg, #1a0000 0%, #7f1d1d 50%, #1a0000 100%); border: 1px solid rgba(220,38,38,0.3); box-shadow: 0 0 60px rgba(220,38,38,0.15);">
             <div class="absolute inset-0 pointer-events-none">
                 <div class="absolute top-0 left-1/4 w-48 h-48 bg-red-500/10 rounded-full blur-3xl"></div>
                 <div class="absolute bottom-0 right-1/4 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl"></div>

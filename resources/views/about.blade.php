@@ -5,7 +5,7 @@
 
 @section('content')
 <!-- About Hero -->
-<section class="relative min-h-[60vh] flex items-center pt-24 pb-16 overflow-hidden" style="background: linear-gradient(135deg, #0f172a 0%, #1e0000 50%, #0f172a 100%);">
+<section class="hero-dynamic hero-about relative min-h-[60vh] flex items-center pt-24 pb-16 overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute top-0 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-3xl"></div>
         <div class="absolute bottom-0 left-0 w-80 h-80 bg-orange-600/5 rounded-full blur-3xl"></div>
@@ -28,21 +28,21 @@
                 </p>
             </div>
             <div class="grid grid-cols-2 gap-4">
-                <div class="glass rounded-2xl p-6 border border-red-500/20">
+                <div class="premium-sparkle-glass rounded-2xl p-6 border border-red-500/20">
                     <div class="w-12 h-12 bg-red-600/20 rounded-xl flex items-center justify-center mb-4">
                         <i class="fas fa-eye text-red-400 text-xl"></i>
                     </div>
                     <h3 class="text-white font-bold text-lg mb-2">Visi</h3>
                     <p class="text-slate-400 text-sm">Menjadi platform manajemen bencana terdepan di Asia Tenggara yang menyelamatkan jutaan jiwa.</p>
                 </div>
-                <div class="glass rounded-2xl p-6 border border-orange-500/20">
+                <div class="premium-sparkle-glass rounded-2xl p-6 border border-orange-500/20">
                     <div class="w-12 h-12 bg-orange-600/20 rounded-xl flex items-center justify-center mb-4">
                         <i class="fas fa-rocket text-orange-400 text-xl"></i>
                     </div>
                     <h3 class="text-white font-bold text-lg mb-2">Misi</h3>
                     <p class="text-slate-400 text-sm">Mempercepat respons, meningkatkan koordinasi, dan memastikan transparansi distribusi bantuan.</p>
                 </div>
-                <div class="glass rounded-2xl p-6 border border-blue-500/20 col-span-2">
+                <div class="premium-sparkle-glass rounded-2xl p-6 border border-blue-500/20 col-span-2">
                     <div class="flex items-center gap-3 mb-3">
                         <div class="w-10 h-10 bg-blue-600/20 rounded-xl flex items-center justify-center">
                             <i class="fas fa-bullseye text-blue-400"></i>

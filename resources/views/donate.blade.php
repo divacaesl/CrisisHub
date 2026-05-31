@@ -5,7 +5,7 @@
 
 @section('content')
 <!-- Donate Hero -->
-<section class="relative min-h-[60vh] flex items-center pt-24 pb-16 overflow-hidden" style="background: linear-gradient(135deg, #0f172a 0%, #1a0000 40%, #431407 70%, #0f172a 100%);">
+<section class="hero-dynamic hero-donate relative min-h-[60vh] flex items-center pt-24 pb-16 overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute top-0 right-0 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl"></div>
         <div class="absolute bottom-0 left-0 w-80 h-80 bg-red-600/5 rounded-full blur-3xl"></div>
@@ -144,8 +144,7 @@
     <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
 
     {{-- Modal Box --}}
-    <div class="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl z-10"
-         style="background: linear-gradient(160deg, #0f172a 0%, #1a0a0a 60%, #1e1020 100%); border: 1px solid rgba(249,115,22,0.25);">
+    <div class="premium-modal relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl z-10">
 
         {{-- Header --}}
         <div class="sticky top-0 z-10 px-6 pt-6 pb-4 border-b border-white/10 flex items-center justify-between"
@@ -491,7 +490,7 @@
 {{-- Success toast from session --}}
 @if(session('donation_success'))
 <div id="donation-toast"
-    class="fixed top-6 right-6 z-50 max-w-sm w-full p-5 rounded-2xl shadow-2xl border border-green-500/30 flex items-start gap-4 animate-fade-in"
+    class="dark-content fixed top-6 right-6 z-50 max-w-sm w-full p-5 rounded-2xl shadow-2xl border border-green-500/30 flex items-start gap-4 animate-fade-in"
     style="background: linear-gradient(135deg, #052e16, #14532d); box-shadow: 0 0 40px rgba(34,197,94,0.2);">
     <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
         <i class="fas fa-check text-white"></i>

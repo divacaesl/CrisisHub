@@ -26,8 +26,158 @@
 
         /* Custom scrollbar */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        .dark ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 3px; }
+
+        /* Premium Ambient Aura Backdrop */
+        .premium-ambient-aura {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            overflow: hidden;
+            background: #f8fafc;
+            transition: background 0.5s ease;
+        }
+        .dark .premium-ambient-aura {
+            background: #0f172a;
+        }
+        .premium-ambient-aura::before,
+        .premium-ambient-aura::after {
+            content: '';
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.45;
+            mix-blend-mode: multiply;
+            animation: ambientFloat 25s infinite ease-in-out;
+            transition: background 0.5s ease, opacity 0.5s ease;
+        }
+        .dark .premium-ambient-aura::before,
+        .dark .premium-ambient-aura::after {
+            mix-blend-mode: screen;
+            opacity: 0.18;
+        }
+        
+        .premium-ambient-aura::before {
+            background: radial-gradient(circle, #ffe4e6 0%, transparent 70%); /* Rose blush in light */
+            top: -10%;
+            left: -10%;
+        }
+        .dark .premium-ambient-aura::before {
+            background: radial-gradient(circle, #991b1b 0%, transparent 70%); /* Deep red in dark */
+        }
+        
+        .premium-ambient-aura::after {
+            background: radial-gradient(circle, #ffedd5 0%, transparent 70%); /* Amber blush in light */
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -12s;
+        }
+        .dark .premium-ambient-aura::after {
+            background: radial-gradient(circle, #431407 0%, transparent 70%); /* Deep orange in dark */
+        }
+        
+        @keyframes ambientFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(120px, 60px) scale(1.15); }
+        }
+
+        /* Dynamic Hero Transitions */
+        .hero-dynamic {
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+        
+        /* Specialized Page Gradients */
+        .hero-home {
+            background: linear-gradient(135deg, #f8fafc 0%, #fff1f2 40%, #f8fafc 70%, #f1f5f9 100%);
+        }
+        .dark .hero-home {
+            background: linear-gradient(135deg, #0f172a 0%, #1e0000 40%, #0f172a 70%, #0a0f1e 100%);
+        }
+        
+        .hero-volunteer {
+            background: linear-gradient(135deg, #f8fafc 0%, #dcfce7 40%, #f1f5f9 100%);
+        }
+        .dark .hero-volunteer {
+            background: linear-gradient(135deg, #0f172a 0%, #052e16 40%, #0f172a 100%);
+        }
+        
+        .hero-donate {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffedd5 40%, #fee2e2 70%, #f1f5f9 100%);
+        }
+        .dark .hero-donate {
+            background: linear-gradient(135deg, #0f172a 0%, #1a0000 40%, #431407 70%, #0f172a 100%);
+        }
+        
+        .hero-contact {
+            background: linear-gradient(135deg, #f8fafc 0%, #dbeafe 50%, #f1f5f9 100%);
+        }
+        .dark .hero-contact {
+            background: linear-gradient(135deg, #0f172a 0%, #0c1a35 50%, #0f172a 100%);
+        }
+        
+        .hero-about {
+            background: linear-gradient(135deg, #f8fafc 0%, #fee2e2 50%, #f1f5f9 100%);
+        }
+        .dark .hero-about {
+            background: linear-gradient(135deg, #0f172a 0%, #1e0000 50%, #0f172a 100%);
+        }
+
+        /* Dynamic slate-to-gray Premium Footer */
+        .footer-dynamic {
+            background: linear-gradient(to bottom, #f1f5f9 0%, #e2e8f0 100%) !important;
+            border-top: 1px solid rgba(0,0,0,0.06) !important;
+            transition: background 0.5s ease, border-color 0.5s ease;
+        }
+        .dark .footer-dynamic {
+            background: #080e1a !important;
+            border-top: 1px solid rgba(255,255,255,0.05) !important;
+        }
+
+        /* Dynamic Payment Modal Backdrop & Border */
+        .premium-modal {
+            background: linear-gradient(160deg, #ffffff 0%, #fff7ed 60%, #fff1f2 100%) !important;
+            border: 1px solid rgba(220, 38, 38, 0.15) !important;
+        }
+        .dark .premium-modal {
+            background: linear-gradient(160deg, #0f172a 0%, #1a0a0a 60%, #1e1020 100%) !important;
+            border: 1px solid rgba(249, 115, 22, 0.25) !important;
+        }
+
+        /* Premium Glassmorphic Sparkle Refraction */
+        .premium-sparkle-glass {
+            position: relative;
+            background: rgba(255, 255, 255, 0.65) !important;
+            backdrop-filter: blur(25px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.6) !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                        inset 0 -1px 0 rgba(0, 0, 0, 0.02) !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .dark .premium-sparkle-glass {
+            background: rgba(15, 23, 42, 0.65) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.45), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                        inset 0 -1px 0 rgba(0, 0, 0, 0.4) !important;
+        }
+        .premium-sparkle-glass:hover {
+            border-color: rgba(220, 38, 38, 0.25) !important;
+            box-shadow: 0 20px 50px rgba(220, 38, 38, 0.08), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+            transform: translateY(-4px);
+        }
+        .dark .premium-sparkle-glass:hover {
+            border-color: rgba(239, 68, 68, 0.35) !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 
+                        0 0 30px rgba(239, 68, 68, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+        }
 
         /* Glassmorphism */
         .glass {
@@ -327,19 +477,63 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             border-color: rgba(239, 68, 68, 0.25) !important;
         }
+
+        /* Smart Dynamic Light Theme Contrast Overrides for Public Pages */
+        html:not(.dark) *:not(.dark-content):not(.dark-content *) > .text-white:not(.badge):not(.btn):not([class*="bg-"]):not([class*="btn-"]):not(.badge-urgent):not(.sos-btn) {
+            color: #0f172a !important;
+        }
+        html:not(.dark) *:not(.dark-content):not(.dark-content *) > .text-slate-300:not(.badge):not(.btn):not([class*="bg-"]) {
+            color: #334155 !important;
+        }
+        html:not(.dark) *:not(.dark-content):not(.dark-content *) > .text-slate-400:not(.badge):not(.btn):not([class*="bg-"]) {
+            color: #475569 !important;
+        }
+        html:not(.dark) *:not(.dark-content):not(.dark-content *) > .text-slate-500:not(.badge):not(.btn):not([class*="bg-"]) {
+            color: #64748b !important;
+        }
+        html:not(.dark) .hero-dynamic h1,
+        html:not(.dark) .hero-dynamic h2,
+        html:not(.dark) .hero-dynamic h3 {
+            color: #0f172a !important;
+        }
+        html:not(.dark) .hero-dynamic p,
+        html:not(.dark) .hero-dynamic span:not(.badge):not(.btn):not([class*="bg-"]) {
+            color: #334155 !important;
+        }
+        html:not(.dark) .hero-dynamic .text-green-400 {
+            color: #15803d !important;
+        }
+        html:not(.dark) .hero-dynamic .text-orange-400 {
+            color: #c2410c !important;
+        }
+        html:not(.dark) .hero-dynamic .text-blue-400 {
+            color: #1d4ed8 !important;
+        }
+        html:not(.dark) .hero-dynamic .text-red-400 {
+            color: #b91c1c !important;
+        }
+        
+        /* Light mode dynamic input validation labels */
+        html:not(.dark) .form-label {
+            color: #334155 !important;
+        }
+        html:not(.dark) .form-input::placeholder,
+        html:not(.dark) .form-select::placeholder,
+        html:not(.dark) textarea::placeholder {
+            color: #94a3b8 !important;
+        }
     </style>
 
     @yield('head')
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 antialiased transition-colors duration-300">
 
-    <!-- Video & Particle Background -->
+    <!-- Premium Ambient Aura & Video Particle Background -->
+    <div class="premium-ambient-aura"></div>
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover opacity-[0.05] dark:opacity-[0.15] mix-blend-multiply dark:mix-blend-screen">
+        <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover opacity-[0.03] dark:opacity-[0.12] mix-blend-multiply dark:mix-blend-screen">
             <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-particle-loop-32819-large.mp4" type="video/mp4">
         </video>
-        <!-- Overlay to ensure text readability -->
-        <div class="absolute inset-0 bg-gradient-to-b from-slate-50/50 via-slate-50/80 to-slate-50 dark:from-[#0f172a]/50 dark:via-[#0f172a]/80 dark:to-[#0f172a]"></div>
     </div>
 
     <!-- Navbar -->
@@ -447,7 +641,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#080e1a] border-t border-white/5">
+    <footer class="footer-dynamic border-t">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
                 <!-- Brand -->

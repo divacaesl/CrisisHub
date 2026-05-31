@@ -5,7 +5,7 @@
 
 @section('content')
 <!-- Volunteer Hero -->
-<section class="relative min-h-[65vh] flex items-center pt-24 pb-16 overflow-hidden" style="background: linear-gradient(135deg, #0f172a 0%, #052e16 40%, #0f172a 100%);">
+<section class="hero-dynamic hero-volunteer relative min-h-[65vh] flex items-center pt-24 pb-16 overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute top-0 right-0 w-96 h-96 bg-green-600/10 rounded-full blur-3xl"></div>
         <div class="absolute bottom-0 left-0 w-80 h-80 bg-emerald-600/5 rounded-full blur-3xl"></div>
