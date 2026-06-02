@@ -588,9 +588,32 @@
                         Laporkan
                     </a>
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="px-4 py-2 border border-slate-300 dark:border-slate-600 hover:border-slate-400 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm font-medium rounded-xl transition-all duration-200">
-                            <i class="fas fa-tachometer-alt mr-1.5"></i>Dashboard
-                        </a>
+                        @php
+                            $userRoles = auth()->user()->roles->pluck('name')->implode(', ');
+                            $roleDisplay = $userRoles ?: 'Pengguna';
+                        @endphp
+                        <div class="relative group">
+                            <button class="flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-600 hover:border-slate-400 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm font-medium rounded-xl transition-all duration-200">
+                                <i class="fas fa-user-circle"></i>
+                                <span class="hidden sm:inline">{{ auth()->user()->name }} ({{ $roleDisplay }})</span>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                <div class="py-1">
+                                    @if(auth()->user()->hasRole('Admin'))
+                                        <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">Admin Dashboard</a>
+                                    @endif
+                                    <a href="{{ url('/dashboard') }}" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                                        <i class="fas fa-history mr-1.5"></i> Riwayat
+                                    </a>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700">
+                                            <i class="fas fa-sign-out-alt mr-1.5"></i> Keluar
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     @else
                         <a href="{{ route('login') }}" class="px-4 py-2 border border-slate-300 dark:border-slate-600 hover:border-slate-400 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm font-medium rounded-xl transition-all duration-200">
                             Masuk
@@ -627,9 +650,29 @@
                     <i class="fas fa-phone w-5"></i>Kontak
                 </a>
                 <div class="pt-2 border-t border-white/10">
-                    <a href="/report" class="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r from-red-600 to-orange-600 text-white font-semibold rounded-xl">
+                    <a href="/report" class="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r from-red-600 to-orange-600 text-white font-semibold rounded-xl mb-2">
                         <i class="fas fa-exclamation-triangle"></i>Laporkan Bencana
                     </a>
+                    @auth
+                        @if(auth()->user()->hasRole('Admin'))
+                            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-all">
+                                <i class="fas fa-user-shield w-5"></i>Admin Dashboard
+                            </a>
+                        @endif
+                        <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-all">
+                            <i class="fas fa-history w-5"></i>Riwayat Saya
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" class="m-0">
+                            @csrf
+                            <button type="submit" class="w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:text-red-300 hover:bg-white/10 transition-all">
+                                <i class="fas fa-sign-out-alt w-5"></i>Keluar
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-all">
+                            <i class="fas fa-sign-in-alt w-5"></i>Masuk
+                        </a>
+                    @endauth
                 </div>
             </div>
         </div>

@@ -48,19 +48,29 @@ class ReportController extends Controller
         $latitude = $request->latitude;
         $longitude = $request->longitude;
 
-        // Eloquent fallback bounding box distance computation
-        $duplicates = Report::selectRaw("*, 
-            ( 6371000 * acos( cos( radians(?) ) *
-            cos( radians( latitude ) )
-            * cos( radians( longitude ) - radians(?)
-            ) + sin( radians(?) ) *
-            sin( radians( latitude ) ) )
-            ) AS distance", [$latitude, $longitude, $latitude])
-        ->having('distance', '<', $radiusMeters)
-        ->where('created_at', '>=', $timeLimit)
-        ->get();
+        // Fetch recent reports to calculate distance in PHP (SQLite compatible)
+        $recentReports = Report::where('created_at', '>=', $timeLimit)->get();
+        $isDuplicate = false;
 
-        if ($duplicates->count() > 0) {
+        foreach ($recentReports as $rep) {
+            $latFrom = deg2rad((float) $latitude);
+            $lonFrom = deg2rad((float) $longitude);
+            $latTo = deg2rad((float) $rep->latitude);
+            $lonTo = deg2rad((float) $rep->longitude);
+  
+            $latDelta = $latTo - $latFrom;
+            $lonDelta = $lonTo - $lonFrom;
+  
+            $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+            $distance = $angle * 6371000; // Earth radius in meters
+
+            if ($distance < $radiusMeters) {
+                $isDuplicate = true;
+                break;
+            }
+        }
+
+        if ($isDuplicate) {
             $data['flag_duplicate'] = true;
         }
 
@@ -122,6 +132,6 @@ class ReportController extends Controller
             'calculated_at' => now(),
         ]);
 
-        return redirect()->back()->with('success', 'Laporan bantuan darurat berhasil dikirim! Tim CrisisHub akan memverifikasi dalam waktu singkat.');
+        return redirect()->route('dashboard')->with('success', 'Berhasil menambahkan laporan SOS! Laporan Anda telah masuk ke Riwayat Laporan Saya dan sedang menunggu diverifikasi oleh admin.');
     }
 }

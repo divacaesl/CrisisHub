@@ -118,7 +118,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/apply/organization', [\App\Http\Controllers\ApplicationController::class, 'storeOrganization']);
 
     Route::post('/report/store', [\App\Http\Controllers\ReportController::class, 'store'])->name('report.store');
-
+    
+    // Report Chat Routes
+    Route::get('/report/{id}/chat', [\App\Http\Controllers\ReportChatController::class, 'getMessages'])->name('report.chat.get');
+    Route::post('/report/{id}/chat', [\App\Http\Controllers\ReportChatController::class, 'sendMessage'])->name('report.chat.send');
     // Volunteer task status update (relawan update tugas mereka sendiri)
     Route::post('/volunteer/task/{id}/update', [\App\Http\Controllers\CenterController::class, 'updateTaskStatus'])->name('center.volunteer.task.update');
 });

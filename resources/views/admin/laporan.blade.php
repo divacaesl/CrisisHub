@@ -99,6 +99,10 @@
                             <input type="hidden" name="action" value="Rejected">
                             <button type="submit" class="px-2.5 py-1.5 text-[10px] font-bold rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors">✕ Reject</button>
                         </form>
+                        @elseif(in_array($report->status, ['Verified', 'In Progress', 'Resolved']))
+                        <button onclick="openChatModal({{ $report->id }}, '{{ $report->jenis_bencana }}')" class="px-2.5 py-1.5 text-[10px] font-bold rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors flex items-center gap-1">
+                            <i class="fas fa-comment-dots"></i> Live Chat
+                        </button>
                         @else
                         <span class="text-[10px] text-gray-600">—</span>
                         @endif
@@ -121,4 +125,113 @@
 
 {{-- Pagination --}}
 <div class="mt-5">{{ $reports->withQueryString()->links() }}</div>
+
+<!-- Chat Modal -->
+<div id="chat-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+    <div class="card-glass rounded-2xl w-full max-w-lg mx-4 overflow-hidden shadow-2xl flex flex-col h-[600px] max-h-[80vh] border border-white/10">
+        <!-- Header -->
+        <div class="bg-white/[0.02] px-6 py-4 flex justify-between items-center border-b border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white text-base leading-tight">Live Chat Bantuan</h3>
+                    <p id="chat-modal-title" class="text-xs text-blue-400 font-semibold"></p>
+                </div>
+            </div>
+            <button onclick="closeChatModal()" class="text-gray-400 hover:text-white transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Messages -->
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-6 custom-scrollbar space-y-4">
+            <!-- AJAX content -->
+        </div>
+
+        <!-- Input Box -->
+        <div class="p-4 bg-white/[0.02] border-t border-white/5">
+            <form onsubmit="sendChatMessage(event)" class="flex gap-2">
+                <input type="text" id="chat-input" placeholder="Ketik pesan Anda di sini..." class="flex-1 bg-white/5 border border-white/10 text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" required autocomplete="off">
+                <button type="submit" class="w-12 flex-shrink-0 bg-blue-600 hover:bg-blue-500 text-white rounded-xl flex items-center justify-center transition-colors">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Chat Feature
+    let currentReportChatId = null;
+
+    function openChatModal(reportId, title) {
+        currentReportChatId = reportId;
+        document.getElementById('chat-modal-title').textContent = title;
+        document.getElementById('chat-modal').classList.remove('hidden');
+        fetchMessages();
+    }
+
+    function closeChatModal() {
+        document.getElementById('chat-modal').classList.add('hidden');
+        currentReportChatId = null;
+    }
+
+    function fetchMessages() {
+        if (!currentReportChatId) return;
+        fetch(`/report/${currentReportChatId}/chat`)
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('chat-messages');
+                container.innerHTML = '';
+                data.forEach(msg => {
+                    const isSelf = msg.sender_id == {{ auth()->id() }};
+                    const align = isSelf ? 'justify-end' : 'justify-start';
+                    const bg = isSelf ? 'bg-blue-600 text-white' : 'bg-white/10 text-gray-200 border border-white/5';
+                    const name = isSelf ? 'Anda (Admin)' : msg.sender_name;
+                    
+                    container.innerHTML += `
+                        <div class="flex ${align}">
+                            <div class="max-w-[75%]">
+                                <span class="text-[10px] text-gray-500 block mb-1 ${isSelf ? 'text-right' : 'text-left'}">${name} • ${msg.time}</span>
+                                <div class="${bg} px-4 py-2 rounded-2xl ${isSelf ? 'rounded-tr-sm' : 'rounded-tl-sm'} text-sm shadow">
+                                    ${msg.content}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.scrollTop = container.scrollHeight;
+            })
+            .catch(err => console.error(err));
+    }
+
+    function sendChatMessage(e) {
+        e.preventDefault();
+        const input = document.getElementById('chat-input');
+        const content = input.value.trim();
+        if (!content || !currentReportChatId) return;
+
+        input.disabled = true;
+        fetch(`/report/${currentReportChatId}/chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ content: content })
+        })
+        .then(res => res.json())
+        .then(data => {
+            input.value = '';
+            input.disabled = false;
+            fetchMessages();
+        })
+        .catch(err => {
+            console.error(err);
+            input.disabled = false;
+        });
+    }
+</script>
 @endsection

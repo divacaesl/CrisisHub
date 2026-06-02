@@ -37,13 +37,16 @@ class DashboardController extends Controller
         // Get user's own reports to display separately
         $myReports = Report::where('user_id', $user->id)->orderBy('created_at', 'desc')->take(5)->get();
 
+        $volunteerApp = \App\Models\VolunteerApplication::where('user_id', $user->id)->latest()->first();
+
         return view('dashboard.index', compact(
             'reportCount', 
             'needCount', 
             'resolvedCount',
             'donations', 
             'recentReports',
-            'myReports'
+            'myReports',
+            'volunteerApp'
         ));
     }
 }

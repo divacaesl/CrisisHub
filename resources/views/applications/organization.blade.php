@@ -1,11 +1,18 @@
-@extends('layouts.dashboard')
+@extends('layouts.public')
 
 @section('title', 'Daftar Mitra Organisasi')
-@section('role', 'Pendaftaran')
-@section('page_title', 'Formulir Kemitraan Organisasi')
 
 @section('content')
-<div class="max-w-3xl mx-auto">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 min-h-screen" style="padding-top: 7rem;">
+    <!-- Page Header -->
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white font-display">Formulir Kemitraan Organisasi</h1>
+            <p class="text-slate-500 text-sm mt-1">Daftarkan instansi/NGO Anda sebagai mitra resmi.</p>
+        </div>
+    </div>
+    
+    <div class="max-w-3xl mx-auto">
     <!-- Alerts -->
     @if(session('success'))
         <div class="mb-6 p-4 rounded-2xl bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 flex items-start gap-3 backdrop-blur-md">
@@ -243,5 +250,7 @@
             </form>
         </div>
     @endif
+</div>
+    </div>
 </div>
 @endsection

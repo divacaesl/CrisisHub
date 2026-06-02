@@ -95,11 +95,42 @@ class AdminDashboardController extends Controller
     {
         $report = Report::findOrFail($id);
         $action = $request->action; // 'Approved' | 'Rejected'
+        
+        // Map Approved to the correct enum value 'Verified'
+        $statusValue = $action === 'Approved' ? 'Verified' : $action;
+
         $report->update([
-            'status'      => $action,
+            'status'      => $statusValue,
             'admin_notes' => $request->notes,
             'verified_by' => auth()->id(),
         ]);
+
+        if ($action === 'Approved') {
+            try {
+                \Illuminate\Support\Facades\Mail::to($report->user->email)->send(new \App\Mail\ReportVerified($report));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error("Gagal mengirim email verifikasi ke {$report->user->email}: " . $e->getMessage());
+            }
+
+            // Auto-create Campaign Donasi
+            try {
+                \App\Models\Campaign::create([
+                    'title' => 'Bantuan Darurat: ' . $report->jenis_bencana,
+                    'emoji' => '🆘',
+                    'location' => $report->alamat_lengkap ?? 'Lokasi Terdeteksi',
+                    'tag' => 'AKTIF',
+                    'tag_color' => 'blue',
+                    'description' => "Penggalangan dana otomatis untuk laporan bencana: " . $report->deskripsi_kondisi,
+                    'target_amount' => 50000000,
+                    'collected_amount' => 0,
+                    'deadline' => now()->addDays(30),
+                    'is_active' => true,
+                ]);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error("Gagal auto-create campaign untuk laporan {$report->id}: " . $e->getMessage());
+            }
+        }
+
         return back()->with('success', "Laporan berhasil di-{$action}.");
     }
 

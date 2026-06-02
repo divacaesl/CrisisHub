@@ -3,6 +3,41 @@
 @section('title', 'Daftar Relawan — CrisisHub')
 @section('description', 'Bergabunglah sebagai relawan CrisisHub dan menjadi garda terdepan penanganan bencana di Indonesia.')
 
+@php
+$categories = [
+    ['id' => 'rescue', 'icon' => 'fas fa-life-ring', 'color' => 'red', 'emoji' => '🆘', 'title' => 'Rescue Team', 'desc' => 'Tim penyelamatan & evakuasi korban bencana langsung di lapangan.', 'members' => '2.840', 'skills' => ['SAR', 'Evakuasi', 'Selam'], 'open' => true,
+     'details' => 'Tim Rescue bertugas di garis depan saat bencana terjadi. Anda akan dilatih untuk melakukan pencarian dan penyelamatan di berbagai medan ekstrem.',
+     'tasks' => ['Evakuasi korban', 'Pencarian orang hilang', 'Pemetaan area berbahaya'],
+     'training' => 'Setiap akhir pekan (Sabtu & Minggu)',
+     'benefit' => 'Sertifikat SAR Dasar Nasional',
+     'urgency' => 'Sangat Tinggi'],
+    ['id' => 'medical', 'icon' => 'fas fa-stethoscope', 'color' => 'blue', 'emoji' => '🏥', 'title' => 'Medical Team', 'desc' => 'Tim medis untuk pertolongan pertama dan pelayanan kesehatan darurat.', 'members' => '1.920', 'skills' => ['P3K', 'Gawat Darurat', 'Psikologi'], 'open' => true,
+     'details' => 'Tim Medis memberikan layanan kesehatan darurat bagi korban bencana. Tenaga kesehatan sangat dibutuhkan untuk penanganan trauma fisik dan psikologis.',
+     'tasks' => ['Pertolongan pertama (P3K)', 'Triage pasien', 'Trauma healing'],
+     'training' => '2 kali sebulan (Jumat sore)',
+     'benefit' => 'Sertifikat BLS (Basic Life Support)',
+     'urgency' => 'Tinggi'],
+    ['id' => 'logistics', 'icon' => 'fas fa-box', 'color' => 'orange', 'emoji' => '📦', 'title' => 'Logistics Team', 'desc' => 'Pengelolaan dan distribusi bantuan logistik ke wilayah terdampak.', 'members' => '3.210', 'skills' => ['Gudang', 'Distribusi', 'Inventaris'], 'open' => true,
+     'details' => 'Tim Logistik mengatur alur barang masuk dan keluar, pendirian tenda, hingga manajemen dapur umum untuk penyintas.',
+     'tasks' => ['Manajemen gudang', 'Distribusi bantuan pangan', 'Pendirian tenda darurat'],
+     'training' => '1 kali sebulan (Fleksibel)',
+     'benefit' => 'Sertifikat Manajemen Bencana',
+     'urgency' => 'Sedang'],
+    ['id' => 'communication', 'icon' => 'fas fa-satellite-dish', 'color' => 'purple', 'emoji' => '📡', 'title' => 'Communication Team', 'desc' => 'Koordinasi komunikasi dan informasi antar tim di lapangan.', 'members' => '1.450', 'skills' => ['Radio', 'IT', 'Media Sosial'], 'open' => false,
+     'details' => 'Tim Komunikasi memastikan arus informasi tetap berjalan meskipun jaringan publik terputus.',
+     'tasks' => ['Instalasi radio komunikasi', 'Broadcast informasi darurat', 'Update media sosial'],
+     'training' => 'Setiap Rabu malam (Online)',
+     'benefit' => 'Sertifikat Komunikasi Krisis',
+     'urgency' => 'Rendah (Penuh)'],
+    ['id' => 'assessment', 'icon' => 'fas fa-clipboard-check', 'color' => 'yellow', 'emoji' => '📋', 'title' => 'Assessment Team', 'desc' => 'Tim penilaian kerusakan dan kebutuhan korban secara komprehensif.', 'members' => '1.120', 'skills' => ['Survey', 'Data', 'Analisis'], 'open' => true,
+     'details' => 'Tim Assessment adalah tim perintis yang datang pertama untuk menilai seberapa parah kerusakan dan apa saja yang dibutuhkan korban.',
+     'tasks' => ['Pemetaan wilayah terdampak', 'Pengumpulan data korban', 'Analisis kebutuhan mendesak'],
+     'training' => 'Insidental sebelum misi',
+     'benefit' => 'Sertifikat Asesor Bencana',
+     'urgency' => 'Tinggi'],
+];
+@endphp
+
 @section('content')
 <!-- Volunteer Hero -->
 <section class="hero-dynamic hero-volunteer relative min-h-[65vh] flex items-center pt-24 pb-16 overflow-hidden">
@@ -92,17 +127,8 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-            @php
-            $categories = [
-                ['icon' => 'fas fa-life-ring', 'color' => 'red', 'emoji' => '🆘', 'title' => 'Rescue Team', 'desc' => 'Tim penyelamatan & evakuasi korban bencana langsung di lapangan.', 'members' => '2.840', 'skills' => ['SAR', 'Evakuasi', 'Selam'], 'open' => true],
-                ['icon' => 'fas fa-stethoscope', 'color' => 'blue', 'emoji' => '🏥', 'title' => 'Medical Team', 'desc' => 'Tim medis untuk pertolongan pertama dan pelayanan kesehatan darurat.', 'members' => '1.920', 'skills' => ['P3K', 'Gawat Darurat', 'Psikologi'], 'open' => true],
-                ['icon' => 'fas fa-box', 'color' => 'orange', 'emoji' => '📦', 'title' => 'Logistics Team', 'desc' => 'Pengelolaan dan distribusi bantuan logistik ke wilayah terdampak.', 'members' => '3.210', 'skills' => ['Gudang', 'Distribusi', 'Inventaris'], 'open' => true],
-                ['icon' => 'fas fa-satellite-dish', 'color' => 'purple', 'emoji' => '📡', 'title' => 'Communication Team', 'desc' => 'Koordinasi komunikasi dan informasi antar tim di lapangan.', 'members' => '1.450', 'skills' => ['Radio', 'IT', 'Media Sosial'], 'open' => false],
-                ['icon' => 'fas fa-clipboard-check', 'color' => 'yellow', 'emoji' => '📋', 'title' => 'Assessment Team', 'desc' => 'Tim penilaian kerusakan dan kebutuhan korban secara komprehensif.', 'members' => '1.120', 'skills' => ['Survey', 'Data', 'Analisis'], 'open' => true],
-            ];
-            @endphp
             @foreach($categories as $i => $cat)
-            <div class="glass rounded-2xl p-6 border border-{{ $cat['color'] }}-500/20 card-hover premium-card-glow fade-up" style="animation-delay: {{ $i * 0.1 }}s">
+            <div onclick="openTeamModal('{{ $cat['id'] }}')" class="glass rounded-2xl p-6 border border-{{ $cat['color'] }}-500/20 card-hover premium-card-glow fade-up cursor-pointer" style="animation-delay: {{ $i * 0.1 }}s">
                 <div class="text-4xl mb-4">{{ $cat['emoji'] }}</div>
                 <div class="flex items-center justify-between mb-2">
                     <h3 class="text-slate-800 dark:text-white font-bold">{{ $cat['title'] }}</h3>
@@ -128,94 +154,16 @@
     </div>
 </section>
 
-<!-- Registration Form -->
-<section id="form-relawan" class="py-20 bg-white dark:bg-[#0a0f1e] transition-colors duration-300">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12 fade-up">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-green-600/15 border border-green-600/25 rounded-full mb-4">
-                <i class="fas fa-file-alt text-green-600 dark:text-green-400 text-xs"></i>
-                <span class="text-green-600 dark:text-green-400 text-sm font-semibold">Formulir Pendaftaran</span>
-            </div>
-            <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-3">Daftar Sebagai Relawan</h2>
-            <p class="text-slate-650 dark:text-slate-400">Isi formulir di bawah ini dan tim kami akan menghubungi Anda dalam 24 jam.</p>
-        </div>
-
-        <div class="glass rounded-3xl p-8 md:p-10 border border-slate-200 dark:border-white/10 fade-up premium-card-glow">
-            <form action="#" method="POST" class="space-y-6" id="volunteerForm">
-                @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="form-label">Nama Lengkap *</label>
-                        <input type="text" name="nama" class="form-input" placeholder="Masukkan nama lengkap" required id="v-nama">
-                    </div>
-                    <div>
-                        <label class="form-label">Email *</label>
-                        <input type="email" name="email" class="form-input" placeholder="email@contoh.com" required id="v-email">
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="form-label">Nomor HP/WhatsApp *</label>
-                        <input type="tel" name="phone" class="form-input" placeholder="+62 812 xxxx xxxx" required id="v-phone">
-                    </div>
-                    <div>
-                        <label class="form-label">Kota Domisili *</label>
-                        <input type="text" name="kota" class="form-input" placeholder="Contoh: Bandung, Jawa Barat" required id="v-kota">
-                    </div>
-                </div>
-                <div>
-                    <label class="form-label">Kategori Relawan *</label>
-                    <select name="kategori" class="form-select" required id="v-kategori">
-                        <option value="">Pilih Kategori</option>
-                        <option value="rescue">🆘 Rescue Team</option>
-                        <option value="medical">🏥 Medical Team</option>
-                        <option value="logistics">📦 Logistics Team</option>
-                        <option value="communication">📡 Communication Team</option>
-                        <option value="assessment">📋 Assessment Team</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="form-label">Keahlian Khusus</label>
-                    <input type="text" name="keahlian" class="form-input" placeholder="Contoh: SAR, Pertolongan Pertama, IT, Mengemudi" id="v-keahlian">
-                </div>
-                <div>
-                    <label class="form-label">Pengalaman Kerelawanan</label>
-                    <select name="pengalaman" class="form-select" id="v-pengalaman">
-                        <option value="">Pilih Pengalaman</option>
-                        <option value="0">Belum pernah (Pemula)</option>
-                        <option value="1">1-2 tahun</option>
-                        <option value="3">3-5 tahun</option>
-                        <option value="5">Lebih dari 5 tahun</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="form-label">Sertifikasi yang Dimiliki</label>
-                    <input type="text" name="sertifikasi" class="form-input" placeholder="Contoh: SAR Dasar, PPGD, ISO 22320" id="v-sertifikasi">
-                </div>
-                <div>
-                    <label class="form-label">Upload CV/Resume (PDF, max 2MB)</label>
-                    <div class="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-green-550/50 rounded-xl p-8 text-center cursor-pointer transition-all group bg-slate-50/50 dark:bg-slate-900/20" onclick="document.getElementById('cvUpload').click()">
-                        <i class="fas fa-cloud-upload-alt text-slate-400 group-hover:text-green-500 text-3xl mb-3 transition-colors"></i>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-1">Klik atau drag & drop file CV Anda</p>
-                        <p class="text-slate-500 dark:text-slate-600 text-xs">PDF, DOC, DOCX — Max 2MB</p>
-                        <input type="file" id="cvUpload" name="cv" accept=".pdf,.doc,.docx" class="hidden">
-                    </div>
-                </div>
-                <div>
-                    <label class="form-label">Motivasi Bergabung</label>
-                    <textarea name="motivasi" rows="4" class="form-input resize-none" placeholder="Ceritakan mengapa Anda ingin menjadi relawan CrisisHub..." id="v-motivasi"></textarea>
-                </div>
-                <div class="flex items-start gap-3">
-                    <input type="checkbox" id="agree" name="agree" class="mt-1 custom-radio" required>
-                    <label for="agree" class="text-slate-650 dark:text-slate-400 text-sm">Saya menyetujui <a href="/terms" class="text-green-600 dark:text-green-400 hover:underline font-semibold">Syarat & Ketentuan</a> dan bersedia mengikuti pelatihan serta misi yang ditugaskan oleh CrisisHub.</label>
-                </div>
-                <button type="submit" id="submitVolunteer" class="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-black text-lg rounded-2xl transition-all shimmer-btn" style="box-shadow: 0 0 20px rgba(34,197,94,0.3);">
-                    <i class="fas fa-hard-hat mr-2"></i>Kirim Pendaftaran Relawan
-                </button>
-            </form>
-        </div>
-    </div>
-</section>
+<script>
+    function openTeamModal(id) {
+        document.getElementById('team-modal-' + id).classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeTeamModal(id) {
+        document.getElementById('team-modal-' + id).classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+</script>
 
 <!-- Success Stories -->
 <section class="py-20 bg-slate-50 dark:bg-[#0f172a] transition-colors duration-300">
@@ -263,6 +211,282 @@
         </div>
     </div>
 </section>
+
+@foreach($categories as $cat)
+<!-- Modal for Team Details -->
+<div id="team-modal-{{ $cat['id'] }}" class="fixed inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm hidden p-4" style="z-index: 99999;">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl shadow-2xl relative flex flex-col max-h-[90vh]">
+        <!-- Modal Header -->
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-{{ $cat['color'] }}-500/10 rounded-t-3xl shrink-0">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-{{ $cat['color'] }}-500/20 text-{{ $cat['color'] }}-500 flex items-center justify-center text-2xl">
+                    <i class="{{ $cat['icon'] }}"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-black text-slate-900 dark:text-white">{{ $cat['title'] }}</h2>
+                    <p class="text-sm text-{{ $cat['color'] }}-600 dark:text-{{ $cat['color'] }}-400 font-bold">Tingkat Kebutuhan: {{ $cat['urgency'] }}</p>
+                </div>
+            </div>
+            <button onclick="closeTeamModal('{{ $cat['id'] }}')" class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:bg-red-100 hover:text-red-500 transition-colors shadow-sm">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="p-6 md:p-8 space-y-6 overflow-y-auto flex-1">
+            <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wider text-slate-500">Deskripsi Tim</h4>
+                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{{ $cat['details'] }}</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wider text-slate-500"><i class="fas fa-tasks mr-2"></i>Tugas Volunteer</h4>
+                    <ul class="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                        @foreach($cat['tasks'] as $task)
+                        <li>{{ $task }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wider text-slate-500"><i class="fas fa-tools mr-2"></i>Skill Dibutuhkan</h4>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach($cat['skills'] as $skill)
+                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200 dark:border-slate-700">{{ $skill }}</span>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                <div>
+                    <h4 class="text-xs font-bold text-slate-500 mb-1 uppercase">Jadwal Pelatihan</h4>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white"><i class="far fa-calendar-alt text-blue-500 mr-2"></i>{{ $cat['training'] }}</p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-500 mb-1 uppercase">Benefit Sertifikat</h4>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white"><i class="fas fa-certificate text-amber-500 mr-2"></i>{{ $cat['benefit'] }}</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
+                <div class="text-sm">
+                    <span class="text-slate-500">Anggota Aktif:</span>
+                    <span class="font-bold text-slate-900 dark:text-white ml-1">{{ $cat['members'] }} Relawan</span>
+                </div>
+                
+                @if($cat['open'])
+                    @auth
+                        <button onclick="closeTeamModal('{{ $cat['id'] }}'); openApplyModal('{{ $cat['title'] }}')" class="px-6 py-3 bg-{{ $cat['color'] }}-500 hover:bg-{{ $cat['color'] }}-600 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-{{ $cat['color'] }}-500/30">
+                            Gabung Tim Ini
+                        </button>
+                    @else
+                        <a href="{{ route('login') }}" class="px-6 py-3 bg-{{ $cat['color'] }}-500 hover:bg-{{ $cat['color'] }}-600 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-{{ $cat['color'] }}-500/30">
+                            Gabung Tim Ini
+                        </a>
+                    @endauth
+                @else
+                    <button disabled class="px-6 py-3 bg-slate-300 dark:bg-slate-700 text-slate-500 font-bold rounded-xl cursor-not-allowed">
+                        Kuota Penuh
+                    </button>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+<!-- MODAL FORM PENDAFTARAN -->
+@auth
+<div id="apply-modal" class="fixed inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm hidden p-4" style="z-index: 99999;">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-3xl shadow-2xl relative flex flex-col max-h-[90vh]">
+        <!-- Modal Header -->
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900 rounded-t-3xl shrink-0">
+            <div>
+                <h2 class="text-2xl font-black text-slate-900 dark:text-white font-display" id="modal-title">Formulir Pendaftaran Relawan</h2>
+                <p class="text-sm text-slate-500">Isi data diri dengan lengkap sesuai dengan identitas asli Anda.</p>
+            </div>
+            <button onclick="closeApplyModal()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:bg-red-100 hover:text-red-500 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="p-6 md:p-8 overflow-y-auto flex-1">
+            <form id="volunteerForm" action="{{ url('/apply/volunteer') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                @csrf
+                <input type="hidden" name="preferred_team" id="preferred_team_input">
+
+                <!-- Data Diri (Readonly) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Nama Lengkap *</label>
+                        <input type="text" name="full_name" value="{{ auth()->user()->name ?? '' }}" required class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Email *</label>
+                        <input type="email" value="{{ auth()->user()->email ?? '' }}" disabled class="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border-none rounded-xl text-sm text-slate-500 cursor-not-allowed">
+                    </div>
+                </div>
+
+                <!-- Kontak & Lokasi -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Nomor HP/WhatsApp *</label>
+                        <input type="text" name="phone_number" required placeholder="+62 812 xxxx xxxx" class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Kota Domisili *</label>
+                        <input type="text" name="city" required placeholder="Contoh: Bandung, Jawa Barat" class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    </div>
+                </div>
+
+                <!-- Keahlian & Kategori -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Kategori Relawan *</label>
+                        <select name="category" required class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                            <option value="" disabled selected>Pilih Kategori</option>
+                            <option value="Profesional">Profesional (Dokter, Insinyur, dll)</option>
+                            <option value="Mahasiswa">Mahasiswa</option>
+                            <option value="Masyarakat Umum">Masyarakat Umum</option>
+                            <option value="Pensiunan">Pensiunan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Keahlian Khusus</label>
+                        <input type="text" name="skills" placeholder="Contoh: SAR, Pertolongan Pertama, IT, Mengemudi" class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    </div>
+                </div>
+
+                <!-- Waktu & Area Penugasan -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Ketersediaan Waktu *</label>
+                        <select name="availability" required class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                            <option value="" disabled selected>Pilih Waktu</option>
+                            <option value="Full Time">Siap Panggilan (Full Time)</option>
+                            <option value="Weekend">Akhir Pekan Saja (Weekend)</option>
+                            <option value="Weekday">Hari Kerja (Weekday)</option>
+                            <option value="Remote">Hanya Remote / Online</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Area Penugasan *</label>
+                        <select name="assignment_area" required class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                            <option value="" disabled selected>Pilih Area</option>
+                            <option value="Dalam Kota">Hanya Dalam Kota Domisili</option>
+                            <option value="Dalam Provinsi">Dalam Satu Provinsi</option>
+                            <option value="Seluruh Indonesia">Siap ke Seluruh Indonesia</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Pengalaman & Sertifikasi -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Pengalaman Kerelawanan</label>
+                    <textarea name="experience" rows="2" placeholder="Ceritakan pengalaman Anda sebelumnya di bidang kebencanaan/kemanusiaan..." class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Sertifikasi yang Dimiliki</label>
+                    <input type="text" name="certification" placeholder="Contoh: SAR Dasar, PPGD, ISO 22320" class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                </div>
+
+                <!-- Upload CV -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Upload CV/Resume (PDF/DOC, maks 2MB)</label>
+                    <div class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-6 text-center hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-slate-400 mb-2"></i>
+                        <input type="file" name="cv_file" accept=".pdf,.doc,.docx" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                    </div>
+                </div>
+
+                <!-- Kontak Darurat -->
+                <div class="bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 rounded-2xl p-6">
+                    <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-4"><i class="fas fa-heartbeat text-red-500 mr-2"></i>Kontak Darurat (Wajib)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Nama Lengkap</label>
+                            <input type="text" name="emergency_contact_name" required placeholder="Nama Kerabat" class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Hubungan</label>
+                            <input type="text" name="emergency_contact_relation" required placeholder="Ayah/Ibu/Suami/Istri" class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Nomor HP</label>
+                            <input type="text" name="emergency_contact_phone" required placeholder="08xxx" class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Motivasi -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Motivasi Bergabung</label>
+                    <textarea name="motivation" rows="3" placeholder="Ceritakan mengapa Anda ingin menjadi relawan CrisisHub..." class="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"></textarea>
+                </div>
+
+                <!-- Persetujuan -->
+                <div class="flex items-start gap-3">
+                    <input type="checkbox" required id="agree" class="mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                    <label for="agree" class="text-xs text-slate-500 dark:text-slate-400 cursor-pointer">
+                        Saya menyetujui <a href="#" class="text-blue-500 font-bold hover:underline">Syarat & Ketentuan</a> dan bersedia mengikuti pelatihan serta misi yang ditugaskan oleh CrisisHub. Seluruh data yang saya isi adalah benar.
+                    </label>
+                </div>
+
+                <div class="pt-4 border-t border-slate-200 dark:border-slate-800">
+                    <button type="submit" id="submitVolunteer" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg transition-transform transform hover:scale-[1.01] flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Kirim Pendaftaran Relawan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endauth
+
+<!-- Alerts & Notifications -->
+@if(session('success'))
+<div id="success-modal" class="fixed inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4" style="z-index: 999999;">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md shadow-2xl relative flex flex-col items-center text-center p-8 transform transition-all">
+        <div class="w-24 h-24 rounded-full bg-green-500/10 text-green-500 flex justify-center items-center mb-6">
+            <i class="fas fa-check-circle text-6xl"></i>
+        </div>
+        <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-2">Berhasil!</h2>
+        <p class="text-slate-500 dark:text-slate-400 mb-8">{{ session('success') }}</p>
+        <button onclick="document.getElementById('success-modal').style.display='none'" class="w-full py-3.5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold rounded-xl shadow-lg transition-transform hover:scale-[1.02]">
+            Tutup
+        </button>
+    </div>
+</div>
+@endif
+
+@if(session('error') || $errors->any())
+<div id="error-modal" class="fixed inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4" style="z-index: 999999;">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md shadow-2xl relative flex flex-col items-center text-center p-8 transform transition-all">
+        <div class="w-24 h-24 rounded-full bg-red-500/10 text-red-500 flex justify-center items-center mb-6">
+            <i class="fas fa-exclamation-triangle text-6xl"></i>
+        </div>
+        <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-2">Perhatian!</h2>
+        <div class="text-slate-500 dark:text-slate-400 mb-8 text-sm">
+            @if(session('error'))
+                <p>{{ session('error') }}</p>
+            @endif
+            @if($errors->any())
+                <ul class="list-disc list-inside text-left mt-2">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
+        </div>
+        <button onclick="document.getElementById('error-modal').style.display='none'" class="w-full py-3.5 bg-gradient-to-r from-slate-200 to-slate-300 hover:from-slate-300 hover:to-slate-400 text-slate-800 font-bold rounded-xl shadow-lg transition-transform hover:scale-[1.02]">
+            Mengerti
+        </button>
+    </div>
+</div>
+@endif
+
 @endsection
 
 @section('scripts')
@@ -276,16 +500,112 @@
         }
     });
 
-    // Form submit
-    document.getElementById('volunteerForm')?.addEventListener('submit', function(e) {
+    // Form submit with AJAX and Desktop Notifications
+    document.getElementById('volunteerForm')?.addEventListener('submit', async function(e) {
         e.preventDefault();
+        
+        // Remove previous errors
+        document.querySelectorAll('.error-text').forEach(el => el.remove());
+        document.querySelectorAll('.border-red-500').forEach(el => el.classList.remove('border-red-500', 'focus:ring-red-500'));
+        
         const btn = document.getElementById('submitVolunteer');
+        const originalBtnText = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Mengirim...';
         btn.disabled = true;
-        setTimeout(() => {
-            btn.innerHTML = '<i class="fas fa-check mr-2"></i>Pendaftaran Terkirim! Tim kami akan menghubungi Anda';
-            btn.style.background = 'linear-gradient(135deg, #16a34a, #15803d)';
-        }, 2000);
+
+        const formData = new FormData(this);
+        
+        try {
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                if (response.status === 422) {
+                    // Validation errors
+                    const errors = data.errors;
+                    for (const [field, messages] of Object.entries(errors)) {
+                        const input = document.querySelector(`[name="${field}"]`);
+                        if (input) {
+                            input.classList.add('border-red-500', 'focus:ring-red-500');
+                            const errorMsg = document.createElement('p');
+                            errorMsg.className = 'text-red-500 text-xs mt-1 error-text font-bold';
+                            errorMsg.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${messages[0]}`;
+                            input.parentNode.appendChild(errorMsg);
+                        }
+                    }
+                } else {
+                    // Other error (e.g., already applied)
+                    const errorModal = document.getElementById('error-modal');
+                    if (errorModal) {
+                        errorModal.querySelector('.text-slate-500').innerHTML = `<p>${data.message || 'Terjadi kesalahan teknis.'}</p>`;
+                        errorModal.style.display = 'flex';
+                    }
+                    
+                    if (Notification.permission === 'granted') {
+                        new Notification('Gagal mendaftar', { body: data.message || 'Terjadi kesalahan teknis.', icon: '/favicon.ico' });
+                    }
+                }
+            } else {
+                // Success
+                document.getElementById('apply-modal').classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                
+                // Show success modal
+                const successModal = document.getElementById('success-modal');
+                if(successModal) {
+                    successModal.querySelector('p').innerText = data.message || 'Berhasil terkirim!';
+                    successModal.style.display = 'flex';
+                }
+                
+                // OS Notification
+                if (Notification.permission === 'granted') {
+                    new Notification('Pendaftaran Berhasil!', { body: data.message || 'Pengajuan relawan Anda berhasil dikirim.', icon: '/favicon.ico' });
+                } else if (Notification.permission !== 'denied') {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            new Notification('Pendaftaran Berhasil!', { body: data.message || 'Pengajuan relawan Anda berhasil dikirim.', icon: '/favicon.ico' });
+                        }
+                    });
+                }
+                
+                this.reset();
+            }
+        } catch (error) {
+            const errorModal = document.getElementById('error-modal');
+            if (errorModal) {
+                errorModal.querySelector('.text-slate-500').innerHTML = `<p>Gagal menghubungi server. Silakan coba lagi nanti.</p>`;
+                errorModal.style.display = 'flex';
+            }
+            if (Notification.permission === 'granted') {
+                new Notification('Kesalahan Koneksi', { body: 'Gagal menghubungi server CrisisHub.', icon: '/favicon.ico' });
+            }
+        } finally {
+            btn.innerHTML = originalBtnText;
+            btn.disabled = false;
+        }
     });
+
+    // Request Notification permission early when opening modal
+    function openApplyModal(teamName) {
+        if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+            Notification.requestPermission();
+        }
+        document.getElementById('modal-title').textContent = 'Formulir Pendaftaran - ' + teamName;
+        document.getElementById('preferred_team_input').value = teamName;
+        document.getElementById('apply-modal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeApplyModal() {
+        document.getElementById('apply-modal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
 </script>
 @endsection

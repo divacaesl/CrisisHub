@@ -105,51 +105,28 @@
 
         <!-- Navigation -->
         <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1.5 custom-scrollbar">
-            <!-- Standard User Menu (Everyone gets this) -->
-            <div class="mb-2 px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Menu Utama</div>
+            <!-- Riwayat (Everyone gets this) -->
+            <div class="mb-2 px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Riwayat Saya</div>
             <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 font-medium transition-colors {{ request()->routeIs('dashboard') ? 'bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 font-semibold' : '' }}">
-                <i class="fas fa-home w-5 text-center"></i> Beranda
+                <i class="fas fa-history w-5 text-center"></i> Semua Riwayat
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 font-medium transition-colors">
-                <i class="fas fa-bullhorn w-5 text-center"></i> Laporan Saya
-            </a>
-            <a href="{{ route('dashboard') }}#riwayat-donasi" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 font-medium transition-colors">
-                <i class="fas fa-history w-5 text-center"></i> Riwayat Donasi
-            </a>
-
-            <!-- Quick Donate Action -->
-            <div class="px-4 mt-2 mb-2">
-                <a href="{{ route('donate') }}" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-xl shadow-lg transition-transform hover:scale-105">
-                    <i class="fas fa-heart"></i> Berdonasi
-                </a>
-            </div>
-            
-            <!-- Capability-based Centers -->
-            <div class="mt-6 mb-2 px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Akses Khusus</div>
-            
-            @role('Admin')
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 font-medium transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-semibold' : '' }}">
-                <i class="fas fa-satellite-dish w-5 text-center text-indigo-500"></i> Admin Center
-            </a>
-            @endrole
 
             @role('Relawan')
             <a href="{{ route('center.volunteer') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 font-medium transition-colors {{ request()->routeIs('center.volunteer') ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold' : '' }}">
                 <i class="fas fa-hands-helping w-5 text-center text-blue-500"></i> Volunteer Center
             </a>
-            @else
-            <a href="{{ route('apply.volunteer') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 font-medium transition-colors border border-dashed border-slate-300 dark:border-slate-700">
-                <i class="fas fa-user-plus w-5 text-center text-slate-400"></i> Daftar Relawan
-            </a>
             @endrole
 
             @role('Organisasi Bantuan')
             <a href="{{ route('center.organization') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 font-medium transition-colors {{ request()->routeIs('center.organization') ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold' : '' }}">
-                <i class="fas fa-building w-5 text-center text-emerald-500"></i> Organization Center
+                <i class="fas fa-building w-5 text-center text-emerald-500"></i> Riwayat Organisasi
             </a>
-            @else
-            <a href="{{ route('apply.organization') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 font-medium transition-colors border border-dashed border-slate-300 dark:border-slate-700">
-                <i class="fas fa-users-cog w-5 text-center text-slate-400"></i> Daftar Organisasi
+            @endrole
+
+            @role('Admin')
+            <div class="mt-6 mb-2 px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Akses Khusus</div>
+            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 font-medium transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-semibold' : '' }}">
+                <i class="fas fa-satellite-dish w-5 text-center text-indigo-500"></i> Admin Center
             </a>
             @endrole
 
@@ -211,6 +188,7 @@
         </div>
     </main>
 
+    @yield('modals')
     @yield('scripts')
 </body>
 </html>

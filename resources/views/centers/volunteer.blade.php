@@ -21,6 +21,46 @@
     </div>
     @endif
 
+    <!-- Profile Overview -->
+    @php
+        $volApp = \App\Models\VolunteerApplication::where('user_id', auth()->id())->latest()->first();
+        $team = $volApp ? $volApp->preferred_team : 'Relawan Umum';
+        $level = 'Pemula';
+        $hours = $completedTasks * 8; // Assuming 8 hours per completed task
+        
+        if ($completedTasks >= 10) $level = 'Koordinator';
+        elseif ($completedTasks >= 5) $level = 'Senior';
+        elseif ($completedTasks >= 2) $level = 'Aktif';
+    @endphp
+
+    <div class="glass-panel rounded-3xl p-6 md:p-8 mb-8 relative overflow-hidden flex flex-col md:flex-row items-center gap-6 shadow-lg border border-slate-200 dark:border-slate-800">
+        <div class="absolute -right-20 -top-20 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
+        
+        <div class="w-24 h-24 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 border-4 border-white dark:border-slate-900 shadow-xl overflow-hidden relative z-10">
+            <span class="text-3xl font-black text-slate-400 dark:text-slate-600">{{ substr(auth()->user()->name, 0, 1) }}</span>
+        </div>
+        
+        <div class="flex-1 text-center md:text-left relative z-10">
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white font-display">{{ auth()->user()->name }}</h2>
+            <p class="text-slate-500 text-sm mb-4">{{ auth()->user()->email }}</p>
+            
+            <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                <div class="px-4 py-2 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50 flex items-center gap-2">
+                    <i class="fas fa-users text-blue-500"></i>
+                    <span class="text-xs font-bold text-blue-700 dark:text-blue-400">Tim: {{ $team ?? 'Umum' }}</span>
+                </div>
+                <div class="px-4 py-2 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50 flex items-center gap-2">
+                    <i class="fas fa-medal text-amber-500"></i>
+                    <span class="text-xs font-bold text-amber-700 dark:text-amber-400">Level: {{ $level }}</span>
+                </div>
+                <div class="px-4 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 flex items-center gap-2">
+                    <i class="fas fa-clock text-emerald-500"></i>
+                    <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400">Kontribusi: {{ $hours }} Jam</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Stats Row -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <!-- Misi Aktif -->

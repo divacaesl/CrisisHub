@@ -16,6 +16,16 @@ class VolunteerApplication extends Model
         'skills',
         'experience',
         'status',
+        'category',
+        'certification',
+        'cv_path',
+        'motivation',
+        'availability',
+        'assignment_area',
+        'emergency_contact_name',
+        'emergency_contact_relation',
+        'emergency_contact_phone',
+        'preferred_team',
     ];
 
     public function user()

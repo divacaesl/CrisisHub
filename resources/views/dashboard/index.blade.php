@@ -1,16 +1,22 @@
-@extends('layouts.dashboard')
+@extends('layouts.public')
 
-@section('title', 'Dashboard')
-@section('role', 'Standard User')
-@section('page_title', 'Dashboard Utama')
-
-@section('header_actions')
-    <button onclick="openReportModal(true)" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white text-sm font-bold rounded-full transition-all shadow-lg animate-pulse" style="box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);">
-        <i class="fas fa-exclamation-triangle"></i> SOS Darurat
-    </button>
-@endsection
+@section('title', 'Riwayat Saya')
 
 @section('content')
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 min-h-screen" style="padding-top: 7rem;">
+    <!-- Page Header -->
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white font-display">Riwayat Aktivitas & Kontribusi</h1>
+            <p class="text-slate-500 text-sm mt-1">Selamat datang di panel riwayat Anda.</p>
+        </div>
+        <div>
+            <button onclick="openReportModal(true)" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white text-sm font-bold rounded-full transition-all shadow-lg animate-pulse" style="box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);">
+                <i class="fas fa-exclamation-triangle"></i> SOS Darurat
+            </button>
+        </div>
+    </div>
+
     <!-- Alerts & Toast -->
     @if(session('success'))
         <div class="mb-6 p-4 rounded-2xl bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 flex items-start gap-3 backdrop-blur-md">
@@ -103,6 +109,79 @@
         </div>
     </div>
 
+    <!-- Volunteer Progress Tracker (Tahap 4) -->
+    @if(isset($volunteerApp) && in_array($volunteerApp->status, ['pending', 'under_review']))
+        <div class="mb-8 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+            <!-- Background accent -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
+            
+            <div class="flex items-center gap-3 mb-6 relative z-10">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                    <i class="fas fa-id-card-alt"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white font-display">Status Pendaftaran Relawan</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Pantau progres pengajuan Anda untuk menjadi bagian dari tim lapangan.</p>
+                </div>
+            </div>
+
+            @php
+                $progress = 25;
+                if ($volunteerApp->status == 'under_review') $progress = 50;
+            @endphp
+
+            <div class="relative z-10">
+                <div class="flex justify-between text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
+                    <span>Progress:</span>
+                    <span>{{ $progress }}%</span>
+                </div>
+                <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-6">
+                    <div class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-1000 ease-out" style="width: {{ $progress }}%"></div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <!-- Step 1 -->
+                    <div class="flex flex-col gap-2 relative">
+                        <div class="flex items-center gap-2">
+                            <div class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px]">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="text-xs font-bold text-slate-900 dark:text-white">Formulir Dikirim</span>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="flex flex-col gap-2 relative">
+                        <div class="flex items-center gap-2">
+                            @if($progress >= 50)
+                                <div class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px]">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span class="text-xs font-bold text-slate-900 dark:text-white">Dokumen Diverifikasi</span>
+                            @else
+                                <div class="w-5 h-5 rounded-full border-2 border-slate-300 dark:border-slate-700 flex items-center justify-center text-[10px]"></div>
+                                <span class="text-xs font-medium text-slate-500">Dokumen Diverifikasi</span>
+                            @endif
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="flex flex-col gap-2 relative">
+                        <div class="flex items-center gap-2">
+                            <div class="w-5 h-5 rounded-full border-2 border-slate-300 dark:border-slate-700 flex items-center justify-center text-[10px]"></div>
+                            <span class="text-xs font-medium text-slate-500">Pelatihan Dasar</span>
+                        </div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="flex flex-col gap-2 relative">
+                        <div class="flex items-center gap-2">
+                            <div class="w-5 h-5 rounded-full border-2 border-slate-300 dark:border-slate-700 flex items-center justify-center text-[10px]"></div>
+                            <span class="text-xs font-medium text-slate-500">Aktivasi Akun</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- Main Grid -->
     <div class="grid lg:grid-cols-3 gap-8">
         <!-- Left Col: Action & Timeline -->
@@ -192,7 +271,14 @@
                                 @else
                                     <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-500">Ditolak</span>
                                 @endif
-                                <span class="text-[10px] text-slate-400">{{ $rep->created_at->diffForHumans() }}</span>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-[10px] text-slate-400">{{ $rep->created_at->diffForHumans() }}</span>
+                                    @if(in_array($rep->status, ['Verified', 'In Progress', 'Resolved']))
+                                        <button onclick="openChatModal({{ $rep->id }}, '{{ $rep->jenis_bencana }}')" class="px-2 py-1 text-[10px] font-bold bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 border border-blue-500/20 rounded-md transition-all flex items-center gap-1">
+                                            <i class="fas fa-comment-dots"></i> Chat Admin
+                                        </button>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     @empty
@@ -298,6 +384,9 @@
         </div>
     </div>
 
+@endsection
+
+@section('modals')
     <!-- REPORT CREATION MODAL (Buat Laporan Baru) -->
     <div id="report-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md hidden overflow-y-auto py-10">
         <div class="glass-panel rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl border border-white/10 mx-4 my-auto flex flex-col max-h-[90vh]">
@@ -444,6 +533,9 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
     <!-- Scripts for Tab & Modal navigation -->
     <script>
         function switchReportTab(tabId, el) {
@@ -484,47 +576,178 @@
             document.body.classList.remove('overflow-hidden');
         }
 
-        // HTML5 Geolocation Auto detection
+        // HTML5 Geolocation Auto detection with IP Fallback
         function detectGPSLocation() {
             const btnText = document.getElementById('gps-btn-text');
             const latInput = document.getElementById('geo-latitude');
             const lngInput = document.getElementById('geo-longitude');
             const accuracyAlert = document.getElementById('gps-accuracy-alert');
+            const addressInput = document.getElementById('geo-address');
 
             btnText.textContent = "Mendeteksi Lokasi...";
             
+            const handleSuccess = (lat, lng, accuracyText) => {
+                latInput.value = parseFloat(lat).toFixed(6);
+                lngInput.value = parseFloat(lng).toFixed(6);
+                btnText.textContent = "Lokasi Ditemukan ✓";
+                accuracyAlert.innerHTML = `<i class="fas fa-satellite"></i> ${accuracyText}`;
+                accuracyAlert.classList.remove('hidden');
+
+                // Simple Reverse Geocoding attempt with public osm service
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.display_name && !addressInput.value) {
+                            addressInput.value = data.display_name;
+                        }
+                    })
+                    .catch(err => console.log('Reverse geocoding error:', err));
+            };
+
+            const fallbackToIP = () => {
+                btnText.textContent = "Mencoba via Jaringan...";
+                fetch('https://ipinfo.io/json')
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.loc) {
+                            const [lat, lng] = data.loc.split(',');
+                            handleSuccess(lat, lng, "Lokasi perkiraan (Berdasarkan Jaringan IP)");
+                            if (!addressInput.value) {
+                                addressInput.value = `${data.city}, ${data.region}`;
+                            }
+                        } else {
+                            throw new Error('IP API failed');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('IP Fallback Error:', err);
+                        btnText.textContent = "Gagal Deteksi Lokasi";
+                        alert("Gagal mendeteksi koordinat lokasi secara otomatis. Pastikan Anda memberikan izin akses lokasi pada browser (Location Permission) atau gunakan koneksi internet yang stabil, lalu coba lagi.");
+                    });
+            };
+
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-
-                        latInput.value = lat.toFixed(6);
-                        lngInput.value = lng.toFixed(6);
-                        btnText.textContent = "GPS Berhasil Terdeteksi ✓";
-                        accuracyAlert.classList.remove('hidden');
-
-                        // Simple Reverse Geocoding attempt with public osm service
-                        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data && data.display_name) {
-                                    document.getElementById('geo-address').value = data.display_name;
-                                }
-                            })
-                            .catch(err => console.log('Reverse geocoding error:', err));
+                        handleSuccess(position.coords.latitude, position.coords.longitude, "Lokasi akurat terdeteksi dari GPS perangkat!");
                     },
                     (error) => {
-                        console.error('GPS Detection Error:', error);
-                        btnText.textContent = "Gagal Mendeteksi GPS";
-                        alert("Gagal mendeteksi koordinat lokasi Anda secara otomatis. Silakan isi kolom secara manual.");
+                        console.warn('GPS Detection Error, falling back to IP:', error.message);
+                        fallbackToIP();
                     },
-                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                    { enableHighAccuracy: false, timeout: 8000, maximumAge: 0 }
                 );
             } else {
-                alert("Browser Anda tidak mendukung layanan Geolocation GPS.");
-                btnText.textContent = "GPS Tidak Didukung";
+                fallbackToIP();
             }
         }
+
+        // Chat Feature
+        let currentReportChatId = null;
+
+        function openChatModal(reportId, title) {
+            currentReportChatId = reportId;
+            document.getElementById('chat-modal-title').textContent = title;
+            document.getElementById('chat-modal').classList.remove('hidden');
+            fetchMessages();
+        }
+
+        function closeChatModal() {
+            document.getElementById('chat-modal').classList.add('hidden');
+            currentReportChatId = null;
+        }
+
+        function fetchMessages() {
+            if (!currentReportChatId) return;
+            fetch(`/report/${currentReportChatId}/chat`)
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('chat-messages');
+                    container.innerHTML = '';
+                    data.forEach(msg => {
+                        const isSelf = msg.sender_id == {{ auth()->id() }};
+                        const align = isSelf ? 'justify-end' : 'justify-start';
+                        const bg = isSelf ? 'bg-blue-600 text-white' : 'bg-slate-700 text-white';
+                        const name = isSelf ? 'Anda' : (msg.is_admin ? 'Admin CrisisHub' : msg.sender_name);
+                        
+                        container.innerHTML += `
+                            <div class="flex ${align} mb-4">
+                                <div class="max-w-[75%]">
+                                    <span class="text-[10px] text-slate-400 block mb-1 ${isSelf ? 'text-right' : 'text-left'}">${name} • ${msg.time}</span>
+                                    <div class="${bg} px-4 py-2 rounded-2xl ${isSelf ? 'rounded-tr-sm' : 'rounded-tl-sm'} text-sm shadow">
+                                        ${msg.content}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.scrollTop = container.scrollHeight;
+                })
+                .catch(err => console.error(err));
+        }
+
+        function sendChatMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const content = input.value.trim();
+            if (!content || !currentReportChatId) return;
+
+            input.disabled = true;
+            fetch(`/report/${currentReportChatId}/chat`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ content: content })
+            })
+            .then(res => res.json())
+            .then(data => {
+                input.value = '';
+                input.disabled = false;
+                fetchMessages();
+            })
+            .catch(err => {
+                console.error(err);
+                input.disabled = false;
+            });
+        }
     </script>
+
+    <!-- Chat Modal -->
+    <div id="chat-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+        <div class="glass-panel rounded-2xl w-full max-w-lg mx-4 overflow-hidden shadow-2xl flex flex-col h-[600px] max-h-[80vh] border border-slate-700">
+            <!-- Header -->
+            <div class="bg-slate-800 px-6 py-4 flex justify-between items-center border-b border-slate-700">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-base leading-tight">Live Chat Bantuan</h3>
+                        <p id="chat-modal-title" class="text-xs text-blue-400 font-semibold"></p>
+                    </div>
+                </div>
+                <button onclick="closeChatModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Messages -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-6 bg-slate-900 custom-scrollbar">
+                <!-- AJAX content -->
+            </div>
+
+            <!-- Input Box -->
+            <div class="p-4 bg-slate-800 border-t border-slate-700">
+                <form onsubmit="sendChatMessage(event)" class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Ketik pesan Anda di sini..." class="flex-1 bg-slate-900 border border-slate-700 text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" required autocomplete="off">
+                    <button type="submit" class="w-12 flex-shrink-0 bg-blue-600 hover:bg-blue-500 text-white rounded-xl flex items-center justify-center transition-colors">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
