@@ -158,9 +158,7 @@
     <aside class="w-64 flex flex-col h-full flex-shrink-0 z-20 border-r" style="background: var(--sidebar-bg); border-color: var(--border);">
         <!-- Logo -->
         <div class="px-5 py-5 flex items-center space-x-3 border-b" style="border-color: var(--border);">
-            <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: var(--gold);">
-                <svg class="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12h3v8h14v-8h3L12 2zm0 3.8l5 5V18H7v-7.2l5-5z"/></svg>
-            </div>
+            <img src="/images/logo.png" alt="CrisisHub Logo" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
             <div>
                 <h1 class="text-lg font-bold leading-tight font-display" style="color: var(--text-main);">CrisisHub</h1>
                 <p class="text-[9px] tracking-widest uppercase" style="color: var(--gold);">Command Center</p>

@@ -90,9 +90,7 @@
         <!-- Logo -->
         <div class="flex items-center justify-between h-20 px-6 border-b border-slate-200 dark:border-white/10">
             <a href="/" class="flex items-center gap-3">
-                <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl">
-                    <i class="fas fa-shield-alt text-white text-lg"></i>
-                </div>
+                <img src="/images/logo.png" alt="CrisisHub Logo" class="w-10 h-10 rounded-full object-cover">
                 <div>
                     <span class="text-xl font-bold text-slate-900 dark:text-white">Crisis<span class="text-red-600 dark:text-red-500">Hub</span></span>
                     <div class="text-[10px] uppercase font-bold tracking-widest text-slate-500 dark:text-slate-400">@yield('role', 'Dashboard')</div>

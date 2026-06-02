@@ -542,12 +542,7 @@
             <div class="flex items-center justify-between h-18 py-4">
                 <!-- Logo -->
                 <a href="/" class="flex items-center gap-3 group">
-                    <div class="relative w-10 h-10">
-                        <div class="absolute inset-0 bg-red-600 rounded-xl rotate-12 group-hover:rotate-0 transition-transform duration-300"></div>
-                        <div class="relative flex items-center justify-center w-10 h-10 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl">
-                            <i class="fas fa-shield-alt text-white text-lg"></i>
-                        </div>
-                    </div>
+                    <img src="/images/logo.png" alt="CrisisHub Logo" class="w-10 h-10 rounded-full object-cover group-hover:scale-110 transition-transform duration-300">
                     <div>
                         <span class="text-xl font-bold text-slate-900 dark:text-white">Crisis<span class="text-red-600 dark:text-red-500">Hub</span></span>
                         <div class="text-xs text-slate-500 dark:text-slate-400 leading-none -mt-0.5">Tanggap Bencana</div>
