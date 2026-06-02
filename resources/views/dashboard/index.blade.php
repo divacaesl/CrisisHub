@@ -2,6 +2,65 @@
 
 @section('title', 'Riwayat Saya')
 
+@section('head')
+<style>
+    @keyframes pulse-red-slow {
+        0%, 100% { border-color: rgba(239, 68, 68, 0.4); box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
+        50% { border-color: rgba(239, 68, 68, 0.9); box-shadow: 0 0 30px rgba(239, 68, 68, 0.5); }
+    }
+    .animate-pulse-slow {
+        animation: pulse-red-slow 2.5s infinite;
+    }
+
+    /* SOS Mode Form Overrides */
+    .sos-mode-form {
+        background-color: rgba(15, 23, 42, 0.98) !important;
+        color: #f3f4f6 !important;
+    }
+    .sos-mode-form .form-section-card {
+        background-color: rgba(239, 68, 68, 0.03) !important;
+        border-color: rgba(239, 68, 68, 0.25) !important;
+    }
+    .sos-mode-form .form-section-header span {
+        color: #fca5a5 !important;
+    }
+    .sos-mode-form .form-section-header i {
+        color: #ef4444 !important;
+    }
+    .sos-mode-form label {
+        color: #f87171 !important;
+    }
+    .sos-mode-form input:not([type="checkbox"]):not([type="radio"]), 
+    .sos-mode-form select, 
+    .sos-mode-form textarea {
+        background-color: rgba(24, 12, 12, 0.6) !important;
+        border-color: rgba(239, 68, 68, 0.3) !important;
+        color: #ffffff !important;
+    }
+    .sos-mode-form input:not([type="checkbox"]):not([type="radio"]):focus, 
+    .sos-mode-form select:focus, 
+    .sos-mode-form textarea:focus {
+        border-color: #ef4444 !important;
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.45) !important;
+        background-color: rgba(30, 10, 10, 0.8) !important;
+    }
+    .sos-mode-form select option {
+        background-color: #1e0a0a !important;
+        color: #ffffff !important;
+    }
+
+    /* Normal Mode Form Styles */
+    .normal-mode-form .form-section-card {
+        background-color: rgba(255, 255, 255, 0.6) !important;
+        border-color: rgba(226, 232, 240, 0.8) !important;
+    }
+    .dark .normal-mode-form .form-section-card {
+        background-color: rgba(30, 41, 59, 0.2) !important;
+        border-color: rgba(255, 255, 255, 0.05) !important;
+    }
+</style>
+@endsection
+
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 min-h-screen" style="padding-top: 7rem;">
     <!-- Page Header -->

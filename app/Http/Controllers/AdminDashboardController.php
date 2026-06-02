@@ -172,6 +172,14 @@ class AdminDashboardController extends Controller
             if (!$user->hasRole('Relawan')) {
                 $user->assignRole('Relawan');
             }
+            
+            // Send direct message/notification
+            \App\Models\Message::create([
+                'sender_id' => auth()->id(),
+                'receiver_id' => $user->id,
+                'content' => 'Selamat, pendaftaran relawan Anda telah disetujui.',
+                'type' => 'direct'
+            ]);
         }
 
         $statusStr = $action === 'approved' ? 'disetujui' : 'ditolak';

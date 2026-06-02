@@ -67,8 +67,9 @@
                 <td class="px-6 py-4">
                     @php $status = $t->status ?? 'Assigned'; @endphp
                     <span class="text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded border
-                        @if($status === 'Completed') bg-green-500/10 border-green-500/20 text-green-400
-                        @elseif($status === 'In Progress') bg-blue-500/10 border-blue-500/20 text-blue-400
+                        @if($status === 'Completed' || $status === 'Selesai') bg-green-500/10 border-green-500/20 text-green-400
+                        @elseif($status === 'In Progress' || $status === 'On The Way' || $status === 'On Site') bg-blue-500/10 border-blue-500/20 text-blue-400
+                        @elseif($status === 'Requested') bg-orange-500/10 border-orange-500/20 text-orange-400
                         @elseif($status === 'Rejected') bg-red-500/10 border-red-500/20 text-red-400
                         @else bg-yellow-500/10 border-yellow-500/20 text-yellow-400 @endif">
                         {{ $status }}
@@ -77,6 +78,22 @@
                 <td class="px-6 py-4 text-right">
                     @if($status !== 'Completed' && $status !== 'Rejected')
                     <div class="flex items-center justify-end gap-1.5">
+                        @if($status === 'Requested')
+                        <form method="POST" action="{{ route('admin.penugasan.update-status', $t->id) }}" class="inline">
+                            @csrf
+                            <input type="hidden" name="status" value="Assigned">
+                            <button type="submit" class="px-2.5 py-1 text-[9px] font-black uppercase rounded bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 transition-all">
+                                ✓ Setujui
+                            </button>
+                        </form>
+                        <form method="POST" action="{{ route('admin.penugasan.update-status', $t->id) }}" class="inline">
+                            @csrf
+                            <input type="hidden" name="status" value="Rejected">
+                            <button type="submit" class="px-2.5 py-1 text-[9px] font-black uppercase rounded bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all">
+                                ✗ Tolak
+                            </button>
+                        </form>
+                        @endif
                         @if($status === 'Assigned')
                         <form method="POST" action="{{ route('admin.penugasan.update-status', $t->id) }}" class="inline">
                             @csrf
@@ -86,6 +103,7 @@
                             </button>
                         </form>
                         @endif
+                        @if($status !== 'Requested')
                         <form method="POST" action="{{ route('admin.penugasan.update-status', $t->id) }}" class="inline">
                             @csrf
                             <input type="hidden" name="status" value="Completed">
@@ -93,6 +111,7 @@
                                 ✓ Selesai
                             </button>
                         </form>
+                        @endif
                     </div>
                     @else
                     <span class="text-[10px] text-gray-600">—</span>
