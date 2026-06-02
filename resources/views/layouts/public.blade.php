@@ -685,9 +685,11 @@
                 <!-- Brand -->
                 <div class="lg:col-span-1">
                     <a href="/" class="flex items-center gap-3 mb-4">
-                        <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl">
-                            <i class="fas fa-shield-alt text-white text-lg"></i>
-                        </div>
+                        <img
+                            src="{{ asset('images/logo.png') }}"
+                            alt="CrisisHub"
+                            class="w-10 h-10 object-contain"
+/>
                         <span class="text-xl font-bold text-white">Crisis<span class="text-red-500">Hub</span></span>
                     </a>
                     <p class="text-slate-400 text-sm leading-relaxed mb-6">

@@ -428,153 +428,193 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            <!-- Case 1: Banjir Jakarta -->
-            <div class="case-card premium-card-glow fade-up">
-                <div class="relative">
-                    <img src="/images/flood_case.png" alt="Banjir Jakarta Utara" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent"></div>
-                    <div class="absolute top-3 left-3 flex gap-2">
-                        <span class="px-2.5 py-1 bg-red-600 text-white text-xs font-bold rounded-lg badge-urgent">KRITIS</span>
-                        <span class="px-2.5 py-1 bg-blue-600/80 text-white text-xs font-medium rounded-lg">🌊 Banjir</span>
-                    </div>
-                    <div class="absolute top-3 right-3 glass rounded-lg px-2 py-1 border-0">
-                        <div class="text-white text-xs font-bold">Priority: <span class="text-red-400">9.2</span></div>
-                    </div>
-                </div>
-                <div class="p-5">
-                    <h3 class="text-slate-900 dark:text-white font-bold text-base mb-1">Banjir Jakarta Utara</h3>
-                    <p class="text-slate-500 text-xs mb-3 flex items-center gap-1"><i class="fas fa-map-marker-alt text-red-500"></i> Jakarta Utara, DKI Jakarta</p>
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <div class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-transparent rounded-lg p-2.5 text-center">
-                            <div class="text-red-600 dark:text-red-400 font-black text-lg">2.847</div>
-                            <div class="text-slate-550 dark:text-slate-400 text-xs">Korban Jiwa</div>
-                        </div>
-                        <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-transparent rounded-lg p-2.5 text-center">
-                            <div class="text-orange-600 dark:text-orange-400 font-black text-lg">94%</div>
-                            <div class="text-slate-550 dark:text-slate-400 text-xs">Tingkat Kerusakan</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-slate-500 dark:text-slate-400 text-xs">Bantuan Aktif</span>
-                        <span class="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-xs rounded-full font-semibold">⚠ Kurang</span>
-                    </div>
-                    <div class="text-xs text-slate-500 mb-4 flex items-center gap-1"><i class="fas fa-clock"></i> 6 jam yang lalu</div>
-                    <a href="/disaster/1" class="block w-full text-center py-2.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-semibold text-sm rounded-xl transition-all">
-                        Detail Kasus <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
-            </div>
+            @php
+                // Merge database reports and mock cases
+                $dbReports = $reports ?? collect();
+                
+                // Convert DB reports to the structure used by the card
+                $cards = [];
+                foreach ($dbReports as $rep) {
+                    $priorityRel = \App\Models\PriorityScore::where('report_id', $rep->id)->first();
+                    $priorityScore = $priorityRel ? $priorityRel->score : $rep->priority_score;
+                    $level = $priorityRel ? $priorityRel->level : 'Sedang';
 
-            <!-- Case 2: Gempa Cianjur -->
-            <div class="case-card premium-card-glow fade-up" style="animation-delay:0.1s">
-                <div class="relative">
-                    <img src="/images/earthquake_case.png" alt="Gempa Cianjur" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent"></div>
-                    <div class="absolute top-3 left-3 flex gap-2">
-                        <span class="px-2.5 py-1 bg-red-600 text-white text-xs font-bold rounded-lg badge-urgent">KRITIS</span>
-                        <span class="px-2.5 py-1 bg-purple-600/80 text-white text-xs font-medium rounded-lg">🏔️ Gempa</span>
-                    </div>
-                    <div class="absolute top-3 right-3 glass rounded-lg px-2 py-1 border-0">
-                        <div class="text-white text-xs font-bold">Priority: <span class="text-red-400">8.7</span></div>
-                    </div>
-                </div>
-                <div class="p-5">
-                    <h3 class="text-slate-900 dark:text-white font-bold text-base mb-1">Gempa 6.2 SR Cianjur</h3>
-                    <p class="text-slate-500 text-xs mb-3 flex items-center gap-1"><i class="fas fa-map-marker-alt text-red-500"></i> Cianjur, Jawa Barat</p>
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <div class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-transparent rounded-lg p-2.5 text-center">
-                            <div class="text-red-600 dark:text-red-400 font-black text-lg">1.340</div>
-                            <div class="text-slate-550 dark:text-slate-400 text-xs">Korban Jiwa</div>
-                        </div>
-                        <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-transparent rounded-lg p-2.5 text-center">
-                            <div class="text-orange-600 dark:text-orange-400 font-black text-lg">87%</div>
-                            <div class="text-slate-550 dark:text-slate-400 text-xs">Tingkat Kerusakan</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-slate-500 dark:text-slate-400 text-xs">Bantuan Aktif</span>
-                        <span class="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs rounded-full font-semibold">🚨 Sangat Kurang</span>
-                    </div>
-                    <div class="text-xs text-slate-500 mb-4 flex items-center gap-1"><i class="fas fa-clock"></i> 2 jam yang lalu</div>
-                    <a href="/disaster/2" class="block w-full text-center py-2.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-semibold text-sm rounded-xl transition-all">
-                        Detail Kasus <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
-            </div>
+                    $statusColor = 'orange';
+                    if (strtolower($level) === 'kritis') $statusColor = 'red';
+                    elseif (strtolower($level) === 'tinggi') $statusColor = 'red';
+                    elseif (strtolower($level) === 'terkendali' || strtolower($level) === 'rendah') $statusColor = 'green';
+                    
+                    $badgeClass = 'bg-red-600';
+                    if (strtolower($level) === 'sedang') $badgeClass = 'bg-orange-500';
+                    elseif (strtolower($level) === 'rendah') $badgeClass = 'bg-green-500';
 
-            <!-- Case 3: Banjir Kalimantan -->
-            <div class="case-card premium-card-glow fade-up" style="animation-delay:0.2s">
-                <div class="relative">
-                    <img src="/images/flood_case.png" alt="Banjir Banjarmasin" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent"></div>
-                    <div class="absolute top-3 left-3 flex gap-2">
-                        <span class="px-2.5 py-1 bg-orange-600 text-white text-xs font-bold rounded-lg">SEDANG</span>
-                        <span class="px-2.5 py-1 bg-blue-600/80 text-white text-xs font-medium rounded-lg">🌊 Banjir</span>
-                    </div>
-                    <div class="absolute top-3 right-3 glass rounded-lg px-2 py-1 border-0">
-                        <div class="text-white text-xs font-bold">Priority: <span class="text-orange-400">7.1</span></div>
-                    </div>
-                </div>
-                <div class="p-5">
-                    <h3 class="text-slate-900 dark:text-white font-bold text-base mb-1">Banjir Banjarmasin</h3>
-                    <p class="text-slate-500 text-xs mb-3 flex items-center gap-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Banjarmasin, Kalimantan Selatan</p>
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-transparent rounded-lg p-2.5 text-center">
-                            <div class="text-orange-600 dark:text-orange-400 font-black text-lg">4.210</div>
-                            <div class="text-slate-550 dark:text-slate-400 text-xs">Korban Jiwa</div>
-                        </div>
-                        <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-100 dark:border-transparent rounded-lg p-2.5 text-center">
-                            <div class="text-yellow-600 dark:text-yellow-400 font-black text-lg">65%</div>
-                            <div class="text-slate-550 dark:text-slate-400 text-xs">Tingkat Kerusakan</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-slate-500 dark:text-slate-400 text-xs">Bantuan Aktif</span>
-                        <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs rounded-full font-semibold">✅ Cukup</span>
-                    </div>
-                    <div class="text-xs text-slate-500 mb-4 flex items-center gap-1"><i class="fas fa-clock"></i> 12 jam yang lalu</div>
-                    <a href="/disaster/3" class="block w-full text-center py-2.5 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-semibold text-sm rounded-xl transition-all">
-                        Detail Kasus <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
-            </div>
+                    $typeIcons = [
+                        'Banjir' => '🌊 Banjir',
+                        'Gempa' => '🏔️ Gempa',
+                        'Gempa Bumi' => '🏔️ Gempa',
+                        'Gunung Api' => '🌋 Gunung Api',
+                        'Gunung' => '🌋 Gunung Api',
+                        'Longsor' => '⛰️ Longsor',
+                        'Tanah Longsor' => '⛰️ Longsor',
+                        'Angin' => '💨 Angin Kencang',
+                        'Angin Kencang' => '💨 Angin Kencang',
+                        'Angin Topan' => '💨 Angin Kencang',
+                    ];
+                    
+                    $typeStr = '⚠ Bencana';
+                    foreach ($typeIcons as $k => $v) {
+                        if (stripos($rep->jenis_bencana, $k) !== false) {
+                            $typeStr = $v;
+                            break;
+                        }
+                    }
 
-            <!-- Case 4: Gunung Api Sinabung -->
-            <div class="case-card premium-card-glow fade-up" style="animation-delay:0.3s">
+                    // Volunteer availability and resource allocation status
+                    $assignedVolunteers = \App\Models\VolunteerTask::where('report_id', $rep->id)->count();
+                    if ($assignedVolunteers >= 5) {
+                        $resourceStatus = 'Cukup';
+                        $resourceClass = 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400';
+                    } elseif ($assignedVolunteers >= 2) {
+                        $resourceStatus = 'Sedang';
+                        $resourceClass = 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400';
+                    } else {
+                        $resourceStatus = 'Kurang';
+                        $resourceClass = 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
+                    }
+
+                    $cards[] = [
+                        'id' => $rep->id,
+                        'is_db' => true,
+                        'title' => $rep->jenis_bencana . ' - ' . ($rep->alamat_lengkap ? explode(',', $rep->alamat_lengkap)[0] : 'Lokasi Terdampak'),
+                        'type_str' => $typeStr,
+                        'status' => strtoupper($level),
+                        'badge_class' => $badgeClass,
+                        'priority_score' => number_format($priorityScore / 10, 1),
+                        'location' => $rep->alamat_lengkap ?: 'Tidak Diketahui',
+                        'date' => $rep->created_at->diffForHumans(),
+                        'korban' => number_format($rep->jumlah_korban),
+                        'kerusakan' => $rep->tingkat_kerusakan ?: 'Sedang',
+                        'resource_status' => $resourceStatus,
+                        'resource_class' => $resourceClass,
+                        'image' => $rep->foto_path ? \Illuminate\Support\Facades\Storage::url($rep->foto_path) : '/images/flood_case.png',
+                    ];
+                }
+
+                // Mock cases fallback
+                $mockCases = [
+                    [
+                        'id' => 1,
+                        'is_db' => false,
+                        'title' => 'Banjir Jakarta Utara',
+                        'type_str' => '🌊 Banjir',
+                        'status' => 'KRITIS',
+                        'badge_class' => 'bg-red-600',
+                        'priority_score' => '9.2',
+                        'location' => 'Jakarta Utara, DKI Jakarta',
+                        'date' => '6 jam yang lalu',
+                        'korban' => '2.847',
+                        'kerusakan' => 'Hancur Total',
+                        'resource_status' => 'Kurang',
+                        'resource_class' => 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
+                        'image' => '/images/flood_case.png',
+                    ],
+                    [
+                        'id' => 2,
+                        'is_db' => false,
+                        'title' => 'Gempa 6.2 SR Cianjur',
+                        'type_str' => '🏔️ Gempa',
+                        'status' => 'KRITIS',
+                        'badge_class' => 'bg-red-600',
+                        'priority_score' => '8.7',
+                        'location' => 'Cianjur, Jawa Barat',
+                        'date' => '2 jam yang lalu',
+                        'korban' => '1.340',
+                        'kerusakan' => 'Tinggi',
+                        'resource_status' => 'Sangat Kurang',
+                        'resource_class' => 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
+                        'image' => '/images/earthquake_case.png',
+                    ],
+                    [
+                        'id' => 3,
+                        'is_db' => false,
+                        'title' => 'Banjir Banjarmasin',
+                        'type_str' => '🌊 Banjir',
+                        'status' => 'AKTIF',
+                        'badge_class' => 'bg-orange-500',
+                        'priority_score' => '7.5',
+                        'location' => 'Banjarmasin, Kalimantan Selatan',
+                        'date' => '1 hari yang lalu',
+                        'korban' => '892',
+                        'kerusakan' => 'Sedang',
+                        'resource_status' => 'Cukup',
+                        'resource_class' => 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
+                        'image' => '/images/flood_case.png',
+                    ],
+                    [
+                        'id' => 4,
+                        'is_db' => false,
+                        'title' => 'Gunung Api Sinabung',
+                        'type_str' => '🌋 Gunung Api',
+                        'status' => 'SIAGA',
+                        'badge_class' => 'bg-orange-500',
+                        'priority_score' => '6.8',
+                        'location' => 'Karo, Sumatera Utara',
+                        'date' => '3 hari yang lalu',
+                        'korban' => '450',
+                        'kerusakan' => 'Sedang',
+                        'resource_status' => 'Cukup',
+                        'resource_class' => 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
+                        'image' => '/images/donation_banner.png',
+                    ],
+                ];
+
+                // Combine them, keeping db reports first, and then filling up to 4 if needed
+                $finalCards = array_merge($cards, array_slice($mockCases, count($cards)));
+                // Take at most 8 cases to keep layout clean
+                $finalCards = array_slice($finalCards, 0, 8);
+            @endphp
+
+            @foreach($finalCards as $i => $card)
+            <div class="case-card premium-card-glow fade-up" style="animation-delay: {{ $i * 0.1 }}s">
                 <div class="relative">
-                    <img src="/images/cause3.png" alt="Erupsi Gunung Sinabung" class="w-full h-48 object-cover">
+                    <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}" class="w-full h-48 object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent"></div>
                     <div class="absolute top-3 left-3 flex gap-2">
-                        <span class="px-2.5 py-1 bg-yellow-600 text-white text-xs font-bold rounded-lg">WASPADA</span>
-                        <span class="px-2.5 py-1 bg-orange-600/80 text-white text-xs font-medium rounded-lg">🌋 Gunung Api</span>
+                        <span class="px-2.5 py-1 {{ $card['badge_class'] }} text-white text-xs font-bold rounded-lg badge-urgent">{{ $card['status'] }}</span>
+                        <span class="px-2.5 py-1 bg-blue-600/80 text-white text-xs font-medium rounded-lg">{{ $card['type_str'] }}</span>
                     </div>
                     <div class="absolute top-3 right-3 glass rounded-lg px-2 py-1 border-0">
-                        <div class="text-white text-xs font-bold">Priority: <span class="text-yellow-400">6.4</span></div>
+                        <div class="text-white text-xs font-bold">Priority: <span class="text-red-400">{{ $card['priority_score'] }}</span></div>
                     </div>
                 </div>
-                <div class="p-5">
-                    <h3 class="text-slate-900 dark:text-white font-bold text-base mb-1">Erupsi Gunung Sinabung</h3>
-                    <p class="text-slate-500 text-xs mb-3 flex items-center gap-1"><i class="fas fa-map-marker-alt text-yellow-500"></i> Karo, Sumatera Utara</p>
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-100 dark:border-transparent rounded-lg p-2.5 text-center">
-                            <div class="text-yellow-600 dark:text-yellow-400 font-black text-lg">892</div>
-                            <div class="text-slate-550 dark:text-slate-400 text-xs">Pengungsi</div>
-                        </div>
-                        <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-transparent rounded-lg p-2.5 text-center">
-                            <div class="text-orange-600 dark:text-orange-400 font-black text-lg">45%</div>
-                            <div class="text-slate-550 dark:text-slate-400 text-xs">Zona Bahaya</div>
+                <div class="p-5 flex flex-col justify-between" style="min-height: 250px;">
+                    <div>
+                        <h3 class="text-slate-900 dark:text-white font-bold text-base mb-1 line-clamp-1">{{ $card['title'] }}</h3>
+                        <p class="text-slate-500 text-xs mb-3 flex items-center gap-1"><i class="fas fa-map-marker-alt text-red-500"></i> {{ $card['location'] }}</p>
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <div class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-transparent rounded-lg p-2.5 text-center">
+                                <div class="text-red-600 dark:text-red-400 font-black text-lg">{{ $card['korban'] }}</div>
+                                <div class="text-slate-550 dark:text-slate-400 text-xs">Korban Jiwa</div>
+                            </div>
+                            <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-transparent rounded-lg p-2.5 text-center">
+                                <div class="text-orange-600 dark:text-orange-400 font-black text-lg">{{ $card['kerusakan'] }}</div>
+                                <div class="text-slate-550 dark:text-slate-400 text-xs">Kerusakan</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-slate-500 dark:text-slate-400 text-xs">Bantuan Aktif</span>
-                        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-750 dark:text-blue-300 text-xs rounded-full font-semibold">🔵 Tersedia</span>
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-slate-500 dark:text-slate-400 text-xs">Bantuan Aktif</span>
+                            <span class="px-2 py-0.5 {{ $card['resource_class'] }} text-xs rounded-full font-semibold">{{ $card['resource_status'] }}</span>
+                        </div>
+                        <div class="text-xs text-slate-500 mb-4 flex items-center gap-1"><i class="fas fa-clock"></i> {{ $card['date'] }}</div>
+                        <a href="/disaster/{{ $card['id'] }}" class="block w-full text-center py-2.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-semibold text-sm rounded-xl transition-all">
+                            Detail Kasus <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
                     </div>
-                    <div class="text-xs text-slate-500 mb-4 flex items-center gap-1"><i class="fas fa-clock"></i> 1 hari yang lalu</div>
-                    <a href="/disaster/4" class="block w-full text-center py-2.5 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white font-semibold text-sm rounded-xl transition-all">
-                        Detail Kasus <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
                 </div>
             </div>
+            @endforeach
         </div>
     </div>
 </section>

@@ -30,7 +30,7 @@ class AdminDashboardController extends Controller
         $totalDistribusi = Distribution::count();
         $totalRelawan    = VolunteerLocation::distinct('volunteer_id')->count();
         $totalDonasi     = Donation::where('type', 'Uang')->where('status', 'Verified')->sum('amount');
-        $activeDisasters = Report::where('status', 'Approved')->count();
+        $activeDisasters = Report::whereIn('status', ['Verified', 'Approved', 'In Progress'])->count();
         $pendingReports  = Report::where('status', 'Pending')->count();
 
         $latestReports   = Report::orderBy('created_at', 'desc')->take(5)->get();
@@ -106,6 +106,13 @@ class AdminDashboardController extends Controller
         ]);
 
         if ($action === 'Approved') {
+            // Calculate and save priority score
+            try {
+                app(\App\Services\PriorityScoringService::class)->calculateForReport($report->id);
+            } catch (\Exception $ex) {
+                \Illuminate\Support\Facades\Log::error("Gagal menghitung priority score saat verifikasi: " . $ex->getMessage());
+            }
+
             try {
                 \Illuminate\Support\Facades\Mail::to($report->user->email)->send(new \App\Mail\ReportVerified($report));
             } catch (\Exception $e) {
@@ -125,6 +132,7 @@ class AdminDashboardController extends Controller
                     'collected_amount' => 0,
                     'deadline' => now()->addDays(30),
                     'is_active' => true,
+                    'report_id' => $report->id,
                 ]);
             } catch (\Exception $e) {
                 \Illuminate\Support\Facades\Log::error("Gagal auto-create campaign untuk laporan {$report->id}: " . $e->getMessage());
@@ -140,7 +148,7 @@ class AdminDashboardController extends Controller
     public function verifikasi()
     {
         $pending  = Report::with('user')->where('status', 'Pending')->orderBy('created_at', 'desc')->paginate(15);
-        $approved = Report::with('user')->where('status', 'Approved')->orderBy('updated_at', 'desc')->take(5)->get();
+        $approved = Report::with('user')->whereIn('status', ['Verified', 'Approved'])->orderBy('updated_at', 'desc')->take(5)->get();
         $rejected = Report::with('user')->where('status', 'Rejected')->orderBy('updated_at', 'desc')->take(5)->get();
 
         $pendingVolunteers = \App\Models\VolunteerApplication::with('user')->where('status', 'pending')->orderBy('created_at', 'desc')->get();
@@ -223,7 +231,7 @@ class AdminDashboardController extends Controller
         $query = User::whereHas('roles', fn($q) => $q->where('name', 'Relawan'));
         if ($request->search) $query->where('name', 'like', "%{$request->search}%");
         $volunteers = $query->orderBy('created_at', 'desc')->paginate(15);
-        $reports    = Report::where('status', 'Approved')->get(['id', 'jenis_bencana', 'alamat_lengkap']);
+        $reports    = Report::whereIn('status', ['Verified', 'Approved'])->get(['id', 'jenis_bencana', 'alamat_lengkap']);
         return view('admin.relawan', compact('volunteers', 'reports'));
     }
 
@@ -239,6 +247,14 @@ class AdminDashboardController extends Controller
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ]);
+
+            // Recalculate priority score
+            try {
+                app(\App\Services\PriorityScoringService::class)->calculateForReport($request->report_id);
+            } catch (\Exception $ex) {
+                \Illuminate\Support\Facades\Log::error("Gagal update score saat relawan ditugaskan: " . $ex->getMessage());
+            }
+
             return back()->with('success', 'Relawan berhasil ditugaskan.');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal menugaskan relawan: ' . $e->getMessage());
@@ -467,8 +483,15 @@ class AdminDashboardController extends Controller
         $task = \App\Models\VolunteerTask::findOrFail($id);
         $request->validate(['status' => 'required|in:Assigned,In Progress,Completed,Rejected']);
         $task->update(['status' => $request->status]);
+
+        // Recalculate priority score
+        try {
+            app(\App\Services\PriorityScoringService::class)->calculateForReport($task->report_id);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Gagal update score saat updateTaskStatus: " . $e->getMessage());
+        }
+
         return back()->with('success', 'Status tugas relawan berhasil diperbarui.');
-    }
 
     // ═══════════════════════════════════════════════
     // SYSTEM SETTINGS

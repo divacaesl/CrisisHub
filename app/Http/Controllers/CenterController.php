@@ -172,6 +172,13 @@ class CenterController extends Controller
 
         $task->update($updateData);
 
+        // Recalculate priority score for the report
+        try {
+            app(\App\Services\PriorityScoringService::class)->calculateForReport($task->report_id);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Gagal update score saat relawan updateTaskStatus: " . $e->getMessage());
+        }
+
         return back()->with('success', 'Status tugas berhasil diperbarui.');
     }
 

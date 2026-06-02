@@ -77,62 +77,8 @@ class ReportController extends Controller
         // Create Report
         $report = Report::create($data);
 
-        // Calculate and save Priority Score
-        $score = 0;
-        
-        // 1. Damage Level Weight (Max 45)
-        $damageScores = [
-            'Rendah' => 10,
-            'Sedang' => 25,
-            'Tinggi' => 35,
-            'Hancur Total' => 45
-        ];
-        $score += $damageScores[$request->tingkat_kerusakan] ?? 10;
-
-        // 2. Vulnerability Weight (Max 35)
-        // 3 pts per infant, 2 pts per elderly, 4 pts per disabled
-        $vulnerabilityScore = ($request->infants_count * 3) + ($request->elderly_count * 2) + ($request->disabled_count * 4);
-        $score += min(35, $vulnerabilityScore);
-
-        // 3. Logistics stock status Weight (Max 10)
-        if ($data['logistic_stock_critical']) {
-            $score += 10;
-        }
-
-        // 4. Victims count weight (Max 10)
-        // 1 point per 5 victims
-        $victimWeight = min(10, intval($request->jumlah_korban / 5));
-        $score += $victimWeight;
-
-        // Cap final priority score at 100
-        $score = min(100, $score);
-
-        // Assign priority level
-        $level = 'Rendah';
-        if ($score >= 80) {
-            $level = 'Kritis';
-        } elseif ($score >= 50) {
-            $level = 'Tinggi';
-        } elseif ($score >= 25) {
-            $level = 'Sedang';
-        }
-
-        PriorityScore::create([
-            'report_id' => $report->id,
-            'score' => $score,
-            'level' => $level,
-            'variables_snapshot' => json_encode([
-                'severity' => $request->tingkat_kerusakan,
-                'infants' => $request->infants_count,
-                'elderly' => $request->elderly_count,
-                'disabled' => $request->disabled_count,
-                'logistic_critical' => $data['logistic_stock_critical'],
-                'victims' => $request->jumlah_korban
-            ]),
-            'calculated_at' => now(),
-        ]);
-
-        $report->update(['priority_score' => $score]);
+        // Calculate and save Priority Score using AI PriorityScoringService
+        app(\App\Services\PriorityScoringService::class)->calculateForReport($report->id);
 
         return redirect()->route('dashboard')->with('success', 'Berhasil menambahkan laporan SOS! Laporan Anda telah masuk ke Riwayat Laporan Saya dan sedang menunggu diverifikasi oleh admin.');
     }

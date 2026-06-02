@@ -119,7 +119,8 @@ if (!function_exists('getCampaignsList')) {
                 'deadline' => $deadlineStr,
                 'donors' => $donors,
                 'desc' => $c->description,
-                'urgent' => $c->tag === 'URGENT'
+                'urgent' => $c->tag === 'URGENT',
+                'report_id' => $c->report_id,
             ];
         });
     }
@@ -129,7 +130,14 @@ if (!function_exists('getCampaignsList')) {
 Route::get('/', function () {
     $campaigns = getCampaignsList()->take(3);
     $totalDonationsInDb = \App\Models\Donation::sum('amount');
-    return view('welcome', compact('campaigns', 'totalDonationsInDb'));
+    
+    // Fetch approved reports from database
+    $reports = \App\Models\Report::whereIn('status', ['Verified', 'Approved', 'In Progress'])
+        ->orderBy('priority_score', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return view('welcome', compact('campaigns', 'totalDonationsInDb', 'reports'));
 })->name('home');
 
 // About Page
@@ -437,9 +445,7 @@ Route::get('/disaster/{id}', function ($id) {
 
     $disaster = null;
 
-    if (isset($mockDisasters[$id])) {
-        $disaster = $mockDisasters[$id];
-    } elseif ($report) {
+    if ($report) {
         $priorityRel = \App\Models\PriorityScore::where('report_id', $report->id)->first();
         $priorityScore = $priorityRel ? $priorityRel->score : $report->priority_score;
         $level = $priorityRel ? $priorityRel->level : 'Sedang';
@@ -513,6 +519,8 @@ Route::get('/disaster/{id}', function ($id) {
             'phone' => '+62 812-3456-7890',
             'needs' => $needs
         ];
+    } elseif (isset($mockDisasters[$id])) {
+        $disaster = $mockDisasters[$id];
     } else {
         abort(404);
     }
