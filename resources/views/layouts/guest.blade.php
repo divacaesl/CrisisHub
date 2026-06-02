@@ -33,7 +33,7 @@
         }
     </style>
 </head>
-<body class="text-slate-900 dark:text-slate-100 antialiased overflow-hidden transition-colors duration-300">
+<body class="text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden transition-colors duration-300">
 
     <!-- Video Background Loop -->
     <div class="fixed inset-0 z-[-1]">

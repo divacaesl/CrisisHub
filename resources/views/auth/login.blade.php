@@ -80,6 +80,31 @@
                     </div>
                 </form>
 
+                <div class="mt-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-slate-200 dark:border-slate-700"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white dark:bg-slate-900 text-slate-500">Atau masuk dengan</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <a href="{{ route('google.login') }}" class="w-full flex items-center justify-center gap-3 py-3.5 px-4 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm text-sm font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+                            Lanjutkan dengan Google
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-slate-600 dark:text-slate-400">
+                        Belum punya akun?
+                        <a href="{{ route('register') }}" class="font-bold text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">Daftar sekarang</a>
+                    </p>
+                </div>
+
                 <!-- Back to Home -->
                 <div class="mt-8 text-center">
                     <a href="/" class="text-sm font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors flex items-center justify-center gap-2">
