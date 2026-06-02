@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Detail Bencana — CrisisHub')
+@section('title', $disaster['title'] . ' — Detail Bencana')
 
 @section('content')
 <section class="hero-dynamic hero-about pt-24 pb-16 min-h-screen">
@@ -14,34 +14,40 @@
         <!-- Header -->
         <div class="glass rounded-3xl p-8 border border-red-500/20 mb-8">
             <div class="flex flex-wrap items-start gap-4 mb-6">
-                <span class="px-3 py-1.5 bg-red-600 text-white text-sm font-bold rounded-xl badge-urgent">🔴 KRITIS</span>
-                <span class="px-3 py-1.5 bg-blue-600/40 text-blue-300 text-sm rounded-xl">🌊 Banjir</span>
-                <span class="px-3 py-1.5 glass text-slate-400 text-sm rounded-xl">Priority Score: 9.2</span>
+                @if(strtolower($disaster['status']) === 'kritis' || strtolower($disaster['status']) === 'tinggi')
+                    <span class="px-3 py-1.5 bg-red-600 text-white text-sm font-bold rounded-xl badge-urgent">🔴 {{ $disaster['status'] }}</span>
+                @elseif(strtolower($disaster['status']) === 'waspada' || strtolower($disaster['status']) === 'sedang')
+                    <span class="px-3 py-1.5 bg-orange-600 text-white text-sm font-bold rounded-xl badge-urgent">🟠 {{ $disaster['status'] }}</span>
+                @else
+                    <span class="px-3 py-1.5 bg-green-600 text-white text-sm font-bold rounded-xl badge-urgent">🟢 {{ $disaster['status'] }}</span>
+                @endif
+                <span class="px-3 py-1.5 bg-blue-600/40 text-blue-300 text-sm rounded-xl">{{ $disaster['type_icon'] }} {{ $disaster['type'] }}</span>
+                <span class="px-3 py-1.5 glass text-slate-400 text-sm rounded-xl">Priority Score: {{ $disaster['priority_score'] }}</span>
             </div>
 
-            <h1 class="text-3xl sm:text-4xl font-black text-white mb-3">Banjir Besar Jakarta Utara</h1>
+            <h1 class="text-3xl sm:text-4xl font-black text-white mb-3">{{ $disaster['title'] }}</h1>
             <div class="flex flex-wrap items-center gap-4 text-slate-400 text-sm mb-6">
-                <span class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-red-400"></i> Jakarta Utara, DKI Jakarta</span>
-                <span class="flex items-center gap-2"><i class="fas fa-clock text-orange-400"></i> 30 Mei 2026, 06:15 WIB</span>
-                <span class="flex items-center gap-2"><i class="fas fa-eye text-blue-400"></i> 12.450 dilihat</span>
+                <span class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-red-400"></i> {{ $disaster['location'] }}</span>
+                <span class="flex items-center gap-2"><i class="fas fa-clock text-orange-400"></i> {{ $disaster['date'] }}</span>
+                <span class="flex items-center gap-2"><i class="fas fa-eye text-blue-400"></i> {{ $disaster['views'] }} dilihat</span>
             </div>
 
             <!-- Quick Stats -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="bg-red-50 dark:bg-red-900/20 border border-red-500/10 rounded-2xl p-4 text-center">
-                    <div class="text-3xl font-black text-red-600 dark:text-red-400">2.847</div>
+                    <div class="text-3xl font-black text-red-600 dark:text-red-400">{{ $disaster['korban'] }}</div>
                     <div class="text-slate-600 dark:text-slate-400 text-xs mt-1">Korban Terdampak</div>
                 </div>
                 <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-500/10 rounded-2xl p-4 text-center">
-                    <div class="text-3xl font-black text-orange-600 dark:text-orange-400">94%</div>
+                    <div class="text-3xl font-black text-orange-600 dark:text-orange-400">{{ $disaster['kerusakan'] }}</div>
                     <div class="text-slate-600 dark:text-slate-400 text-xs mt-1">Tingkat Kerusakan</div>
                 </div>
                 <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-500/10 rounded-2xl p-4 text-center">
-                    <div class="text-3xl font-black text-blue-600 dark:text-blue-400">248</div>
+                    <div class="text-3xl font-black text-blue-600 dark:text-blue-400">{{ $disaster['relawan'] }}</div>
                     <div class="text-slate-600 dark:text-slate-400 text-xs mt-1">Relawan Dikerahkan</div>
                 </div>
                 <div class="bg-green-50 dark:bg-green-900/20 border border-green-500/10 rounded-2xl p-4 text-center">
-                    <div class="text-3xl font-black text-green-600 dark:text-green-400">1.200</div>
+                    <div class="text-3xl font-black text-green-600 dark:text-green-400">{{ $disaster['bantuan'] }}</div>
                     <div class="text-slate-600 dark:text-slate-400 text-xs mt-1">Bantuan Tersalur</div>
                 </div>
             </div>
@@ -49,7 +55,7 @@
 
         <!-- Main Image -->
         <div class="rounded-2xl overflow-hidden mb-8">
-            <img src="/images/flood_case.png" alt="Kondisi Banjir Jakarta Utara" class="w-full h-80 object-cover">
+            <img src="{{ $disaster['image'] }}" alt="Kondisi {{ $disaster['title'] }}" class="w-full h-80 object-cover">
         </div>
 
         <div class="grid lg:grid-cols-3 gap-8">
@@ -57,23 +63,13 @@
             <div class="lg:col-span-2 space-y-6">
                 <div class="glass rounded-2xl p-7 border border-white/7">
                     <h2 class="text-xl font-bold text-white mb-4">Deskripsi Kejadian</h2>
-                    <p class="text-slate-400 leading-relaxed mb-4">Banjir besar melanda wilayah Jakarta Utara akibat curah hujan ekstrem yang melanda DKI Jakarta sejak dini hari. Ketinggian air mencapai 1,5–2 meter di beberapa kelurahan, menyebabkan ribuan warga harus mengungsi.</p>
-                    <p class="text-slate-400 leading-relaxed">Wilayah yang paling terdampak meliputi Kelurahan Penjaringan, Pluit, Kapuk Muara, dan Muara Baru. Infrastruktur seperti jalan, jembatan, dan fasilitas umum mengalami kerusakan signifikan.</p>
+                    <p class="text-slate-400 leading-relaxed whitespace-pre-line">{{ $disaster['description'] }}</p>
                 </div>
 
                 <div class="glass rounded-2xl p-7 border border-white/7">
                     <h2 class="text-xl font-bold text-white mb-4">Kebutuhan Mendesak</h2>
                     <div class="space-y-3">
-                        @php
-                        $needs = [
-                            ['item' => 'Air Minum Bersih', 'pct' => 85, 'color' => 'blue'],
-                            ['item' => 'Makanan / Sembako', 'pct' => 72, 'color' => 'orange'],
-                            ['item' => 'Obat-obatan', 'pct' => 60, 'color' => 'red'],
-                            ['item' => 'Selimut & Pakaian', 'pct' => 45, 'color' => 'purple'],
-                            ['item' => 'Relawan Medis', 'pct' => 30, 'color' => 'green'],
-                        ];
-                        @endphp
-                        @foreach($needs as $n)
+                        @foreach($disaster['needs'] as $n)
                         <div>
                             <div class="flex justify-between text-sm mb-1">
                                 <span class="text-slate-300">{{ $n['item'] }}</span>
@@ -105,11 +101,11 @@
                     <div class="space-y-3 text-sm">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-map-marker-alt text-red-400 w-4"></i>
-                            <span class="text-slate-400">GOR Jakarta Utara, Jl. Yos Sudarso</span>
+                            <span class="text-slate-400">{{ $disaster['posko'] }}</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <i class="fas fa-phone text-green-400 w-4"></i>
-                            <span class="text-slate-400">+62 21-4567-8900</span>
+                            <span class="text-slate-400">{{ $disaster['phone'] }}</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <i class="fas fa-clock text-blue-400 w-4"></i>

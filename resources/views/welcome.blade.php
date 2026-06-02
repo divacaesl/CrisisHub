@@ -317,7 +317,7 @@
                     </div>
                     <span class="px-2 py-0.5 bg-yellow-900/40 text-yellow-400 text-xs rounded-full font-medium">Live</span>
                 </div>
-                <div class="text-4xl font-black text-slate-900 dark:text-white mb-1"><span data-target="42" data-prefix="Rp " data-suffix=" M">Rp 42 M</span></div>
+                <div class="text-4xl font-black text-slate-900 dark:text-white mb-1"><span class="grand-total-counter" data-target="{{ 42000000000 + $totalDonationsInDb }}" data-prefix="Rp " data-suffix="">Rp {{ number_format(42000000000 + $totalDonationsInDb, 0, ',', '.') }}</span></div>
                 <div class="text-slate-500 dark:text-slate-400 text-sm font-medium">Donasi Terkumpul</div>
                 <div class="mt-3 text-xs text-green-600 dark:text-green-400 flex items-center gap-1"><i class="fas fa-arrow-up text-xs"></i> +Rp 850 jt bulan ini</div>
             </div>
@@ -791,23 +791,17 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            @php
-            $campaigns = [
-                ['emoji' => '🌊', 'title' => 'Darurat Banjir Jakarta Utara', 'location' => 'Jakarta Utara, DKI Jakarta', 'target' => 500000000, 'collected' => 387500000, 'pct' => 78, 'deadline' => '3 hari lagi', 'urgent' => true],
-                ['emoji' => '🏔️', 'title' => 'Rehab Hunian Pasca Gempa Cianjur', 'location' => 'Cianjur, Jawa Barat', 'target' => 1000000000, 'collected' => 642000000, 'pct' => 64, 'deadline' => '12 hari lagi', 'urgent' => false],
-                ['emoji' => '🌋', 'title' => 'Pengungsian Erupsi Sinabung', 'location' => 'Karo, Sumatera Utara', 'target' => 250000000, 'collected' => 185000000, 'pct' => 74, 'deadline' => '7 hari lagi', 'urgent' => false],
-            ];
-            @endphp
-
             @foreach($campaigns as $i => $c)
             <div class="campaign-card premium-card-glow fade-up" style="animation-delay: {{ $i * 0.1 }}s">
                 <div class="h-40 relative overflow-hidden flex items-center justify-center">
-                    @if($i == 0)
+                    @if(stripos($c['title'], 'Banjir Jakarta') !== false)
                         <img src="/images/flood_case.png" alt="{{ $c['title'] }}" class="w-full h-40 object-cover">
-                    @elseif($i == 1)
+                    @elseif(stripos($c['title'], 'Cianjur') !== false)
                         <img src="/images/cause1.png" alt="{{ $c['title'] }}" class="w-full h-40 object-cover">
-                    @else
+                    @elseif(stripos($c['title'], 'Sinabung') !== false)
                         <img src="/images/cause2.png" alt="{{ $c['title'] }}" class="w-full h-40 object-cover">
+                    @else
+                        <img src="/images/flood_case.png" alt="{{ $c['title'] }}" class="w-full h-40 object-cover">
                     @endif
                     <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent"></div>
                     @if($c['urgent'])
@@ -865,7 +859,7 @@
             <div class="relative z-10">
                 <div class="text-5xl mb-4">❤️</div>
                 <h3 class="text-3xl font-black text-white mb-3">Total Donasi Terkumpul</h3>
-                <div class="text-5xl font-black gradient-text mb-2" data-target="42" data-prefix="Rp " data-suffix=" Miliar">Rp 42 Miliar</div>
+                <div class="text-5xl font-black gradient-text mb-2 grand-total-counter" data-target="{{ 42000000000 + $totalDonationsInDb }}" data-prefix="Rp " data-suffix="">Rp {{ number_format(42000000000 + $totalDonationsInDb, 0, ',', '.') }}</div>
                 <p class="text-slate-300 mb-8 max-w-lg mx-auto">Dari 28.400+ donatur yang telah membantu sesama. Bergabunglah bersama kami!</p>
                 <div class="flex flex-wrap justify-center gap-4">
                     <a href="/donate" class="flex items-center gap-2 px-8 py-4 bg-white text-red-700 hover:bg-red-50 font-black rounded-2xl text-lg transition-all">
@@ -935,16 +929,16 @@
 
     // Disaster data
     const disasters = [
-        { lat: -6.1, lng: 106.85, name: 'Banjir Jakarta Utara', type: 'banjir', status: 'kritis', korban: 2847, color: '#ef4444', icon: '🌊', priority: 9.2 },
-        { lat: -6.82, lng: 107.14, name: 'Gempa Cianjur 6.2 SR', type: 'gempa', status: 'kritis', korban: 1340, color: '#dc2626', icon: '🏔️', priority: 8.7 },
-        { lat: -3.32, lng: 114.59, name: 'Banjir Banjarmasin', type: 'banjir', status: 'sedang', korban: 4210, color: '#f97316', icon: '🌊', priority: 7.1 },
-        { lat: 3.18, lng: 98.52, name: 'Erupsi Sinabung', type: 'gunung', status: 'waspada', korban: 892, color: '#eab308', icon: '🌋', priority: 6.4 },
-        { lat: -8.65, lng: 115.22, name: 'Banjir Denpasar', type: 'banjir', status: 'terkendali', korban: 340, color: '#22c55e', icon: '🌊', priority: 4.2 },
-        { lat: -7.25, lng: 110.42, name: 'Longsor Purworejo', type: 'longsor', status: 'sedang', korban: 127, color: '#f97316', icon: '⛰️', priority: 6.8 },
-        { lat: 0.54, lng: 123.06, name: 'Gempa Palu 5.8 SR', type: 'gempa', status: 'kritis', korban: 445, color: '#dc2626', icon: '🏔️', priority: 7.8 },
-        { lat: -2.12, lng: 106.12, name: 'Banjir Bangka', type: 'banjir', status: 'sedang', korban: 680, color: '#f97316', icon: '🌊', priority: 5.5 },
-        { lat: -4.0, lng: 122.51, name: 'Angin Kencang Kendari', type: 'angin', status: 'terkendali', korban: 89, color: '#3b82f6', icon: '💨', priority: 3.8 },
-        { lat: -0.95, lng: 100.35, name: 'Banjir Padang', type: 'banjir', status: 'sedang', korban: 520, color: '#f97316', icon: '🌊', priority: 6.0 },
+        { id: 1, lat: -6.1, lng: 106.85, name: 'Banjir Jakarta Utara', type: 'banjir', status: 'kritis', korban: 2847, color: '#ef4444', icon: '🌊', priority: 9.2 },
+        { id: 2, lat: -6.82, lng: 107.14, name: 'Gempa Cianjur 6.2 SR', type: 'gempa', status: 'kritis', korban: 1340, color: '#dc2626', icon: '🏔️', priority: 8.7 },
+        { id: 3, lat: -3.32, lng: 114.59, name: 'Banjir Banjarmasin', type: 'banjir', status: 'sedang', korban: 4210, color: '#f97316', icon: '🌊', priority: 7.1 },
+        { id: 4, lat: 3.18, lng: 98.52, name: 'Erupsi Sinabung', type: 'gunung', status: 'waspada', korban: 892, color: '#eab308', icon: '🌋', priority: 6.4 },
+        { id: 5, lat: -8.65, lng: 115.22, name: 'Banjir Denpasar', type: 'banjir', status: 'terkendali', korban: 340, color: '#22c55e', icon: '🌊', priority: 4.2 },
+        { id: 6, lat: -7.25, lng: 110.42, name: 'Longsor Purworejo', type: 'longsor', status: 'sedang', korban: 127, color: '#f97316', icon: '⛰️', priority: 6.8 },
+        { id: 7, lat: 0.54, lng: 123.06, name: 'Gempa Palu 5.8 SR', type: 'gempa', status: 'kritis', korban: 445, color: '#dc2626', icon: '🏔️', priority: 7.8 },
+        { id: 8, lat: -2.12, lng: 106.12, name: 'Banjir Bangka', type: 'banjir', status: 'sedang', korban: 680, color: '#f97316', icon: '🌊', priority: 5.5 },
+        { id: 9, lat: -4.0, lng: 122.51, name: 'Angin Kencang Kendari', type: 'angin', status: 'terkendali', korban: 89, color: '#3b82f6', icon: '💨', priority: 3.8 },
+        { id: 10, lat: -0.95, lng: 100.35, name: 'Banjir Padang', type: 'banjir', status: 'sedang', korban: 520, color: '#f97316', icon: '🌊', priority: 6.0 },
     ];
 
     let markers = [];
@@ -976,7 +970,7 @@
                         <div>👥 ${d.korban.toLocaleString('id-ID')} korban terdampak</div>
                         <div style="margin-top:4px;">🕐 Diperbarui baru saja</div>
                     </div>
-                    <a href="/disaster/1" style="display:block;margin-top:10px;text-align:center;padding:6px;background:linear-gradient(135deg,#dc2626,#f97316);color:white;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;">Lihat Detail</a>
+                    <a href="/disaster/${d.id}" style="display:block;margin-top:10px;text-align:center;padding:6px;background:linear-gradient(135deg,#dc2626,#f97316);color:white;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;">Lihat Detail</a>
                 </div>
             `);
             markers.push(marker);

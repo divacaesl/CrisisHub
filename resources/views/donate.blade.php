@@ -39,11 +39,11 @@
             <!-- Donation stats -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
                 <div class="glass rounded-2xl p-5 border border-white/10">
-                    <div class="text-3xl font-black text-orange-400 mb-1" data-target="42" data-prefix="Rp " data-suffix="M">Rp 42M</div>
+                    <div class="text-3xl font-black text-orange-400 mb-1 grand-total-counter" data-target="{{ 42000000000 + $totalDonationsInDb }}" data-prefix="Rp " data-suffix="">Rp {{ number_format(42000000000 + $totalDonationsInDb, 0, ',', '.') }}</div>
                     <div class="text-slate-400 text-xs">Total Donasi</div>
                 </div>
                 <div class="glass rounded-2xl p-5 border border-white/10">
-                    <div class="text-3xl font-black text-green-400 mb-1" data-target="18" data-suffix="">18</div>
+                    <div class="text-3xl font-black text-green-400 mb-1" data-target="{{ count($campaigns) }}" data-suffix="">{{ count($campaigns) }}</div>
                     <div class="text-slate-400 text-xs">Campaign Aktif</div>
                 </div>
                 <div class="glass rounded-2xl p-5 border border-white/10">
@@ -81,28 +81,17 @@
             </select>
         </div>
 
-        @php
-        $campaigns = [
-            ['id'=>1,'emoji'=>'🌊','tag'=>'URGENT','tagColor'=>'red','title'=>'Darurat Banjir Jakarta Utara','location'=>'Jakarta Utara, DKI Jakarta','target'=>500000000,'collected'=>387500000,'pct'=>78,'deadline'=>'3 hari lagi','donors'=>2840,'desc'=>'Banjir besar merendam ratusan rumah di Jakarta Utara. Ribuan keluarga butuh bantuan makanan, air bersih, dan tempat pengungsian.'],
-            ['id'=>2,'emoji'=>'🏔️','tag'=>'AKTIF','tagColor'=>'blue','title'=>'Rehab Hunian Pasca Gempa Cianjur','location'=>'Cianjur, Jawa Barat','target'=>1000000000,'collected'=>642000000,'pct'=>64,'deadline'=>'12 hari lagi','donors'=>5120,'desc'=>'Ribuan rumah rusak akibat gempa 6.2 SR. Dana digunakan untuk perbaikan hunian sementara and kebutuhan dasar keluarga terdampak.'],
-            ['id'=>3,'emoji'=>'🌋','tag'=>'AKTIF','tagColor'=>'orange','title'=>'Pengungsian Erupsi Sinabung','location'=>'Karo, Sumatera Utara','target'=>250000000,'collected'=>185000000,'pct'=>74,'deadline'=>'7 hari lagi','donors'=>1230,'desc'=>'Ratusan keluarga mengungsi akibat erupsi Gunung Sinabung. Bantuan untuk makanan, obat-obatan, dan fasilitas pengungsian sangat dibutuhkan.'],
-            ['id'=>4,'emoji'=>'⛰️','tag'=>'AKTIF','tagColor'=>'green','title'=>'Longsor Purworejo — Pemulihan','location'=>'Purworejo, Jawa Tengah','target'=>300000000,'collected'=>198000000,'pct'=>66,'deadline'=>'15 hari lagi','donors'=>892,'desc'=>'Longsor melanda desa Bagelen, Purworejo. Dana dibutuhkan untuk evakuasi, pembersihan material longsor, dan bantuan korban.'],
-            ['id'=>5,'emoji'=>'💨','tag'=>'BARU','tagColor'=>'purple','title'=>'Pemulihan Angin Puting Beliung NTB','location'=>'Mataram, Nusa Tenggara Barat','target'=>150000000,'collected'=>42000000,'pct'=>28,'deadline'=>'21 hari lagi','donors'=>345,'desc'=>'Angin puting beliung menghancurkan puluhan rumah di Mataram. Bantuan material bangunan dan logistik sangat mendesak.'],
-            ['id'=>6,'emoji'=>'🌊','tag'=>'AKTIF','tagColor'=>'blue','title'=>'Banjir Bandang Kalimantan Selatan','location'=>'Banjarmasin, Kalimantan Selatan','target'=>400000000,'collected'=>287000000,'pct'=>72,'deadline'=>'9 hari lagi','donors'=>2105,'desc'=>'Banjir bandang melanda beberapa kabupaten di Kalimantan Selatan. Ribuan jiwa terdampak dan butuh bantuan segera.'],
-        ];
-        @endphp
-
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
             @foreach($campaigns as $i => $c)
-            <div class="campaign-card premium-card-glow fade-up" style="animation-delay: {{ $i * 0.1 }}s">
+            <div class="campaign-card premium-card-glow fade-up" data-campaign-title="{{ $c['title'] }}" style="animation-delay: {{ $i * 0.1 }}s">
                 <div class="relative h-48 overflow-hidden">
                     @php
                         $img = '/images/cause1.png';
-                        if ($c['id'] == 1 || $c['id'] == 6) $img = '/images/flood_case.png';
-                        elseif ($c['id'] == 2) $img = '/images/cause1.png';
-                        elseif ($c['id'] == 3) $img = '/images/cause3.png';
-                        elseif ($c['id'] == 4) $img = '/images/earthquake_case.png';
-                        elseif ($c['id'] == 5) $img = '/images/cause2.png';
+                        if (stripos($c['title'], 'Banjir Jakarta') !== false || stripos($c['title'], 'Kalimantan') !== false) $img = '/images/flood_case.png';
+                        elseif (stripos($c['title'], 'Cianjur') !== false) $img = '/images/cause1.png';
+                        elseif (stripos($c['title'], 'Sinabung') !== false) $img = '/images/cause3.png';
+                        elseif (stripos($c['title'], 'Purworejo') !== false) $img = '/images/earthquake_case.png';
+                        elseif (stripos($c['title'], 'NTB') !== false) $img = '/images/cause2.png';
                     @endphp
                     <img src="{{ $img }}" alt="{{ $c['title'] }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent"></div>
@@ -119,15 +108,15 @@
                     <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed mb-4">{{ $c['desc'] }}</p>
                     <div class="mb-4">
                         <div class="flex justify-between text-xs mb-2">
-                            <span class="text-slate-500 dark:text-slate-400">Terkumpul: <strong class="text-slate-950 dark:text-white">Rp {{ number_format($c['collected'], 0, ',', '.') }}</strong></span>
-                            <span class="text-orange-500 dark:text-orange-400 font-bold">{{ $c['pct'] }}%</span>
+                            <span class="text-slate-500 dark:text-slate-400">Terkumpul: <strong class="text-slate-950 dark:text-white card-collected">Rp {{ number_format($c['collected'], 0, ',', '.') }}</strong></span>
+                            <span class="text-orange-500 dark:text-orange-400 font-bold card-pct">{{ $c['pct'] }}%</span>
                         </div>
                         <div class="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                            <div class="progress-bar h-full" style="width: {{ $c['pct'] }}%"></div>
+                            <div class="progress-bar h-full card-progress" style="width: {{ $c['pct'] }}%"></div>
                         </div>
                         <div class="flex justify-between text-xs mt-2 text-slate-500 dark:text-slate-400">
-                            <span>Target: Rp {{ number_format($c['target'], 0, ',', '.') }}</span>
-                            <span>{{ $c['donors'] }} donatur</span>
+                            <span class="card-target" data-target-raw="{{ $c['target'] }}">Target: Rp {{ number_format($c['target'], 0, ',', '.') }}</span>
+                            <span class="card-donors" data-donors-raw="{{ $c['donors'] }}">{{ number_format($c['donors'], 0, ',', '.') }} donatur</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-1 text-orange-600 dark:text-orange-400 text-xs font-semibold mb-5">
@@ -310,11 +299,10 @@
                         <label class="form-label">Pilih Campaign *</label>
                         <select name="campaign" class="form-select" id="d-campaign">
                             <option value="">Pilih Campaign Donasi</option>
-                            <option>Darurat Banjir Jakarta Utara</option>
-                            <option>Rehab Hunian Pasca Gempa Cianjur</option>
-                            <option>Pengungsian Erupsi Sinabung</option>
-                            <option>Longsor Purworejo</option>
-                            <option>Donasi Umum (CrisisHub menentukan tujuan)</option>
+                            @foreach($campaigns as $c)
+                            <option value="{{ $c['title'] }}">{{ $c['title'] }}</option>
+                            @endforeach
+                            <option value="Donasi Umum">Donasi Umum (CrisisHub menentukan tujuan)</option>
                         </select>
                     </div>
                     <div class="mb-6">
@@ -389,10 +377,10 @@
                         <label class="form-label">Untuk Campaign *</label>
                         <select name="campaign" class="form-select" id="db-campaign">
                             <option value="">Pilih Campaign Tujuan</option>
-                            <option>Darurat Banjir Jakarta Utara</option>
-                            <option>Rehab Hunian Pasca Gempa Cianjur</option>
-                            <option>Pengungsian Erupsi Sinabung</option>
-                            <option>Donasi Umum</option>
+                            @foreach($campaigns as $c)
+                            <option value="{{ $c['title'] }}">{{ $c['title'] }}</option>
+                            @endforeach
+                            <option value="Donasi Umum">Donasi Umum</option>
                         </select>
                     </div>
                     <div class="mb-8">
@@ -474,32 +462,39 @@
         <!-- Recent Donations Feed -->
         <div class="fade-up">
             <h3 class="text-slate-900 dark:text-white font-bold text-xl mb-6">💝 Donasi Terbaru</h3>
-            <div class="space-y-3">
+            <div id="recent-donations-feed" class="space-y-3">
+                @forelse($recentDonations as $d)
                 @php
-                $recentDonations = [
-                    ['name' => 'Ahmad F.', 'amount' => 500000, 'campaign' => 'Banjir Jakarta Utara', 'time' => '2 menit lalu', 'anon' => false],
-                    ['name' => '***anonim***', 'amount' => 1000000, 'campaign' => 'Gempa Cianjur', 'time' => '5 menit lalu', 'anon' => true],
-                    ['name' => 'PT Maju Bersama', 'amount' => 25000000, 'campaign' => 'Umum', 'time' => '12 menit lalu', 'anon' => false],
-                    ['name' => 'Siti R.', 'amount' => 250000, 'campaign' => 'Erupsi Sinabung', 'time' => '18 menit lalu', 'anon' => false],
-                    ['name' => 'Budi S.', 'amount' => 100000, 'campaign' => 'Banjir Jakarta Utara', 'time' => '25 menit lalu', 'anon' => false],
-                ];
+                    $notes = $d->notes;
+                    if ($notes && preg_match('/^Dari:\s*([^.]+)\./i', $notes, $matches)) {
+                        $donorName = trim($matches[1]);
+                    } else {
+                        $donorName = $d->user ? $d->user->name : '***anonim***';
+                    }
+                    $isAnon = (stripos($donorName, 'anonim') !== false || $donorName === '***anonim***');
+                    $avatar = $isAnon ? '?' : strtoupper(substr($donorName, 0, 1));
+                    $campaignName = $d->campaign_title ?: 'Donasi Umum';
+                    $timeAgo = $d->created_at ? $d->created_at->diffForHumans() : 'Baru saja';
                 @endphp
-                @foreach($recentDonations as $d)
                 <div class="flex items-center gap-4 glass rounded-xl p-4 border border-slate-200 dark:border-white/7">
                     <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                        {{ $d['anon'] ? '?' : strtoupper(substr($d['name'], 0, 1)) }}
+                        {{ $avatar }}
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-2">
-                            <span class="text-slate-800 dark:text-white font-semibold text-sm">{{ $d['name'] }}</span>
+                            <span class="text-slate-800 dark:text-white font-semibold text-sm">{{ $donorName }}</span>
                             <span class="text-slate-550 dark:text-slate-500 text-xs">berdonasi untuk</span>
-                            <span class="text-orange-655 dark:text-orange-400 text-xs font-bold">{{ $d['campaign'] }}</span>
+                            <span class="text-orange-655 dark:text-orange-400 text-xs font-bold">{{ $campaignName }}</span>
                         </div>
-                        <div class="text-slate-450 dark:text-slate-500 text-xs mt-0.5">{{ $d['time'] }}</div>
+                        <div class="text-slate-450 dark:text-slate-500 text-xs mt-0.5">{{ $timeAgo }}</div>
                     </div>
-                    <div class="text-green-600 dark:text-green-400 font-black text-base">Rp {{ number_format($d['amount'], 0, ',', '.') }}</div>
+                    <div class="text-green-600 dark:text-green-400 font-black text-base">Rp {{ number_format($d->amount, 0, ',', '.') }}</div>
                 </div>
-                @endforeach
+                @empty
+                <div class="text-center py-8 text-slate-500 dark:text-slate-400 text-sm">
+                    Belum ada donasi terbaru. Jadilah yang pertama!
+                </div>
+                @endforelse
             </div>
         </div>
     </div>
@@ -607,6 +602,330 @@ function previewModalProof(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+// ── Toast notifications ───────────────────────────────────────
+function showDonationToast(message) {
+    // Remove existing toast if any
+    const existingToast = document.getElementById('donation-toast');
+    if (existingToast) existingToast.remove();
+    
+    const toastHtml = `
+    <div id="donation-toast"
+        class="dark-content fixed top-6 right-6 z-50 max-w-sm w-full p-5 rounded-2xl shadow-2xl border border-green-500/30 flex items-start gap-4 animate-fade-in"
+        style="background: linear-gradient(135deg, #052e16, #14532d); box-shadow: 0 0 40px rgba(34,197,94,0.2);">
+        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-check text-white"></i>
+        </div>
+        <div class="flex-1">
+            <h4 class="text-green-300 font-black mb-1">Donasi Berhasil! 🎉</h4>
+            <p class="text-green-400 text-sm leading-snug">${message}</p>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-green-600 hover:text-green-300 mt-1 flex-shrink-0">
+            <i class="fas fa-times text-sm"></i>
+        </button>
+    </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', toastHtml);
+    setTimeout(() => {
+        const t = document.getElementById('donation-toast');
+        if (t) t.remove();
+    }, 8000);
+}
+
+// ── Update Card donation total dynamically ───────────────────
+function updateCardDonation(title, amount) {
+    const card = document.querySelector(`.campaign-card[data-campaign-title="${title}"]`);
+    if (!card) return;
+    
+    const collectedEl = card.querySelector('.card-collected');
+    const pctEl = card.querySelector('.card-pct');
+    const progressEl = card.querySelector('.card-progress');
+    const targetEl = card.querySelector('.card-target');
+    const donorsEl = card.querySelector('.card-donors');
+    
+    if (!collectedEl) return;
+    
+    // Parse target
+    const target = parseFloat(targetEl.dataset.targetRaw || '0');
+    
+    // Current collected value from text
+    let currentCollected = parseFloat(collectedEl.textContent.replace(/[^0-9]/g, ''));
+    if (isNaN(currentCollected)) currentCollected = 0;
+    
+    const newCollected = currentCollected + amount;
+    
+    // Current donors count
+    let currentDonors = parseInt(donorsEl.dataset.donorsRaw || '0');
+    if (isNaN(currentDonors)) currentDonors = 0;
+    const newDonors = currentDonors + 1;
+    donorsEl.dataset.donorsRaw = newDonors;
+    donorsEl.textContent = newDonors.toLocaleString('id-ID') + ' donatur';
+    
+    // Calculate new percentage
+    const newPct = target > 0 ? Math.min(100, Math.round((newCollected / target) * 100)) : 0;
+    
+    // Animate collected amount counter
+    let start = currentCollected;
+    let duration = 1500;
+    let startTime = performance.now();
+    
+    const updateCounter = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + (newCollected - start) * eased);
+        collectedEl.textContent = 'Rp ' + current.toLocaleString('id-ID');
+        
+        if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+        } else {
+            collectedEl.textContent = 'Rp ' + newCollected.toLocaleString('id-ID');
+        }
+    };
+    requestAnimationFrame(updateCounter);
+    
+    // Animate pct text and progress bar
+    pctEl.textContent = newPct + '%';
+    progressEl.style.width = newPct + '%';
+    
+    // Update grand total count on the page
+    document.querySelectorAll('.grand-total-counter').forEach(el => {
+        let startVal = parseInt(el.textContent.replace(/[^0-9]/g, ''));
+        if (isNaN(startVal)) {
+            startVal = parseInt(el.dataset.target) || 42000000000;
+        }
+        const endVal = startVal + amount;
+        el.dataset.target = endVal;
+        
+        let gtStart = startVal;
+        let gtStartTime = performance.now();
+        const updateGt = (currentTime) => {
+            const elapsed = currentTime - gtStartTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(gtStart + (endVal - gtStart) * eased);
+            el.textContent = 'Rp ' + current.toLocaleString('id-ID');
+            
+            if (progress < 1) {
+                requestAnimationFrame(updateGt);
+            } else {
+                el.textContent = 'Rp ' + endVal.toLocaleString('id-ID');
+            }
+        };
+        requestAnimationFrame(updateGt);
+    });
+}
+
+// ── Prepend new donation to the feed dynamically ──────────────
+function prependRecentDonation(name, amount, campaign, timeAgo) {
+    const feed = document.getElementById('recent-donations-feed');
+    if (!feed) return;
+    
+    // Check if the placeholder block exists and remove it
+    const placeholder = feed.querySelector('.text-center');
+    if (placeholder && placeholder.textContent.includes('Belum ada donasi')) {
+        placeholder.remove();
+    }
+    
+    const isAnon = name.toLowerCase().includes('anonim') || name === '***anonim***';
+    const avatar = isAnon ? '?' : name.substring(0, 1).toUpperCase();
+    const formattedAmount = 'Rp ' + amount.toLocaleString('id-ID');
+    
+    const itemHtml = `
+    <div class="flex items-center gap-4 glass rounded-xl p-4 border border-slate-200 dark:border-white/7 animate-fade-in" style="animation: fadeIn 0.5s ease-out;">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+            ${avatar}
+        </div>
+        <div class="flex-1">
+            <div class="flex items-center gap-2">
+                <span class="text-slate-800 dark:text-white font-semibold text-sm">${name}</span>
+                <span class="text-slate-550 dark:text-slate-500 text-xs">berdonasi untuk</span>
+                <span class="text-orange-655 dark:text-orange-400 text-xs font-bold">${campaign}</span>
+            </div>
+            <div class="text-slate-450 dark:text-slate-500 text-xs mt-0.5">${timeAgo}</div>
+        </div>
+        <div class="text-green-600 dark:text-green-400 font-black text-base">${formattedAmount}</div>
+    </div>
+    `;
+    
+    feed.insertAdjacentHTML('afterbegin', itemHtml);
+    
+    // Limit to 10 items
+    if (feed.children.length > 10) {
+        feed.lastElementChild.remove();
+    }
+}
+
+// ── Interactive submit & bottom forms integration ───────────
+document.addEventListener('DOMContentLoaded', () => {
+    // Intercept Modal Submission
+    const modalForm = document.querySelector('#donasi-modal form');
+    if (modalForm) {
+        modalForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            // Show spinner
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Memproses...';
+            
+            const formData = new FormData(this);
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Terjadi kesalahan pada server.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    closeDonasiModal();
+                    showDonationToast(data.message);
+                    updateCardDonation(data.campaign_title, data.amount);
+                    prependRecentDonation(data.donor_name, data.amount, data.campaign_title, data.time_ago);
+                } else {
+                    alert(data.message || 'Gagal mengirim donasi.');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert(error.message || 'Terjadi kesalahan jaringan.');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            });
+        });
+    }
+
+    // Intercept Bottom Donasi Uang Form
+    const bottomUangForm = document.getElementById('donasiUangForm');
+    if (bottomUangForm) {
+        // Nominal buttons click logic
+        const nominalButtons = bottomUangForm.querySelectorAll('.nominal-btn');
+        const nominalInput = document.getElementById('nominalInput');
+        
+        nominalButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                nominalButtons.forEach(b => {
+                    b.classList.remove('active', 'border-orange-500', 'text-orange-500');
+                    b.classList.add('border-slate-200', 'dark:border-white/10', 'text-slate-700', 'dark:text-slate-300');
+                });
+                this.classList.remove('border-slate-200', 'dark:border-white/10', 'text-slate-700', 'dark:text-slate-300');
+                this.classList.add('active', 'border-orange-500', 'text-orange-500');
+                
+                const amount = this.dataset.amount;
+                if (amount === 'Lainnya') {
+                    nominalInput.value = '';
+                    nominalInput.focus();
+                } else {
+                    nominalInput.value = amount;
+                }
+            });
+        });
+
+        bottomUangForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const campaignSelect = document.getElementById('d-campaign');
+            const selectedNominalBtn = bottomUangForm.querySelector('.nominal-btn.active');
+            const paymentRadio = bottomUangForm.querySelector('input[name="payment"]:checked');
+            const namaInput = document.getElementById('d-nama');
+            const pesanInput = document.getElementById('d-pesan');
+            
+            if (!campaignSelect || !campaignSelect.value) {
+                alert('Silakan pilih campaign donasi terlebih dahulu.');
+                return;
+            }
+            
+            let amount = nominalInput.value;
+            if (!amount && selectedNominalBtn) {
+                amount = selectedNominalBtn.dataset.amount;
+            }
+            
+            if (!amount || amount < 10000) {
+                alert('Silakan masukkan jumlah donasi minimal Rp 10.000.');
+                return;
+            }
+            
+            if (!paymentRadio) {
+                alert('Silakan pilih metode pembayaran.');
+                return;
+            }
+            
+            const campaignTitle = campaignSelect.value;
+            
+            // Check auth state
+            @auth
+                // Find matching campaign data for modal
+                const card = document.querySelector(`.campaign-card[data-campaign-title="${campaignTitle}"]`);
+                let id = '1';
+                let emoji = '🆘';
+                
+                // Open modal and pre-fill values
+                openDonasiModal(id, campaignTitle, emoji);
+                
+                // Pre-fill nominal
+                document.getElementById('modal-amount').value = amount;
+                
+                // Map bottom payment types to modal methods
+                let modalPaymentValue = 'BCA Virtual Account';
+                if (paymentRadio.value === 'qris') modalPaymentValue = 'QRIS';
+                else if (paymentRadio.value === 'bank') modalPaymentValue = 'BCA Virtual Account';
+                else if (paymentRadio.value === 'ewallet') modalPaymentValue = 'QRIS';
+                else if (paymentRadio.value === 'minimarket') modalPaymentValue = 'QRIS';
+                
+                const modalRadio = document.querySelector(`input[name="payment_method"][value="${modalPaymentValue}"]`);
+                if (modalRadio) {
+                    modalRadio.checked = true;
+                    onPaymentChange(modalRadio);
+                }
+                
+                // Pre-fill notes
+                const modalNotes = document.querySelector('textarea[name="notes"]');
+                if (modalNotes) {
+                    let noteText = '';
+                    if (namaInput.value) noteText += 'Dari: ' + namaInput.value + '. ';
+                    if (pesanInput.value) noteText += pesanInput.value;
+                    modalNotes.value = noteText;
+                }
+            @else
+                window.location.href = "{{ route('login') }}";
+            @endauth
+        });
+    }
+
+    // Intercept Bottom Donasi Barang Form
+    const bottomBarangForm = document.getElementById('donasiBarangForm');
+    if (bottomBarangForm) {
+        bottomBarangForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nama = document.getElementById('db-nama').value;
+            const phone = document.getElementById('db-phone').value;
+            const jenis = document.getElementById('db-jenis').value;
+            const jumlah = document.getElementById('db-jumlah').value;
+            const campaign = document.getElementById('db-campaign').value;
+            
+            if (!nama || !phone || !jenis || !jumlah || !campaign) {
+                alert('Silakan lengkapi semua field bertanda bintang (*).');
+                return;
+            }
+            
+            showDonationToast('Pendaftaran donasi barang berhasil diserahkan! Tim kami akan menghubungi Anda untuk detail penjemputan.');
+            this.reset();
+        });
+    }
+});
 </script>
 @endsection
 
