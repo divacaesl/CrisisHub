@@ -3,6 +3,20 @@
 @section('title', 'Donasi — CrisisHub')
 @section('description', 'Setiap donasi Anda menyelamatkan kehidupan. Donasikan sekarang untuk korban bencana Indonesia.')
 
+@section('head')
+<style>
+    /* Prevent the bank detail card from rendering as stark white in dark mode */
+    #modal-bank-box {
+        background: rgba(241, 245, 249, 0.95) !important;
+        border: 1px solid rgba(226, 232, 240, 1) !important;
+    }
+    .dark #modal-bank-box {
+        background: rgba(30, 41, 59, 0.75) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+</style>
+@endsection
+
 @section('content')
 <!-- Donate Hero -->
 <section class="hero-dynamic hero-donate relative min-h-[60vh] flex items-center pt-24 pb-16 overflow-hidden">
@@ -139,22 +153,22 @@
 </section>
 
 {{-- ==================== DONATION MODAL ==================== --}}
-<div id="donasi-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" onclick="if(event.target===this) closeDonasiModal()">
+<div id="donasi-modal" class="fixed inset-0 z-50 hidden overflow-y-auto p-4 md:p-6 justify-center items-start" onclick="if(event.target===this) closeDonasiModal()">
     {{-- Backdrop --}}
-    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+    <div class="fixed inset-0 bg-black/70 backdrop-blur-sm pointer-events-none"></div>
 
     {{-- Modal Box --}}
-    <div class="premium-modal relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl z-10">
+    <div class="premium-modal relative w-full max-w-lg my-auto rounded-3xl shadow-2xl z-10">
 
         {{-- Header --}}
-        <div class="sticky top-0 z-10 px-6 pt-6 pb-4 border-b border-white/10 flex items-center justify-between"
+        <div class="sticky top-0 z-10 px-6 pt-6 pb-4 border-b border-slate-200 dark:border-white/10 flex items-center justify-between"
              style="background: inherit; backdrop-filter: blur(20px);">
             <div>
-                <p class="text-orange-400 text-xs font-bold uppercase tracking-widest mb-1">Donasi untuk</p>
-                <h3 id="modal-title" class="text-white font-black text-xl leading-tight"></h3>
+                <p class="text-orange-500 dark:text-orange-400 text-xs font-bold uppercase tracking-widest mb-1">Donasi untuk</p>
+                <h3 id="modal-title" class="text-slate-900 dark:text-white font-black text-xl leading-tight"></h3>
             </div>
             <button onclick="closeDonasiModal()"
-                class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-400 hover:text-white transition-all flex-shrink-0 ml-4">
+                class="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all flex-shrink-0 ml-4">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -167,23 +181,23 @@
 
             {{-- Step 1 --}}
             <div>
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">① Pilih Nominal</p>
+                <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">① Pilih Nominal</p>
                 <div class="grid grid-cols-3 gap-2 mb-3">
                     @foreach([50000, 100000, 250000, 500000, 1000000, 2500000] as $nom)
                     <button type="button" onclick="selectNominal({{ $nom }}, this)"
-                        class="nominal-preset py-2.5 text-xs font-bold rounded-xl border border-white/10 text-slate-400 hover:border-orange-500 hover:text-orange-400 hover:bg-orange-500/5 transition-all">
+                        class="nominal-preset py-2.5 text-xs font-bold rounded-xl border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-orange-500 hover:text-orange-500 dark:hover:text-orange-400 hover:bg-orange-500/5 dark:hover:bg-orange-500/5 transition-all">
                         Rp {{ number_format($nom, 0, ',', '.') }}
                     </button>
                     @endforeach
                 </div>
                 <input type="number" name="amount" id="modal-amount"
-                    class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white font-bold text-sm placeholder-slate-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+                    class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 rounded-xl py-3 px-4 text-slate-900 dark:text-white font-bold text-sm placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
                     placeholder="Nominal lain (min. Rp 10.000)" min="10000" required>
             </div>
 
             {{-- Step 2 --}}
             <div>
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">② Metode Pembayaran</p>
+                <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">② Metode Pembayaran</p>
                 <div class="grid grid-cols-2 gap-2">
                     @foreach([
                         ['value'=>'BCA Virtual Account',   'label'=>'BCA Virtual Account', 'icon'=>'fas fa-university',  'num'=>'8277-0001-2345', 'color'=>'blue'],
@@ -191,24 +205,30 @@
                         ['value'=>'QRIS',                  'label'=>'QRIS / GoPay / OVO',  'icon'=>'fas fa-qrcode',      'num'=>'crisis@qris',    'color'=>'green'],
                         ['value'=>'BNI Virtual Account',   'label'=>'BNI',                 'icon'=>'fas fa-piggy-bank',  'num'=>'8000-9876-5432', 'color'=>'orange'],
                     ] as $m)
-                    <label class="payment-method-label flex items-center gap-3 p-3 rounded-xl border border-white/10 cursor-pointer hover:border-{{ $m['color'] }}-500/60 transition-all"
+                    <label class="payment-method-label flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-white/10 cursor-pointer hover:border-orange-500 dark:hover:border-orange-500/60 transition-all"
                            data-number="{{ $m['num'] }}" data-name="a.n. Yayasan CrisisHub Indonesia">
                         <input type="radio" name="payment_method" value="{{ $m['value'] }}" class="sr-only" required
                                onchange="onPaymentChange(this)">
-                        <div class="w-9 h-9 rounded-xl bg-{{ $m['color'] }}-500/10 flex items-center justify-center text-{{ $m['color'] }}-400 flex-shrink-0">
+                        <div class="w-9 h-9 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500 dark:text-orange-400 flex-shrink-0">
                             <i class="{{ $m['icon'] }}"></i>
                         </div>
-                        <span class="text-slate-300 text-xs font-semibold">{{ $m['label'] }}</span>
+                        <span class="text-slate-700 dark:text-slate-300 text-xs font-semibold">{{ $m['label'] }}</span>
                     </label>
                     @endforeach
                 </div>
 
                 {{-- Bank detail box --}}
-                <div id="modal-bank-box" class="hidden mt-3 p-4 rounded-xl bg-slate-800/70 border border-slate-700">
-                    <p class="text-slate-500 text-xs mb-1">Transfer ke:</p>
-                    <p id="modal-bank-num" class="text-white font-black text-xl tracking-wider"></p>
-                    <p id="modal-bank-name" class="text-slate-400 text-xs mt-0.5"></p>
-                    <div class="mt-2 pt-2 border-t border-slate-700 flex items-center gap-2 text-orange-400 text-xs font-semibold">
+                <div id="modal-bank-box" class="hidden mt-3 p-4 rounded-xl border">
+                    <p id="modal-bank-label" class="text-slate-500 dark:text-slate-400 text-xs mb-1">Transfer ke:</p>
+                    <p id="modal-bank-num" class="text-slate-900 dark:text-white font-black text-xl tracking-wider"></p>
+                    <p id="modal-bank-name" class="text-slate-500 dark:text-slate-400 text-xs mt-0.5"></p>
+                    
+                    {{-- QR Code Image for QRIS --}}
+                    <div id="modal-qr-box" class="hidden flex flex-col items-center justify-center my-4 p-3 bg-white rounded-2xl border border-slate-200 w-48 h-48 mx-auto shadow-md">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=crisis@qris" alt="QRIS Code" class="w-full h-full object-contain">
+                    </div>
+
+                    <div class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-700 flex items-center gap-2 text-orange-500 dark:text-orange-400 text-xs font-semibold">
                         <i class="fas fa-info-circle"></i> Setelah transfer, upload bukti di bawah
                     </div>
                 </div>
@@ -216,13 +236,13 @@
 
             {{-- Step 3 --}}
             <div>
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">③ Bukti Transfer</p>
+                <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">③ Bukti Transfer</p>
                 <label for="modal-proof" id="proof-drop-zone"
-                    class="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-white/15 hover:border-orange-500/50 rounded-2xl cursor-pointer transition-all group relative overflow-hidden">
+                    class="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-slate-300 dark:border-white/15 hover:border-orange-500 dark:hover:border-orange-500/50 rounded-2xl cursor-pointer transition-all group relative overflow-hidden">
                     <div id="proof-placeholder-modal" class="text-center">
-                        <i class="fas fa-cloud-upload-alt text-3xl text-slate-600 group-hover:text-orange-400 transition-colors mb-2"></i>
-                        <p class="text-slate-500 text-xs group-hover:text-slate-300">Klik atau drag foto bukti transfer</p>
-                        <p class="text-slate-600 text-[10px] mt-1">PNG, JPG, JPEG • Maks 4MB</p>
+                        <i class="fas fa-cloud-upload-alt text-3xl text-slate-400 dark:text-slate-650 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-colors mb-2"></i>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs group-hover:text-slate-700 dark:group-hover:text-slate-300">Klik atau drag foto bukti transfer</p>
+                        <p class="text-slate-400 dark:text-slate-600 text-[10px] mt-1">PNG, JPG, JPEG • Maks 4MB</p>
                     </div>
                     <img id="proof-preview-modal" src="#" alt="preview" class="hidden absolute inset-0 w-full h-full object-contain p-2">
                 </label>
@@ -232,9 +252,9 @@
 
             {{-- Pesan --}}
             <div>
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Pesan / Doa (Opsional)</p>
+                <p class="text-xs font-bold text-slate-550 dark:text-slate-455 uppercase tracking-widest mb-2">Pesan / Doa (Opsional)</p>
                 <textarea name="notes" rows="2"
-                    class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-orange-500 resize-none transition-all"
+                    class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 rounded-xl py-3 px-4 text-slate-900 dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-orange-500 resize-none transition-all"
                     placeholder="Tuliskan doa untuk para korban..."></textarea>
             </div>
 
@@ -246,8 +266,8 @@
         @else
         <div class="p-10 text-center">
             <div class="text-5xl mb-4">🔒</div>
-            <h4 class="text-white font-black text-lg mb-2">Login untuk Berdonasi</h4>
-            <p class="text-slate-400 text-sm mb-6">Masuk terlebih dahulu untuk melanjutkan proses donasi.</p>
+            <h4 class="text-slate-900 dark:text-white font-black text-lg mb-2">Login untuk Berdonasi</h4>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Masuk terlebih dahulu untuk melanjutkan proses donasi.</p>
             <a href="{{ route('login') }}"
                class="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold rounded-2xl transition-all hover:scale-105">
                 <i class="fas fa-sign-in-alt"></i> Masuk Sekarang
@@ -518,8 +538,9 @@ function openDonasiModal(id, title, emoji) {
     document.getElementById('proof-preview-modal').classList.add('hidden');
     document.getElementById('proof-placeholder-modal').classList.remove('hidden');
     document.getElementById('modal-proof').value = '';
+    
     document.querySelectorAll('.nominal-preset').forEach(b =>
-        b.classList.remove('border-orange-500', 'text-orange-400', 'bg-orange-500/10'));
+        b.classList.remove('border-orange-500', 'text-orange-500', 'text-orange-400', 'bg-orange-500/10'));
     document.querySelectorAll('.payment-method-label').forEach(l =>
         l.classList.remove('border-orange-500', 'bg-orange-500/10'));
 
@@ -543,8 +564,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDonasiM
 function selectNominal(amount, btn) {
     document.getElementById('modal-amount').value = amount;
     document.querySelectorAll('.nominal-preset').forEach(b =>
-        b.classList.remove('border-orange-500', 'text-orange-400', 'bg-orange-500/10'));
-    btn.classList.add('border-orange-500', 'text-orange-400', 'bg-orange-500/10');
+        b.classList.remove('border-orange-500', 'text-orange-500', 'text-orange-400', 'bg-orange-500/10'));
+    btn.classList.add('border-orange-500', 'text-orange-500', 'dark:text-orange-400', 'bg-orange-500/10');
 }
 
 // ── Payment method selection ──────────────────────────────────
@@ -559,6 +580,18 @@ function onPaymentChange(radio) {
 
     document.getElementById('modal-bank-num').textContent  = num;
     document.getElementById('modal-bank-name').textContent = name;
+
+    const qrBox = document.getElementById('modal-qr-box');
+    const labelEl = document.getElementById('modal-bank-label');
+    
+    if (radio.value === 'QRIS') {
+        qrBox.classList.remove('hidden');
+        labelEl.textContent = 'Scan QRIS di bawah ini:';
+    } else {
+        qrBox.classList.add('hidden');
+        labelEl.textContent = 'Transfer ke:';
+    }
+
     document.getElementById('modal-bank-box').classList.remove('hidden');
 }
 

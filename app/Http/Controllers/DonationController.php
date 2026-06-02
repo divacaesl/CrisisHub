@@ -33,16 +33,16 @@ class DonationController extends Controller
         }
 
         $donation = Donation::create([
-            'user_id' => auth()->id(),
-            'type' => 'Uang',
-            'amount' => $request->amount,
+            'user_id'        => auth()->id(),
+            'type'           => 'Uang',
+            'amount'         => $request->amount,
             'payment_method' => $request->payment_method,
-            'notes' => $request->notes,
-            'status' => 'Submitted',
-            'tracking_code' => $receiptNumber,
-            'proof_image' => $proofPath,
+            'notes'          => $request->notes,
+            'status'         => 'Submitted',
+            'tracking_code'  => $receiptNumber,
+            'proof_image'    => $proofPath,
             'campaign_title' => $request->campaign_title,
-            'verified_at' => now(),
+            // verified_at left null — akan diisi saat admin memverifikasi
         ]);
 
         // Send Email Receipt

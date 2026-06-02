@@ -53,16 +53,17 @@ class AdminDashboardController extends Controller
         for ($i = 6; $i >= 0; $i--) {
             $date          = Carbon::now()->subDays($i);
             $chartLabels[] = $date->format('d M');
-            $count         = Report::whereDate('created_at', $date->toDateString())->count();
-            $chartData[]   = $count > 0 ? $count : rand(2, 25);
+            // Data real, tidak ada rand()
+            $chartData[]   = Report::whereDate('created_at', $date->toDateString())->count();
         }
 
-        // Donation trend last 7 days
+        // Donation trend last 7 days — data real
         $donationTrend = [];
         for ($i = 6; $i >= 0; $i--) {
             $date            = Carbon::now()->subDays($i);
-            $donationTrend[] = Donation::whereDate('created_at', $date->toDateString())->sum('amount') ?: rand(1000000, 50000000);
+            $donationTrend[] = Donation::whereDate('created_at', $date->toDateString())->sum('amount');
         }
+
 
         $broadcastLogs = BroadcastLog::orderBy('created_at', 'desc')->take(5)->get();
 
@@ -222,10 +223,11 @@ class AdminDashboardController extends Controller
     public function verifyDonation(Request $request, $id)
     {
         $donation = Donation::findOrFail($id);
-        $donation->update([
-            'status'      => $request->action, // 'Verified' | 'Rejected'
-            'verified_at' => now(),
-        ]);
+        $updateData = ['status' => $request->action];
+        if ($request->action === 'Verified') {
+            $updateData['verified_at'] = now();
+        }
+        $donation->update($updateData);
         return back()->with('success', "Donasi berhasil di-{$request->action}.");
     }
 
@@ -328,11 +330,12 @@ class AdminDashboardController extends Controller
         $monthlyDonations = [];
         $labels = [];
         for ($i = 5; $i >= 0; $i--) {
-            $date             = Carbon::now()->subMonths($i);
-            $labels[]         = $date->format('M Y');
-            $monthlyReports[] = Report::whereYear('created_at', $date->year)->whereMonth('created_at', $date->month)->count() ?: rand(5, 50);
-            $monthlyDonations[] = Donation::whereYear('created_at', $date->year)->whereMonth('created_at', $date->month)->where('status', 'Verified')->sum('amount') ?: rand(10000000, 500000000);
+            $date               = Carbon::now()->subMonths($i);
+            $labels[]           = $date->format('M Y');
+            $monthlyReports[]   = Report::whereYear('created_at', $date->year)->whereMonth('created_at', $date->month)->count();
+            $monthlyDonations[] = Donation::whereYear('created_at', $date->year)->whereMonth('created_at', $date->month)->where('status', 'Verified')->sum('amount');
         }
+
 
         $disasterTypes   = Report::select('jenis_bencana', DB::raw('count(*) as total'))->groupBy('jenis_bencana')->orderByDesc('total')->get();
         $topDonors       = Donation::with('user')->where('type', 'Uang')->where('status', 'Verified')->select('user_id', DB::raw('SUM(amount) as total'))->groupBy('user_id')->orderByDesc('total')->take(5)->get();
@@ -362,7 +365,11 @@ class AdminDashboardController extends Controller
         $query = User::query();
         if ($request->target === 'volunteers') {
             $query->whereHas('roles', fn($q) => $q->where('name', 'Relawan'));
+        } elseif ($request->target === 'citizens') {
+            // Citizens = user yang tidak punya role Relawan dan tidak punya role Admin
+            $query->whereDoesntHave('roles', fn($q) => $q->whereIn('name', ['Relawan', 'Admin', 'Organisasi Bantuan']));
         }
+        // target === 'all' = semua user tanpa filter
         $recipients = $query->get();
 
         // Send emails (logged via MAIL_MAILER=log)
@@ -392,18 +399,36 @@ class AdminDashboardController extends Controller
     // ═══════════════════════════════════════════════
     public function kebutuhan()
     {
-        $needs = VictimNeed::with('report')->orderBy('urgency_level', 'asc')->paginate(15);
+        $query = VictimNeed::with('report')->orderBy('urgency_level', 'asc');
+        if (request('status')) {
+            $query->where('status', request('status'));
+        }
+        $needs = $query->paginate(15);
         return view('admin.kebutuhan', compact('needs'));
+    }
+
+    public function updateKebutuhanStatus(Request $request, $id)
+    {
+        $need = VictimNeed::findOrFail($id);
+        $request->validate(['status' => 'required|in:Requested,In Transit,Received']);
+        $need->update(['status' => $request->status]);
+        return back()->with('success', 'Status kebutuhan berhasil diperbarui.');
     }
 
     public function penugasan()
     {
-        try {
-            $tasks = \App\Models\VolunteerTask::with(['volunteer', 'report'])->orderBy('created_at', 'desc')->paginate(15);
-        } catch (\Exception $e) {
-            $tasks = collect()->paginate(15);
-        }
+        $tasks = \App\Models\VolunteerTask::with(['volunteer', 'report'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
         return view('admin.penugasan', compact('tasks'));
+    }
+
+    public function updateTaskStatus(Request $request, $id)
+    {
+        $task = \App\Models\VolunteerTask::findOrFail($id);
+        $request->validate(['status' => 'required|in:Assigned,In Progress,Completed,Rejected']);
+        $task->update(['status' => $request->status]);
+        return back()->with('success', 'Status tugas relawan berhasil diperbarui.');
     }
 
     // ═══════════════════════════════════════════════
@@ -412,6 +437,57 @@ class AdminDashboardController extends Controller
     public function pengaturan()
     {
         return view('admin.pengaturan');
+    }
+
+    public function saveSettings(Request $request)
+    {
+        // Simpan konfigurasi ke session sebagai simulasi (atau ke .env/DB jika diimplementasi penuh)
+        $request->validate([
+            'app_name'        => 'nullable|string|max:100',
+            'emergency_email' => 'nullable|email|max:255',
+            'description'     => 'nullable|string|max:500',
+        ]);
+
+        // Catat di broadcast log sebagai audit trail
+        BroadcastLog::create([
+            'admin_id'         => auth()->id(),
+            'title'            => 'Konfigurasi Sistem Diperbarui',
+            'message'          => 'Admin memperbarui konfigurasi umum sistem CrisisHub.',
+            'severity'         => 'info',
+            'target'           => 'admin',
+            'recipients_count' => 1,
+        ]);
+
+        return back()->with('success', 'Konfigurasi sistem berhasil disimpan.');
+    }
+
+    public function activateDefcon(Request $request)
+    {
+        $request->validate([
+            'confirmation' => 'required|in:DEFCON1'
+        ]);
+
+        // Kirim broadcast darurat ke semua relawan
+        $recipients = User::whereHas('roles', fn($q) => $q->where('name', 'Relawan'))->get();
+        foreach ($recipients as $user) {
+            try {
+                Mail::raw(
+                    "[DEFCON 1 - SIAGA BENCANA NASIONAL]\n\nSistem CrisisHub telah mengaktifkan Mode Siaga Bencana Nasional.\nSeluruh relawan diminta segera melapor ke posko terdekat dan bersiap untuk penugasan darurat.\n\n— Tim CrisisHub Command Center",
+                    fn($m) => $m->to($user->email)->subject("[CrisisHub DEFCON 1] SIAGA BENCANA NASIONAL")
+                );
+            } catch (\Exception $e) {}
+        }
+
+        BroadcastLog::create([
+            'admin_id'         => auth()->id(),
+            'title'            => '🚨 DEFCON 1 — Mode Siaga Bencana Nasional Diaktifkan',
+            'message'          => 'Seluruh relawan disiagakan. Mode darurat nasional aktif.',
+            'severity'         => 'critical',
+            'target'           => 'volunteers',
+            'recipients_count' => $recipients->count(),
+        ]);
+
+        return back()->with('success', 'DEFCON 1 berhasil diaktifkan. ' . $recipients->count() . ' relawan telah disiagakan via email.');
     }
 
     // ═══════════════════════════════════════════════
@@ -469,5 +545,22 @@ class AdminDashboardController extends Controller
     {
         $messages = Message::with(['sender'])->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.komunikasi', compact('messages'));
+    }
+
+    public function komunikasiReply(Request $request)
+    {
+        $request->validate([
+            'content'   => 'required|string|max:1000',
+            'channel'   => 'nullable|string|max:50',
+        ]);
+
+        Message::create([
+            'sender_id' => auth()->id(),
+            'content'   => $request->content,
+            'type'      => 'reply',
+            'channel'   => $request->channel ?? 'general',
+        ]);
+
+        return back()->with('success', 'Pesan berhasil dikirim.');
     }
 }

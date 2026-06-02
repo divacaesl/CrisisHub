@@ -49,24 +49,34 @@ Route::get('/disaster/{id}', function ($id) {
     return view('disaster-detail', ['disasterId' => $id]);
 })->name('disaster.detail');
 
-// News Pages
+// News Pages — redirect ke halaman utama sambil highlight section berita
 Route::get('/news', function () {
-    return view('welcome');
+    return redirect()->route('home')->with('section', 'news');
 })->name('news.index');
 
 Route::get('/news/{id}', function ($id) {
-    return view('welcome');
+    return redirect()->route('home')->with('section', 'news');
 })->name('news.detail');
 
-// Public Map
+// Public Map — tampilkan halaman peta bencana aktif dengan marker Leaflet
 Route::get('/peta-bencana', function () {
-    return view('welcome');
+    $reports = \App\Models\Report::whereNotNull('latitude')
+        ->whereNotNull('longitude')
+        ->whereIn('status', ['Verified', 'Approved', 'In Progress'])
+        ->get();
+    return view('peta-bencana', compact('reports'));
 })->name('peta.bencana');
 
-// Public Analytics
+// Public Analytics — tampilkan halaman analitik publik
 Route::get('/analytics', function () {
-    return view('welcome');
+    $totalLaporan = \App\Models\Report::count();
+    $totalDonasi  = \App\Models\Donation::where('status', 'Verified')->sum('amount');
+    $totalRelawan = \App\Models\User::whereHas('roles', fn($q) => $q->where('name', 'Relawan'))->count();
+    $disasterTypes = \App\Models\Report::select('jenis_bencana', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+        ->groupBy('jenis_bencana')->orderByDesc('total')->take(8)->get();
+    return view('analytics-publik', compact('totalLaporan', 'totalDonasi', 'totalRelawan', 'disasterTypes'));
 })->name('analytics');
+
 
 // Terms & Privacy
 Route::get('/terms', function () {
@@ -108,6 +118,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/apply/organization', [\App\Http\Controllers\ApplicationController::class, 'storeOrganization']);
 
     Route::post('/report/store', [\App\Http\Controllers\ReportController::class, 'store'])->name('report.store');
+
+    // Volunteer task status update (relawan update tugas mereka sendiri)
+    Route::post('/volunteer/task/{id}/update', [\App\Http\Controllers\CenterController::class, 'updateTaskStatus'])->name('center.volunteer.task.update');
 });
 
 // Admin Routes
@@ -148,6 +161,10 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     // ── Aid Distribution ──────────────────────────
     Route::get('/kebutuhan', [$ctrl, 'kebutuhan'])->name('kebutuhan');
+    Route::post('/kebutuhan/{id}/update-status', [$ctrl, 'updateKebutuhanStatus'])->name('kebutuhan.update-status');
+
+    // ── Volunteer Task Status ──────────────────────
+    Route::post('/penugasan/{id}/update-status', [$ctrl, 'updateTaskStatus'])->name('penugasan.update-status');
 
     // ── User Management ───────────────────────────
     Route::get('/pengguna', [$ctrl, 'pengguna'])->name('pengguna');
@@ -167,9 +184,12 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     // ── System Settings ───────────────────────────
     Route::get('/pengaturan', [$ctrl, 'pengaturan'])->name('pengaturan');
+    Route::post('/pengaturan/save', [$ctrl, 'saveSettings'])->name('pengaturan.save');
+    Route::post('/pengaturan/defcon', [$ctrl, 'activateDefcon'])->name('pengaturan.defcon');
 
     // ── Legacy ───────────────────────────────────
     Route::get('/komunikasi', [$ctrl, 'komunikasi'])->name('komunikasi');
+    Route::post('/komunikasi/reply', [$ctrl, 'komunikasiReply'])->name('komunikasi.reply');
 });
 
 

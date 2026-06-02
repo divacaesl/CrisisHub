@@ -56,7 +56,11 @@
                 </td>
                 <td class="px-6 py-4 text-xs text-gray-400">{{ $v->email }}</td>
                 <td class="px-6 py-4">
-                    <span class="text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded border border-green-500/20 bg-green-500/10 text-green-400">AKTIF</span>
+                    @if($v->is_suspended ?? false)
+                        <span class="text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded border border-red-500/20 bg-red-500/10 text-red-400">SUSPENDED</span>
+                    @else
+                        <span class="text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded border border-green-500/20 bg-green-500/10 text-green-400">AKTIF</span>
+                    @endif
                 </td>
                 <td class="px-6 py-4 text-xs text-gray-500">{{ $v->created_at->format('d M Y') }}</td>
                 <td class="px-6 py-4 text-right">
