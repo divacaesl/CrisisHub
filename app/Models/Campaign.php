@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Campaign extends Model
 {
-    protected $fillable = ['title', 'emoji', 'location', 'tag', 'tag_color', 'description', 'target_amount', 'collected_amount', 'deadline', 'is_active'];
+    protected $fillable = ['org_id', 'title', 'emoji', 'location', 'tag', 'tag_color', 'description', 'target_amount', 'collected_amount', 'deadline', 'is_active', 'report_id'];
 
     protected $casts = ['deadline' => 'date', 'is_active' => 'boolean'];
 

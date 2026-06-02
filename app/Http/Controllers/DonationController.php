@@ -48,6 +48,25 @@ class DonationController extends Controller
         // Send Email Receipt
         Mail::to(auth()->user()->email)->send(new DonationReceipt($donation));
 
+        $donorName = '***anonim***';
+        if ($donation->notes && preg_match('/^Dari:\s*([^.]+)\./i', $donation->notes, $matches)) {
+            $donorName = trim($matches[1]);
+        } else {
+            $donorName = auth()->user()?->name ?: '***anonim***';
+        }
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Donasi untuk "' . $request->campaign_title . '" berhasil dikirim! No. Resi: ' . $receiptNumber,
+                'amount' => (float)$request->amount,
+                'campaign_title' => $request->campaign_title ?: 'Donasi Umum',
+                'donor_name' => $donorName,
+                'time_ago' => 'Baru saja',
+                'receipt_number' => $receiptNumber
+            ]);
+        }
+
         return redirect()->route('donate')->with('donation_success', 'Donasi untuk "' . $request->campaign_title . '" berhasil dikirim! No. Resi: ' . $receiptNumber);
     }
 

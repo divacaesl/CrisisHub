@@ -63,22 +63,24 @@
         }
         
         .premium-ambient-aura::before {
-            background: radial-gradient(circle, #ffe4e6 0%, transparent 70%); /* Rose blush in light */
+            background: radial-gradient(circle, #dbeafe 0%, transparent 70%);
             top: -10%;
             left: -10%;
         }
+
         .dark .premium-ambient-aura::before {
-            background: radial-gradient(circle, #991b1b 0%, transparent 70%); /* Deep red in dark */
+            background: radial-gradient(circle, #2563eb 0%, transparent 70%);
         }
-        
+
         .premium-ambient-aura::after {
-            background: radial-gradient(circle, #ffedd5 0%, transparent 70%); /* Amber blush in light */
+            background: radial-gradient(circle, #bfdbfe 0%, transparent 70%);
             bottom: -10%;
             right: -10%;
             animation-delay: -12s;
         }
+
         .dark .premium-ambient-aura::after {
-            background: radial-gradient(circle, #431407 0%, transparent 70%); /* Deep orange in dark */
+            background: radial-gradient(circle, #1e40af 0%, transparent 70%);
         }
         
         @keyframes ambientFloat {
@@ -93,24 +95,36 @@
         
         /* Specialized Page Gradients */
         .hero-home {
-            background: linear-gradient(135deg, #f8fafc 0%, #fff1f2 40%, #f8fafc 70%, #f1f5f9 100%);
+            background: linear-gradient(
+                135deg,
+                #2084e9ff 0%,
+                #b1d3ffff 50%,
+                #b3d9ffff 100%
+            );
         }
+
         .dark .hero-home {
-            background: linear-gradient(135deg, #0f172a 0%, #1e0000 40%, #0f172a 70%, #0a0f1e 100%);
+            background: linear-gradient(
+                135deg,
+                #0f172a 0%,
+                #66a8ff68 50%,
+                #0f172a 100%);
         }
         
         .hero-volunteer {
-            background: linear-gradient(135deg, #f8fafc 0%, #dcfce7 40%, #f1f5f9 100%);
+            background: linear-gradient(135deg, #f8fafc 0%, #dcfce7ff 40%, #f1f5f9 100%);
         }
         .dark .hero-volunteer {
             background: linear-gradient(135deg, #0f172a 0%, #052e16 40%, #0f172a 100%);
         }
         
         .hero-donate {
-            background: linear-gradient(135deg, #f8fafc 0%, #ffedd5 40%, #fee2e2 70%, #f1f5f9 100%);
+            background: linear-gradient(135deg, #d4eafff3 0%,
+                #afd2ffff 50%,
+                #b3d9ffd1 100%);
         }
         .dark .hero-donate {
-            background: linear-gradient(135deg, #0f172a 0%, #1a0000 40%, #431407 70%, #0f172a 100%);
+            background: linear-gradient(135deg, #070e20ff 0%, #0c1a35 50%, #070e20ff 100%);
         }
         
         .hero-contact {
@@ -121,10 +135,15 @@
         }
         
         .hero-about {
-            background: linear-gradient(135deg, #f8fafc 0%, #fee2e2 50%, #f1f5f9 100%);
-        }
+            background: linear-gradient(
+                135deg,
+                #d4eafff3 0%,
+                #afd2ffff 50%,
+                #b3d9ffd1 100%
+    );
+}
         .dark .hero-about {
-            background: linear-gradient(135deg, #0f172a 0%, #1e0000 50%, #0f172a 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #0c1a35 50%, #0f172a 100%);
         }
 
         /* Dynamic slate-to-gray Premium Footer */
@@ -167,18 +186,18 @@
                         inset 0 -1px 0 rgba(0, 0, 0, 0.4) !important;
         }
         .premium-sparkle-glass:hover {
-            border-color: rgba(220, 38, 38, 0.25) !important;
-            box-shadow: 0 20px 50px rgba(220, 38, 38, 0.08), 
+            border-color: rgba(59, 130, 246, 0.25) !important;
+            box-shadow: 0 20px 50px rgba(59, 130, 246, 0.08),
                         inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
             transform: translateY(-4px);
         }
+
         .dark .premium-sparkle-glass:hover {
-            border-color: rgba(239, 68, 68, 0.35) !important;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 
-                        0 0 30px rgba(239, 68, 68, 0.15),
+            border-color: rgba(96, 165, 250, 0.35) !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6),
+                        0 0 30px rgba(96, 165, 250, 0.15),
                         inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
         }
-
         /* Glassmorphism */
         .glass {
             background: rgba(255, 255, 255, 0.75);
@@ -542,12 +561,7 @@
             <div class="flex items-center justify-between h-18 py-4">
                 <!-- Logo -->
                 <a href="/" class="flex items-center gap-3 group">
-                    <div class="relative w-10 h-10">
-                        <div class="absolute inset-0 bg-red-600 rounded-xl rotate-12 group-hover:rotate-0 transition-transform duration-300"></div>
-                        <div class="relative flex items-center justify-center w-10 h-10 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl">
-                            <i class="fas fa-shield-alt text-white text-lg"></i>
-                        </div>
-                    </div>
+                    <img src="/images/logo.png" alt="CrisisHub Logo" class="w-10 h-10 rounded-full object-cover group-hover:scale-110 transition-transform duration-300">
                     <div>
                         <span class="text-xl font-bold text-slate-900 dark:text-white">Crisis<span class="text-red-600 dark:text-red-500">Hub</span></span>
                         <div class="text-xs text-slate-500 dark:text-slate-400 leading-none -mt-0.5">Tanggap Bencana</div>
@@ -690,9 +704,11 @@
                 <!-- Brand -->
                 <div class="lg:col-span-1">
                     <a href="/" class="flex items-center gap-3 mb-4">
-                        <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl">
-                            <i class="fas fa-shield-alt text-white text-lg"></i>
-                        </div>
+                        <img
+                            src="{{ asset('images/logo.png') }}"
+                            alt="CrisisHub"
+                            class="w-10 h-10 object-contain"
+/>
                         <span class="text-xl font-bold text-white">Crisis<span class="text-red-500">Hub</span></span>
                     </a>
                     <p class="text-slate-400 text-sm leading-relaxed mb-6">
@@ -900,6 +916,7 @@
         });
     </script>
 
+    @yield('modals')
     @yield('scripts')
 </body>
 </html>
