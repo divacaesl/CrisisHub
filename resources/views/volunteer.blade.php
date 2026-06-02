@@ -56,7 +56,7 @@ $categories = [
                     Menjadi Garda Terdepan <span style="background: linear-gradient(135deg, #22c55e, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Saat Bencana</span>
                 </h1>
                 <p class="text-slate-300 text-lg leading-relaxed mb-8">
-                    Bergabunglah dengan lebih dari 12.000 relawan CrisisHub yang tersebar di 34 provinsi Indonesia. Bersama kita lebih kuat dalam menghadapi setiap bencana.
+                    Bergabunglah dengan lebih dari 12.000 relawan CrisisHub yang tersebar di 38 provinsi Indonesia. Bersama kita lebih kuat dalam menghadapi setiap bencana.
                 </p>
                 <div class="flex flex-wrap gap-4">
                     <a href="{{ route('apply.volunteer') }}" id="btn-daftar" class="flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold rounded-2xl transition-all" style="box-shadow: 0 0 20px rgba(34,197,94,0.4);">
@@ -73,7 +73,7 @@ $categories = [
                 <div class="absolute bottom-6 left-6 right-6 glass rounded-2xl p-4 border border-green-500/20">
                     <div class="grid grid-cols-3 gap-4 text-center">
                         <div><div class="text-2xl font-black text-green-400">12K+</div><div class="text-xs text-slate-400">Relawan Aktif</div></div>
-                        <div><div class="text-2xl font-black text-blue-400">34</div><div class="text-xs text-slate-400">Provinsi</div></div>
+                        <div><div class="text-2xl font-black text-blue-400">38</div><div class="text-xs text-slate-400">Provinsi</div></div>
                         <div><div class="text-2xl font-black text-orange-400">512</div><div class="text-xs text-slate-400">Misi Aktif</div></div>
                     </div>
                 </div>
