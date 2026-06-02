@@ -895,6 +895,7 @@
         });
     </script>
 
+    @yield('modals')
     @yield('scripts')
 </body>
 </html>

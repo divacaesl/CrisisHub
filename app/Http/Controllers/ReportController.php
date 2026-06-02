@@ -132,6 +132,8 @@ class ReportController extends Controller
             'calculated_at' => now(),
         ]);
 
+        $report->update(['priority_score' => $score]);
+
         return redirect()->route('dashboard')->with('success', 'Berhasil menambahkan laporan SOS! Laporan Anda telah masuk ke Riwayat Laporan Saya dan sedang menunggu diverifikasi oleh admin.');
     }
 }

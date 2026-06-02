@@ -598,6 +598,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/report/{id}/chat', [\App\Http\Controllers\ReportChatController::class, 'sendMessage'])->name('report.chat.send');
     // Volunteer task status update (relawan update tugas mereka sendiri)
     Route::post('/volunteer/task/{id}/update', [\App\Http\Controllers\CenterController::class, 'updateTaskStatus'])->name('center.volunteer.task.update');
+    Route::post('/volunteer/profile/update', [\App\Http\Controllers\CenterController::class, 'updateProfile'])->middleware('role:Relawan')->name('center.volunteer.profile.update');
+    Route::post('/volunteer/availability/toggle', [\App\Http\Controllers\CenterController::class, 'toggleAvailability'])->middleware('role:Relawan')->name('center.volunteer.availability.toggle');
+    Route::post('/volunteer/task/claim', [\App\Http\Controllers\CenterController::class, 'claimTask'])->middleware('role:Relawan')->name('center.volunteer.task.claim');
 });
 
 // Admin Routes
