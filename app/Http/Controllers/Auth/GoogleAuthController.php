@@ -43,6 +43,10 @@ class GoogleAuthController extends Controller
                 Auth::login($user);
             }
 
+            if ($user->hasRole('Admin')) {
+                return redirect()->intended(route('admin.dashboard', absolute: false));
+            }
+
             return redirect()->route('dashboard');
 
         } catch (\Exception $e) {

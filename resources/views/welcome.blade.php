@@ -690,23 +690,13 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @php
-            $news = [
-                ['tag' => 'Update Bantuan', 'color' => 'green', 'title' => 'BNPB Kirim 500 Ton Bantuan Logistik ke Korban Banjir Jakarta Utara', 'summary' => 'Badan Nasional Penanggulangan Bencana (BNPB) telah mengirimkan 500 ton bantuan logistik termasuk makanan, air bersih, dan obat-obatan ke wilayah terdampak banjir di Jakarta Utara.', 'date' => '30 Mei 2026', 'time' => '08:30 WIB', 'read' => '3 menit'],
-                ['tag' => 'Berita Bencana', 'color' => 'red', 'title' => 'Gempa 6.2 SR Guncang Cianjur, Ratusan Rumah Rusak', 'summary' => 'Gempa berkekuatan 6.2 magnitudo mengguncang wilayah Cianjur, Jawa Barat pada pukul 13.21 WIB. Ratusan rumah dilaporkan mengalami kerusakan dari ringan hingga berat.', 'date' => '30 Mei 2026', 'time' => '14:15 WIB', 'read' => '5 menit'],
-                ['tag' => 'Pengumuman', 'color' => 'blue', 'title' => 'CrisisHub Luncurkan Fitur Notifikasi Darurat Berbasis Lokasi', 'summary' => 'CrisisHub kini hadir dengan fitur notifikasi darurat berbasis GPS yang memungkinkan pengguna menerima peringatan bencana secara otomatis berdasarkan lokasi terkini.', 'date' => '29 Mei 2026', 'time' => '16:00 WIB', 'read' => '2 menit'],
-            ];
+            $news = array_slice(getMockNews(), 0, 3);
             @endphp
 
-            @foreach($news as $i => $item)
-            <div class="news-card news-card-item premium-card-glow group fade-up" style="animation-delay: {{ $i * 0.1 }}s">
+            @foreach($news as $item)
+            <div class="news-card news-card-item premium-card-glow group fade-up" style="animation-delay: {{ $loop->index * 0.1 }}s">
                 <div class="relative overflow-hidden h-48">
-                    @if($item['color'] === 'green')
-                        <img src="/images/donation_banner.png" alt="{{ $item['title'] }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                    @elseif($item['color'] === 'red')
-                        <img src="/images/earthquake_case.png" alt="{{ $item['title'] }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                    @else
-                        <img src="/images/mid.png" alt="{{ $item['title'] }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                    @endif
+                    <img src="{{ $item['image'] }}" alt="{{ $item['title'] }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent"></div>
                     <div class="absolute top-3 left-3">
                         <span class="px-2.5 py-1 bg-{{ $item['color'] }}-600/80 text-white text-xs font-semibold rounded-lg">{{ $item['tag'] }}</span>
@@ -725,8 +715,8 @@
                             <span>{{ $item['read'] }} baca</span>
                         </div>
                     </div>
-                    <a href="/news/{{ $i+1 }}" class="mt-4 flex items-center gap-2 text-red-655 dark:text-red-400 hover:text-red-500 dark:hover:text-red-300 text-sm font-semibold transition-colors">
-                        Baca Selengkapnya <i class="fas fa-arrow-right text-xs"></i>
+                    <a href="{{ $item['url'] }}" target="_blank" rel="noopener noreferrer" class="mt-4 flex items-center gap-2 text-red-600 dark:text-red-400 hover:text-red-500 dark:hover:text-red-300 text-sm font-semibold transition-colors">
+                        Baca di {{ $item['author'] }} <i class="fas fa-external-link-alt text-xs"></i>
                     </a>
                 </div>
             </div>

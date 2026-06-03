@@ -330,6 +330,12 @@
 
             <!-- Right -->
             <div class="flex items-center space-x-3">
+                <!-- Link to Main Website -->
+                <a href="{{ route('home') }}" class="hidden md:flex items-center space-x-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors text-xs font-semibold text-slate-600 dark:text-gray-300">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    <span>Web Utama</span>
+                </a>
+
                 <!-- Live Indicator -->
                 <div class="flex items-center space-x-2 px-3 py-1.5 rounded-full" style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);">
                     <span class="relative flex h-1.5 w-1.5">

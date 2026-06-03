@@ -528,14 +528,70 @@ Route::get('/disaster/{id}', function ($id) {
     return view('disaster-detail', compact('disaster'));
 })->name('disaster.detail');
 
-// News Pages — redirect ke halaman utama sambil highlight section berita
-Route::get('/news', function () {
-    return redirect()->route('home')->with('section', 'news');
-})->name('news.index');
+// News Pages
+if (!function_exists('getMockNews')) {
+    function getMockNews() {
+        return [
+            1 => [
+                'id' => 1, 
+                'tag' => 'Update Bantuan', 
+                'color' => 'green', 
+                'title' => 'BNPB Kirim 500 Ton Bantuan Logistik ke Korban Banjir Jakarta Utara', 
+                'summary' => 'Badan Nasional Penanggulangan Bencana (BNPB) telah mengirimkan 500 ton bantuan logistik termasuk makanan, air bersih, dan obat-obatan ke wilayah terdampak banjir di Jakarta Utara.', 
+                'url' => 'https://www.kompas.com/tag/banjir-jakarta',
+                'date' => '30 Mei 2026', 
+                'time' => '08:30 WIB', 
+                'read' => '3 menit', 
+                'image' => '/images/donation_banner.png', 
+                'author' => 'Kompas - Topik Banjir'
+            ],
+            2 => [
+                'id' => 2, 
+                'tag' => 'Berita Bencana', 
+                'color' => 'red', 
+                'title' => 'Gempa 6.2 SR Guncang Cianjur, Ratusan Rumah Rusak', 
+                'summary' => 'Gempa berkekuatan 6.2 magnitudo mengguncang wilayah Cianjur, Jawa Barat pada pukul 13.21 WIB. Ratusan rumah dilaporkan mengalami kerusakan dari ringan hingga berat.', 
+                'url' => 'https://www.kompas.com/tag/gempa-cianjur',
+                'date' => '30 Mei 2026', 
+                'time' => '14:15 WIB', 
+                'read' => '5 menit', 
+                'image' => '/images/earthquake_case.png', 
+                'author' => 'Kompas - Topik Gempa'
+            ],
+            3 => [
+                'id' => 3, 
+                'tag' => 'Pengumuman', 
+                'color' => 'blue', 
+                'title' => 'CrisisHub Luncurkan Fitur Notifikasi Darurat Berbasis Lokasi', 
+                'summary' => 'CrisisHub kini hadir dengan fitur notifikasi darurat berbasis GPS yang memungkinkan pengguna menerima peringatan bencana secara otomatis berdasarkan lokasi terkini.', 
+                'url' => 'https://bnpb.go.id/berita/inarisk-personal-aplikasi-pantau-potensi-bencana',
+                'date' => '29 Mei 2026', 
+                'time' => '16:00 WIB', 
+                'read' => '2 menit', 
+                'image' => '/images/mid.png', 
+                'author' => 'BNPB InaRISK'
+            ],
+            4 => [
+                'id' => 4, 
+                'tag' => 'Relawan', 
+                'color' => 'purple', 
+                'title' => 'Kisah Inspiratif: Relawan Muda Bantu Evakuasi Lansia Saat Banjir', 
+                'summary' => 'Aksi heroik sekelompok relawan muda CrisisHub yang berhasil menyelamatkan puluhan lansia dari panti jompo yang terkepung banjir tinggi di Semarang.', 
+                'url' => 'https://www.kompas.com/tag/relawan',
+                'date' => '28 Mei 2026', 
+                'time' => '10:00 WIB', 
+                'read' => '4 menit', 
+                'image' => '/images/volunteer_team.png', 
+                'author' => 'Kisah Relawan'
+            ],
+        ];
+    }
+}
 
-Route::get('/news/{id}', function ($id) {
-    return redirect()->route('home')->with('section', 'news');
-})->name('news.detail');
+Route::get('/news', function () {
+    $newsList = getMockNews();
+    return view('news.index', compact('newsList'));
+})->name('news.index');
 
 // Public Map — tampilkan halaman peta bencana aktif dengan marker Leaflet
 Route::get('/peta-bencana', function () {

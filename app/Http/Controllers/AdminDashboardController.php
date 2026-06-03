@@ -492,6 +492,7 @@ class AdminDashboardController extends Controller
         }
 
         return back()->with('success', 'Status tugas relawan berhasil diperbarui.');
+    }
 
     // ═══════════════════════════════════════════════
     // SYSTEM SETTINGS

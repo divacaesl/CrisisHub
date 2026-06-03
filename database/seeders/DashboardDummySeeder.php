@@ -26,11 +26,12 @@ class DashboardDummySeeder extends Seeder
 
         // Create Reports
         $reports = [
-            ['jenis' => 'Banjir', 'kerusakan' => 'Hancur Total', 'lat' => -6.985, 'lng' => 107.63, 'desc' => 'Banjir merendam rumah setinggi 2 meter.', 'alamat' => 'Dayeuhkolot, Bandung'],
-            ['jenis' => 'Tanah Longsor', 'kerusakan' => 'Tinggi', 'lat' => -6.82, 'lng' => 107.60, 'desc' => 'Longsor memutus jalan penghubung desa.', 'alamat' => 'Cimenyan, Bandung'],
-            ['jenis' => 'Gempa Bumi', 'kerusakan' => 'Sedang', 'lat' => -7.2, 'lng' => 107.9, 'desc' => 'Gempa 4.5 SR terasa hingga Bandung.', 'alamat' => 'Garut, Jawa Barat'],
-            ['jenis' => 'Angin Topan', 'kerusakan' => 'Tinggi', 'lat' => -7.05, 'lng' => 107.55, 'desc' => 'Angin puting beliung menerjang 50 rumah warga.', 'alamat' => 'Baleendah, Bandung'],
-            ['jenis' => 'Banjir', 'kerusakan' => 'Hancur Total', 'lat' => -7.1, 'lng' => 107.45, 'desc' => 'Banjir bandang membawa lumpur dan material kayu.', 'alamat' => 'Ciwidey, Bandung']
+            ['jenis' => 'Banjir', 'kerusakan' => 'Hancur Total', 'lat' => -6.1322, 'lng' => 106.8833, 'desc' => 'Banjir besar merendam ratusan rumah di Jakarta Utara.', 'alamat' => 'Jakarta Utara, DKI Jakarta'],
+            ['jenis' => 'Gempa Bumi', 'kerusakan' => 'Tinggi', 'lat' => -6.8167, 'lng' => 107.1417, 'desc' => 'Ribuan rumah rusak akibat gempa 6.2 SR.', 'alamat' => 'Cianjur, Jawa Barat'],
+            ['jenis' => 'Erupsi Gunung', 'kerusakan' => 'Sedang', 'lat' => 3.1706, 'lng' => 98.3925, 'desc' => 'Ratusan keluarga mengungsi akibat erupsi Gunung Sinabung.', 'alamat' => 'Karo, Sumatera Utara'],
+            ['jenis' => 'Tanah Longsor', 'kerusakan' => 'Tinggi', 'lat' => -7.7122, 'lng' => 110.0097, 'desc' => 'Longsor melanda desa Bagelen, Purworejo.', 'alamat' => 'Purworejo, Jawa Tengah'],
+            ['jenis' => 'Angin Topan', 'kerusakan' => 'Tinggi', 'lat' => -8.5833, 'lng' => 116.1167, 'desc' => 'Angin puting beliung menghancurkan puluhan rumah di Mataram.', 'alamat' => 'Mataram, Nusa Tenggara Barat'],
+            ['jenis' => 'Banjir Bandang', 'kerusakan' => 'Hancur Total', 'lat' => -3.3167, 'lng' => 114.5901, 'desc' => 'Banjir bandang melanda beberapa kabupaten di Kalimantan Selatan.', 'alamat' => 'Banjarmasin, Kalimantan Selatan']
         ];
 
         foreach ($reports as $idx => $r) {
