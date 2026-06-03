@@ -9,7 +9,11 @@
         
         <div class="relative z-20 text-center text-white mt-auto">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl mb-6 shadow-2xl">
-                <i class="fas fa-shield-alt text-4xl"></i>
+                <img
+    src="{{ asset('images/logo.png') }}"
+    alt="CrisisHub"
+    class="w-10 h-10 object-contain"
+/>
             </div>
             <h1 class="text-4xl font-black mb-4">Crisis<span class="text-red-500">Hub</span></h1>
             <p class="text-lg text-slate-300 max-w-md mx-auto">Platform digital terpadu untuk pelaporan bencana, koordinasi relawan, dan donasi transparan di seluruh Indonesia.</p>
@@ -26,7 +30,11 @@
             <div class="relative z-10">
                 <div class="text-center mb-8">
                     <div class="lg:hidden inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl mb-4 shadow-xl">
-                        <i class="fas fa-shield-alt text-3xl text-white"></i>
+                        <img
+    src="{{ asset('images/logo.png') }}"
+    alt="CrisisHub"
+    class="w-10 h-10 object-contain"
+/>
                     </div>
                     <h2 class="text-3xl font-black text-slate-900 dark:text-white">Buat Akun Baru</h2>
                     <p class="text-slate-500 dark:text-slate-400 mt-2">Daftar untuk mulai berkontribusi di CrisisHub</p>

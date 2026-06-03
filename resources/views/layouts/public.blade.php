@@ -670,7 +670,11 @@
                     @auth
                         @if(auth()->user()->hasRole('Admin'))
                             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-all">
-                                <i class="fas fa-user-shield w-5"></i>Admin Dashboard
+                               <img
+    src="{{ asset('images/logo.png') }}"
+    alt="CrisisHub"
+    class="w-10 h-10 object-contain"
+/>Admin Dashboard
                             </a>
                         @endif
                         <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-all">

@@ -157,7 +157,11 @@
                 <div class="relative">
                     <div class="w-32 h-32 bg-gradient-to-br from-red-600 to-orange-600 rounded-3xl flex items-center justify-center" style="box-shadow: 0 0 60px rgba(220,38,38,0.4);">
                         <div class="text-center">
-                            <i class="fas fa-shield-alt text-white text-3xl mb-1"></i>
+                            <img
+                                src="{{ asset('images/logo.png') }}"
+                                alt="CrisisHub"
+                                class="w-10 h-10 object-contain"
+/>
                             <div class="text-white font-black text-sm">CrisisHub</div>
                         </div>
                     </div>
