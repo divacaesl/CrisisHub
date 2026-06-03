@@ -10,10 +10,10 @@
         <div class="relative z-20 text-center text-white mt-auto">
             <div class="w-full flex items-center justify-center">
                   <img
-    src="{{ asset('images/logo.png') }}"
-    alt="CrisisHub"
-    class="w-20 h-20 object-contain"
-/>
+                        src="{{ asset('images/logo.png') }}"
+                        alt="CrisisHub"
+                        class="w-20 h-20 object-contain"
+                    />
             </div>
             <h1 class="text-4xl font-black mb-4">Crisis<span class="text-red-500">Hub</span></h1>
             <p class="text-lg text-slate-300 max-w-md mx-auto">Platform digital terpadu untuk pelaporan bencana, koordinasi relawan, dan donasi transparan di seluruh Indonesia.</p>
