@@ -159,12 +159,7 @@ Route::get('/donate', function () {
 })->name('donate');
 
 // Donate Campaign Detail
-Route::get('/donate/campaign/{id}', function ($id) {
-    $campaigns = getCampaignsList();
-    $totalDonationsInDb = \App\Models\Donation::sum('amount');
-    $recentDonations = \App\Models\Donation::with('user')->orderBy('created_at', 'desc')->take(10)->get();
-    return view('donate', compact('campaigns', 'totalDonationsInDb', 'recentDonations'));
-})->name('donate.campaign');
+Route::get('/donate/campaign/{id}', [\App\Http\Controllers\DonationController::class, 'detail'])->name('donate.detail');
 
 // Donation routes (Protected Action)
 Route::middleware(['auth'])->group(function () {

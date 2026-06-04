@@ -122,6 +122,7 @@ class AdminDashboardController extends Controller
             // Auto-create Campaign Donasi
             try {
                 \App\Models\Campaign::create([
+                    'org_id' => auth()->id(),
                     'title' => 'Bantuan Darurat: ' . $report->jenis_bencana,
                     'emoji' => '🆘',
                     'location' => $report->alamat_lengkap ?? 'Lokasi Terdeteksi',

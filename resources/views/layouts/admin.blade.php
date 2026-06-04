@@ -19,6 +19,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
+        /* Light Mode Contrast Overrides */
+        html:not(.dark) *:not([class*='bg-']):not(.badge) > .text-white, html:not(.dark) .text-white:not([class*='bg-']):not(.badge) { color: #0f172a !important; }
+        html:not(.dark) .text-slate-300:not([class*='bg-']) { color: #334155 !important; }
+        html:not(.dark) .text-slate-400:not([class*='bg-']) { color: #475569 !important; }
+        html:not(.dark) .text-slate-500:not([class*='bg-']) { color: #64748b !important; }
+        html:not(.dark) .text-gray-500:not([class*='bg-']) { color: #6b7280 !important; }
+        html:not(.dark) .dark\\:text-white:not([class*='bg-']) { color: #0f172a !important; }
+        html:not(.dark) .text-slate-900 { color: #0f172a !important; }
+
         :root {
             --gold: #dc2626;
             --gold-dim: #991b1b;

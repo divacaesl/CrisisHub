@@ -37,22 +37,22 @@
                 Bantuan Anda tersalurkan langsung kepada korban bencana dengan sistem pelacakan transparan dan laporan real-time.
             </p>
             <!-- Donation stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-                <div class="glass rounded-2xl p-5 border border-white/10">
-                    <div class="text-3xl font-black text-orange-400 mb-1 grand-total-counter" data-target="{{ 42000000000 + $totalDonationsInDb }}" data-prefix="Rp " data-suffix="">Rp {{ number_format(42000000000 + $totalDonationsInDb, 0, ',', '.') }}</div>
-                    <div class="text-slate-400 text-xs">Total Donasi</div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-5 mt-10">
+                <div class="glass rounded-2xl p-4 lg:p-5 border border-white/10 flex flex-col justify-center">
+                    <div class="text-xl lg:text-2xl xl:text-3xl font-black text-orange-400 mb-1 grand-total-counter tracking-tighter" data-target="{{ 42000000000 + $totalDonationsInDb }}" data-prefix="Rp " data-suffix="">Rp {{ number_format(42000000000 + $totalDonationsInDb, 0, ',', '.') }}</div>
+                    <div class="text-slate-400 text-xs font-semibold">Total Donasi</div>
                 </div>
-                <div class="glass rounded-2xl p-5 border border-white/10">
-                    <div class="text-3xl font-black text-green-400 mb-1" data-target="{{ count($campaigns) }}" data-suffix="">{{ count($campaigns) }}</div>
-                    <div class="text-slate-400 text-xs">Campaign Aktif</div>
+                <div class="glass rounded-2xl p-4 lg:p-5 border border-white/10 flex flex-col justify-center">
+                    <div class="text-2xl lg:text-3xl font-black text-green-400 mb-1" data-target="{{ count($campaigns) }}" data-suffix="">{{ count($campaigns) }}</div>
+                    <div class="text-slate-400 text-xs font-semibold">Campaign Aktif</div>
                 </div>
-                <div class="glass rounded-2xl p-5 border border-white/10">
-                    <div class="text-3xl font-black text-blue-400 mb-1" data-target="54210" data-suffix="">54.210</div>
-                    <div class="text-slate-400 text-xs">Bantuan Tersalurkan</div>
+                <div class="glass rounded-2xl p-4 lg:p-5 border border-white/10 flex flex-col justify-center">
+                    <div class="text-2xl lg:text-3xl font-black text-blue-400 mb-1" data-target="54210" data-suffix="">54.210</div>
+                    <div class="text-slate-400 text-xs font-semibold">Bantuan Tersalurkan</div>
                 </div>
-                <div class="glass rounded-2xl p-5 border border-white/10">
-                    <div class="text-3xl font-black text-red-400 mb-1" data-target="89432" data-suffix="">89.432</div>
-                    <div class="text-slate-400 text-xs">Penerima Manfaat</div>
+                <div class="glass rounded-2xl p-4 lg:p-5 border border-white/10 flex flex-col justify-center">
+                    <div class="text-2xl lg:text-3xl font-black text-red-400 mb-1" data-target="89432" data-suffix="">89.432</div>
+                    <div class="text-slate-400 text-xs font-semibold">Penerima Manfaat</div>
                 </div>
             </div>
         </div>

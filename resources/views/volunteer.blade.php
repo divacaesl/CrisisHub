@@ -62,7 +62,7 @@ $categories = [
                     <a href="{{ route('apply.volunteer') }}" id="btn-daftar" class="flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold rounded-2xl transition-all" style="box-shadow: 0 0 20px rgba(34,197,94,0.4);">
                         <i class="fas fa-hard-hat"></i>Daftar Sekarang
                     </a>
-                    <a href="#why" class="flex items-center gap-2 px-6 py-3.5 glass border border-white/10 hover:bg-white/10 text-white font-medium rounded-2xl transition-all">
+                    <a href="#why" class="flex items-center gap-2 px-6 py-3.5 bg-white/50 dark:bg-white/10 border border-slate-200 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/20 text-slate-800 dark:text-white font-medium rounded-2xl transition-all">
                         Pelajari Lebih
                     </a>
                 </div>

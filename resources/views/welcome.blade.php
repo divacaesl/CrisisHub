@@ -482,6 +482,27 @@
                         $resourceClass = 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
                     }
 
+                    // Gambar fallback berdasarkan jenis bencana
+                    $disasterImages = [
+                        'Banjir'       => '/images/flood_case.png',
+                        'Gempa'        => '/images/earthquake_case.png',
+                        'Gempa Bumi'   => '/images/earthquake_case.png',
+                        'Longsor'      => '/images/cause1.png',
+                        'Tanah Longsor'=> '/images/cause1.png',
+                        'Gunung Api'   => '/images/cause3.png',
+                        'Gunung'       => '/images/cause3.png',
+                        'Angin'        => '/images/mid.png',
+                        'Angin Kencang'=> '/images/mid.png',
+                        'Angin Topan'  => '/images/mid.png',
+                    ];
+                    $fallbackImage = '/images/donation_banner.png';
+                    foreach ($disasterImages as $key => $img) {
+                        if (stripos($rep->jenis_bencana, $key) !== false) {
+                            $fallbackImage = $img;
+                            break;
+                        }
+                    }
+
                     $cards[] = [
                         'id' => $rep->id,
                         'is_db' => true,
@@ -496,7 +517,7 @@
                         'kerusakan' => $rep->tingkat_kerusakan ?: 'Sedang',
                         'resource_status' => $resourceStatus,
                         'resource_class' => $resourceClass,
-                        'image' => $rep->foto_path ? \Illuminate\Support\Facades\Storage::url($rep->foto_path) : '/images/flood_case.png',
+                        'image' => $rep->foto_path ? \Illuminate\Support\Facades\Storage::url($rep->foto_path) : $fallbackImage,
                     ];
                 }
 
@@ -516,7 +537,7 @@
                         'kerusakan' => 'Hancur Total',
                         'resource_status' => 'Kurang',
                         'resource_class' => 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
-                        'image' => '/images/flood_case.png',
+                        'image' => '/images/flood_case.png',       // Banjir → flood
                     ],
                     [
                         'id' => 2,
@@ -532,28 +553,28 @@
                         'kerusakan' => 'Tinggi',
                         'resource_status' => 'Sangat Kurang',
                         'resource_class' => 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
-                        'image' => '/images/earthquake_case.png',
+                        'image' => '/images/earthquake_case.png',  // Gempa → earthquake
                     ],
                     [
                         'id' => 3,
                         'is_db' => false,
-                        'title' => 'Banjir Banjarmasin',
-                        'type_str' => '🌊 Banjir',
-                        'status' => 'AKTIF',
-                        'badge_class' => 'bg-orange-500',
+                        'title' => 'Tanah Longsor Purworejo',
+                        'type_str' => '⛰️ Longsor',
+                        'status' => 'TINGGI',
+                        'badge_class' => 'bg-red-600',
                         'priority_score' => '7.5',
-                        'location' => 'Banjarmasin, Kalimantan Selatan',
+                        'location' => 'Purworejo, Jawa Tengah',
                         'date' => '1 hari yang lalu',
-                        'korban' => '892',
-                        'kerusakan' => 'Sedang',
-                        'resource_status' => 'Cukup',
-                        'resource_class' => 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
-                        'image' => '/images/flood_case.png',
+                        'korban' => '127',
+                        'kerusakan' => 'Tinggi',
+                        'resource_status' => 'Kurang',
+                        'resource_class' => 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
+                        'image' => '/images/cause1.png',           // Longsor → cause1
                     ],
                     [
                         'id' => 4,
                         'is_db' => false,
-                        'title' => 'Gunung Api Sinabung',
+                        'title' => 'Erupsi Gunung Sinabung',
                         'type_str' => '🌋 Gunung Api',
                         'status' => 'SIAGA',
                         'badge_class' => 'bg-orange-500',
@@ -564,7 +585,71 @@
                         'kerusakan' => 'Sedang',
                         'resource_status' => 'Cukup',
                         'resource_class' => 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
-                        'image' => '/images/donation_banner.png',
+                        'image' => '/images/cause3.png',           // Gunung Api → cause3
+                    ],
+                    [
+                        'id' => 5,
+                        'is_db' => false,
+                        'title' => 'Angin Topan Mataram',
+                        'type_str' => '💨 Angin Kencang',
+                        'status' => 'SEDANG',
+                        'badge_class' => 'bg-orange-500',
+                        'priority_score' => '5.4',
+                        'location' => 'Mataram, NTB',
+                        'date' => '4 hari yang lalu',
+                        'korban' => '94',
+                        'kerusakan' => 'Sedang',
+                        'resource_status' => 'Sedang',
+                        'resource_class' => 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400',
+                        'image' => '/images/mid.png',              // Angin → mid
+                    ],
+                    [
+                        'id' => 6,
+                        'is_db' => false,
+                        'title' => 'Banjir Bandang Banjarmasin',
+                        'type_str' => '🌊 Banjir',
+                        'status' => 'AKTIF',
+                        'badge_class' => 'bg-orange-500',
+                        'priority_score' => '7.1',
+                        'location' => 'Banjarmasin, Kalimantan Selatan',
+                        'date' => '5 hari yang lalu',
+                        'korban' => '892',
+                        'kerusakan' => 'Hancur Total',
+                        'resource_status' => 'Kurang',
+                        'resource_class' => 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
+                        'image' => '/images/hero_disaster.png',    // Banjir ke-2 → hero_disaster
+                    ],
+                    [
+                        'id' => 7,
+                        'is_db' => false,
+                        'title' => 'Gempa Palu 5.8 SR',
+                        'type_str' => '🏔️ Gempa',
+                        'status' => 'KRITIS',
+                        'badge_class' => 'bg-red-600',
+                        'priority_score' => '7.8',
+                        'location' => 'Palu, Sulawesi Tengah',
+                        'date' => '6 hari yang lalu',
+                        'korban' => '445',
+                        'kerusakan' => 'Tinggi',
+                        'resource_status' => 'Kurang',
+                        'resource_class' => 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
+                        'image' => '/images/cause2.png',           // Gempa ke-2 → cause2
+                    ],
+                    [
+                        'id' => 8,
+                        'is_db' => false,
+                        'title' => 'Banjir Rob Bangka',
+                        'type_str' => '🌊 Banjir',
+                        'status' => 'SEDANG',
+                        'badge_class' => 'bg-orange-500',
+                        'priority_score' => '5.5',
+                        'location' => 'Bangka, Kepulauan Bangka Belitung',
+                        'date' => '7 hari yang lalu',
+                        'korban' => '680',
+                        'kerusakan' => 'Sedang',
+                        'resource_status' => 'Sedang',
+                        'resource_class' => 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400',
+                        'image' => '/images/donation_banner.png',  // Banjir ke-3 → donation_banner
                     ],
                 ];
 
@@ -867,7 +952,7 @@
                     </div>
 
                     @auth
-                    <a href="/donate" class="block w-full text-center py-2.5 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-sm rounded-xl transition-all shimmer-btn">
+                    <a href="{{ route('donate.detail', $c['id']) }}" class="block w-full text-center py-2.5 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-sm rounded-xl transition-all shimmer-btn">
                         <i class="fas fa-heart mr-2"></i>Donasi Sekarang
                     </a>
                     @else

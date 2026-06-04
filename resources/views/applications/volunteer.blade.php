@@ -73,6 +73,22 @@ $categories = [
         </div>
     @endif
 
+    @if($errors->any())
+        <div class="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 flex items-start gap-3 backdrop-blur-md">
+            <div class="w-8 h-8 rounded-full bg-red-500 text-white flex justify-center items-center flex-shrink-0">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div>
+                <h3 class="font-bold">Pendaftaran Gagal Validasi!</h3>
+                <ul class="list-disc list-inside text-sm mt-1">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    @endif
+
     @if($existingApp)
         <!-- VIEW 1: USER ALREADY APPLIED -->
         <div class="glass-panel rounded-3xl p-8 shadow-2xl relative overflow-hidden">

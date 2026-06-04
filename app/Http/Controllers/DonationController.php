@@ -75,4 +75,44 @@ class DonationController extends Controller
         $donation = Donation::where('user_id', auth()->id())->findOrFail($id);
         return view('donations.receipt', compact('donation'));
     }
+
+    public function detail($id)
+    {
+        $campaign = \App\Models\Campaign::findOrFail($id);
+        
+        // Calculate dynamic donations for this specific campaign
+        $totalDonations = \App\Models\Donation::where('campaign_title', $campaign->title)
+            ->where('status', 'Verified')
+            ->sum('amount');
+            
+        $donorCount = \App\Models\Donation::where('campaign_title', $campaign->title)
+            ->where('status', 'Verified')
+            ->count();
+            
+        // Combine DB collected amount with dynamic donations
+        $collected = $campaign->collected_amount + $totalDonations;
+        
+        // Calculate percentage
+        $pct = $campaign->target_amount > 0 ? min(100, round(($collected / $campaign->target_amount) * 100)) : 0;
+        
+        // Get recent donors for this campaign
+        $recentDonors = \App\Models\Donation::with('user')
+            ->where('campaign_title', $campaign->title)
+            ->where('status', 'Verified')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+            
+        // Get the associated report if any
+        $report = null;
+        if ($campaign->report_id) {
+            $report = \App\Models\Report::with('user')->find($campaign->report_id);
+        }
+
+        // Calculate days left
+        $diffDays = (int)ceil(now()->diffInDays(\Carbon\Carbon::parse($campaign->deadline), false));
+        $daysLeft = $diffDays > 0 ? $diffDays : 0;
+
+        return view('donate-detail', compact('campaign', 'collected', 'pct', 'recentDonors', 'report', 'donorCount', 'daysLeft'));
+    }
 }

@@ -220,13 +220,13 @@
             @endphp
 
             @foreach($faqs as $i => $faq)
-            <div class="faq-item glass rounded-2xl border border-slate-200 dark:border-white/7 overflow-hidden premium-card-glow">
-                <button class="faq-btn w-full flex items-center justify-between gap-4 p-6 text-left hover:bg-slate-50 dark:hover:bg-white/3 transition-all">
-                    <span class="text-slate-800 dark:text-white font-semibold text-sm md:text-base">{{ $faq['q'] }}</span>
-                    <i class="faq-icon fas fa-plus text-red-500 dark:text-red-400 flex-shrink-0 transition-transform duration-300"></i>
+            <div class="faq-item bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-md transition-all">
+                <button class="faq-btn w-full flex items-center justify-between gap-4 p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <span class="text-slate-900 dark:text-white font-semibold text-sm md:text-base">{{ $faq['q'] }}</span>
+                    <i class="faq-icon fas fa-plus text-slate-400 dark:text-slate-500 flex-shrink-0 transition-transform duration-300"></i>
                 </button>
-                <div class="faq-answer px-6">
-                    <div class="pb-6 text-slate-600 dark:text-slate-400 text-sm leading-relaxed border-t border-slate-200 dark:border-white/7 pt-4">
+                <div class="faq-answer px-6 bg-slate-50 dark:bg-slate-800/50">
+                    <div class="pb-6 text-slate-600 dark:text-slate-300 text-sm leading-relaxed pt-2">
                         {{ $faq['a'] }}
                     </div>
                 </div>

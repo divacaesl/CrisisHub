@@ -249,10 +249,10 @@ class CenterController extends Controller
             'volunteer_id' => $user->id,
             'report_id' => $request->report_id,
             'task' => 'Misi Mandiri Relawan',
-            'status' => 'Requested',
+            'status' => 'Assigned',
             'assigned_at' => now(),
         ]);
 
-        return back()->with('success', 'Pengajuan penugasan berhasil dikirim. Menunggu konfirmasi admin.');
+        return back()->with('success', 'Berhasil menerima tugas. Selamat bertugas!');
     }
 }

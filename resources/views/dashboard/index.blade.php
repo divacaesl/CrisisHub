@@ -2,78 +2,6 @@
 
 @section('title', 'Riwayat Saya')
 
-@section('head')
-<style>
-    @keyframes pulse-red-slow {
-        0%, 100% { border-color: rgba(239,68,68,0.4); box-shadow: 0 0 15px rgba(239,68,68,0.2); }
-        50% { border-color: rgba(239,68,68,0.9); box-shadow: 0 0 30px rgba(239,68,68,0.5); }
-    }
-    .animate-pulse-slow { animation: pulse-red-slow 2.5s infinite; }
-
-    /* ─── MODAL ANIMATION ─── */
-    #report-modal .modal-inner { animation: modalSlide 0.32s cubic-bezier(0.34,1.56,0.64,1); }
-    @keyframes modalSlide {
-        from { opacity:0; transform:translateY(32px) scale(0.97); }
-        to   { opacity:1; transform:translateY(0) scale(1); }
-    }
-
-    /* ─── HEADER VARIANTS ─── */
-    .modal-header-normal { background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%); border-bottom:1px solid rgba(255,255,255,0.07); }
-    .modal-header-sos    { background:linear-gradient(135deg,#450a0a 0%,#991b1b 100%); border-bottom:1px solid rgba(239,68,68,0.35); }
-
-    /* ─── FORM LABELS ─── */
-    .form-label {
-        display:flex; align-items:center; gap:5px;
-        font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
-        color:#64748b; margin-bottom:6px;
-    }
-    .dark .form-label { color:#94a3b8; }
-
-    /* ─── FORM INPUTS ─── */
-    .form-input {
-        width:100%; padding:10px 14px;
-        background:rgba(255,255,255,0.9); border:1.5px solid #e2e8f0; border-radius:12px;
-        font-size:13.5px; color:#0f172a; outline:none; transition:all .2s;
-    }
-    .dark .form-input { background:rgba(15,23,42,0.55); border-color:rgba(255,255,255,0.08); color:#f1f5f9; }
-    .form-input:focus { border-color:#ef4444; box-shadow:0 0 0 3px rgba(239,68,68,0.13); background:#fff; }
-    .dark .form-input:focus { background:rgba(15,23,42,0.9); box-shadow:0 0 0 3px rgba(239,68,68,0.22); }
-
-    /* ─── FORM SECTIONS ─── */
-    .form-section { background:rgba(248,250,252,0.75); border:1.5px solid #e2e8f0; border-radius:16px; padding:16px; }
-    .dark .form-section { background:rgba(15,23,42,0.45); border-color:rgba(255,255,255,0.06); }
-    .form-section-title { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:#475569; display:flex; align-items:center; gap:6px; margin-bottom:12px; }
-    .dark .form-section-title { color:#94a3b8; }
-
-    /* ─── VULNERABLE COUNTER BOXES ─── */
-    .vuln-box { text-align:center; background:rgba(255,255,255,0.9); border:1.5px solid #e2e8f0; border-radius:12px; padding:10px 8px; }
-    .dark .vuln-box { background:rgba(15,23,42,0.6); border-color:rgba(255,255,255,0.07); }
-    .vuln-box input { width:100%; text-align:center; background:transparent; border:none; outline:none; font-size:20px; font-weight:900; color:#ef4444; }
-    .dark .vuln-box input { color:#fca5a5; }
-    .vuln-box .vuln-label { font-size:9.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.06em; margin-top:2px; }
-    .dark .vuln-box .vuln-label { color:#94a3b8; }
-
-    /* ─── GPS BUTTON ─── */
-    .gps-btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:linear-gradient(135deg,#dc2626,#b91c1c); color:#fff; font-size:11px; font-weight:700; border-radius:10px; border:none; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:.05em; }
-    .gps-btn:hover { transform:translateY(-1px); box-shadow:0 4px 14px rgba(220,38,38,0.45); }
-
-    /* ─── SOS MODE OVERRIDES ─── */
-    @keyframes sosBlink { 0%,100%{opacity:1;} 50%{opacity:0.45;} }
-    .sos-blink { animation:sosBlink 1s infinite; }
-    .sos-mode-form .form-input, .sos-mode-form select, .sos-mode-form textarea {
-        background:rgba(30,8,8,0.7) !important; border-color:rgba(239,68,68,0.35) !important; color:#fff !important;
-    }
-    .sos-mode-form .form-input:focus, .sos-mode-form select:focus, .sos-mode-form textarea:focus {
-        border-color:#ef4444 !important; box-shadow:0 0 0 3px rgba(239,68,68,0.25) !important;
-    }
-    .sos-mode-form .form-section { background:rgba(239,68,68,0.04) !important; border-color:rgba(239,68,68,0.22) !important; }
-    .sos-mode-form .vuln-box { background:rgba(30,8,8,0.6) !important; border-color:rgba(239,68,68,0.2) !important; }
-    .sos-mode-form .form-label { color:#fca5a5 !important; }
-    .sos-mode-form .form-section-title { color:#f87171 !important; }
-    .sos-mode-form select option { background:#1e0a0a !important; color:#fff !important; }
-</style>
-@endsection
-
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 min-h-screen" style="padding-top: 7rem;">
     <!-- Page Header -->
@@ -259,15 +187,16 @@
         <!-- Left Col: Action & Timeline -->
         <div class="lg:col-span-2 space-y-8">
             <!-- Buat Laporan Banner -->
-            <div class="glass-panel rounded-3xl p-8 relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-800 dark:to-slate-900 text-white shadow-2xl">
-                <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 20% 150%, #dc2626 0%, transparent 50%), radial-gradient(circle at 80% -50%, #f97316 0%, transparent 50%);"></div>
-                
+            <div class="glass-panel rounded-3xl p-8 relative overflow-hidden bg-red-600 text-white shadow-xl" style="background: linear-gradient(135deg, #dc2626, #991b1b);">
+                <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(circle at top right, #f87171, transparent 60%), radial-gradient(circle at bottom left, #ef4444, transparent 60%);"></div>
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div>
-                        <h2 class="text-2xl font-bold mb-2 font-display">Perlu Bantuan Darurat?</h2>
-                        <p class="text-slate-300 text-sm max-w-md">Laporkan kondisi terkini di wilayah Anda atau ajukan permohonan bantuan logistik, medis, maupun evakuasi.</p>
+                    <div class="text-white">
+                        <h2 class="text-2xl font-bold mb-2 font-display text-white" style="color: white !important;">
+                            <i class="fas fa-exclamation-circle opacity-90 mr-1"></i> Perlu Bantuan Darurat?
+                        </h2>
+                        <p class="text-white/90 text-sm" style="color: rgba(255,255,255,0.9) !important;">Laporkan kondisi terkini di wilayah Anda atau ajukan permohonan bantuan logistik, medis, maupun evakuasi.</p>
                     </div>
-                    <button onclick="openReportModal(false)" class="flex-shrink-0 px-6 py-3.5 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold rounded-xl transition-all shadow-lg flex items-center gap-2 transform hover:scale-[1.03]">
+                    <button onclick="openReportModal(false)" class="flex-shrink-0 px-6 py-3.5 bg-white text-red-700 hover:bg-slate-50 font-bold rounded-xl transition-all shadow-lg flex items-center gap-2 transform hover:scale-[1.03]">
                         <i class="fas fa-plus-circle text-lg"></i> Buat Laporan Baru
                     </button>
                 </div>
@@ -460,176 +389,146 @@
 
 @section('modals')
     <!-- REPORT CREATION MODAL (Buat Laporan Baru) -->
-    <div id="report-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden overflow-y-auto py-8">
-        <div class="modal-inner w-full max-w-2xl mx-4 my-auto rounded-3xl overflow-hidden shadow-2xl border border-white/10 flex flex-col max-h-[92vh]" style="background:rgba(15,23,42,0.97);">
-
-            <!-- SOS Alert Banner (hidden by default) -->
-            <div id="sos-alert-banner" class="hidden px-5 py-2.5 flex items-center gap-2" style="background:linear-gradient(90deg,#7f1d1d,#991b1b,#7f1d1d);">
-                <i class="fas fa-exclamation-triangle text-red-300 sos-blink text-sm"></i>
-                <span class="text-red-100 text-xs font-bold uppercase tracking-widest sos-blink">Mode SOS Aktif — Prioritas Darurat Tertinggi</span>
-                <i class="fas fa-exclamation-triangle text-red-300 sos-blink text-sm ml-auto"></i>
-            </div>
-
-            <!-- Modal Header -->
-            <div id="report-modal-header" class="modal-header-normal px-6 py-5 flex justify-between items-center flex-shrink-0">
-                <div class="flex items-center gap-4">
-                    <div id="modal-icon-wrap" class="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-lg shadow-lg" style="background:linear-gradient(135deg,#f97316,#dc2626);">
-                        <i id="modal-header-icon" class="fas fa-file-medical-alt"></i>
+    <div id="report-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden overflow-y-auto py-10">
+        <div class="bg-slate-50 dark:bg-slate-900 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 mx-4 my-auto flex flex-col max-h-[90vh]">
+            <div class="px-6 py-5 border-b border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.02] flex justify-between items-center flex-shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-red-500 text-white flex justify-center items-center font-bold">
+                        <i class="fas fa-ambulance"></i>
                     </div>
                     <div>
-                        <h3 id="report-modal-title" class="font-black text-white text-lg leading-tight">Buat Laporan Krisis Baru</h3>
-                        <p id="report-modal-subtitle" class="text-xs text-slate-400 mt-0.5">Laporkan kejadian bencana untuk penanganan cepat</p>
+                        <h3 id="report-modal-title" class="font-bold text-slate-900 dark:text-white font-display text-lg">Buat Laporan Krisis Baru</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Laporkan kejadian krisis/bencana untuk penanganan cepat</p>
                     </div>
                 </div>
-                <button onclick="closeReportModal()" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-slate-400 hover:text-white flex items-center justify-center transition-all">
+                <button onclick="closeReportModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 hover:text-slate-900 dark:hover:text-white flex justify-center items-center transition-colors">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
 
-            <form id="report-form" action="{{ route('report.store') }}" method="POST" enctype="multipart/form-data" class="flex-1 overflow-y-auto p-6 space-y-5">
+            <form action="{{ route('report.store') }}" method="POST" enctype="multipart/form-data" class="flex-1 overflow-y-auto p-6 space-y-6">
                 @csrf
-
-                <!-- Section 1: Jenis & Tingkat -->
-                <div class="form-section">
-                    <div class="form-section-title">
-                        <i class="fas fa-bolt text-red-500"></i> Informasi Kejadian
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label"><i class="fas fa-fire-alt text-red-400"></i> Jenis Bencana</label>
-                            <select name="jenis_bencana" required class="form-input">
-                                <option value="">Pilih Jenis Bencana</option>
-                                <option value="Banjir">🌊 Banjir</option>
-                                <option value="Tanah Longsor">⛰️ Tanah Longsor</option>
-                                <option value="Gempa Bumi">🏔️ Gempa Bumi</option>
-                                <option value="Kebakaran Hutan/Pemukiman">🔥 Kebakaran</option>
-                                <option value="Angin Puting Beliung/Topan">💨 Angin Puting Beliung</option>
-                                <option value="Gunung Meletus">🌋 Gunung Meletus</option>
-                                <option value="Tsunami">🌊 Tsunami</option>
-                                <option value="Lainnya">⚠️ Lainnya</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="form-label"><i class="fas fa-tachometer-alt text-orange-400"></i> Tingkat Kerusakan</label>
-                            <select name="tingkat_kerusakan" id="tingkat_kerusakan" required class="form-input">
-                                <option value="">Pilih Tingkat Kerusakan</option>
-                                <option value="Rendah">🟢 Rendah — Kerusakan Minimal</option>
-                                <option value="Sedang">🟡 Sedang — Butuh Perbaikan</option>
-                                <option value="Tinggi">🟠 Tinggi — Rusak Parah</option>
-                                <option value="Hancur Total">🔴 Hancur Total — Rata Tanah</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 2: Korban -->
-                <div class="form-section">
-                    <div class="form-section-title">
-                        <i class="fas fa-users text-red-500"></i> Data Korban &amp; Keluarga
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="form-label"><i class="fas fa-user-injured text-red-400"></i> Jumlah Jiwa Terdampak</label>
-                            <input type="number" name="jumlah_korban" min="0" value="0" required class="form-input">
-                        </div>
-                        <div>
-                            <label class="form-label"><i class="fas fa-home text-slate-400"></i> Anggota Keluarga Terlibat</label>
-                            <input type="number" name="family_members" min="0" value="0" required class="form-input">
-                        </div>
-                    </div>
-                    <!-- Vulnerable groups -->
-                    <p class="text-[10.5px] font-bold text-slate-500 uppercase tracking-wider mb-3">Kelompok Rentan (Opsional)</p>
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="vuln-box">
-                            <div class="text-2xl mb-1">👶</div>
-                            <input type="number" name="infants_count" min="0" value="0" required>
-                            <div class="vuln-label">Bayi / Balita</div>
-                        </div>
-                        <div class="vuln-box">
-                            <div class="text-2xl mb-1">👴</div>
-                            <input type="number" name="elderly_count" min="0" value="0" required>
-                            <div class="vuln-label">Lansia 60+</div>
-                        </div>
-                        <div class="vuln-box">
-                            <div class="text-2xl mb-1">♿</div>
-                            <input type="number" name="disabled_count" min="0" value="0" required>
-                            <div class="vuln-label">Disabilitas</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 3: Logistik & Kebutuhan -->
-                <div class="form-section">
-                    <div class="form-section-title">
-                        <i class="fas fa-boxes text-orange-400"></i> Logistik &amp; Kebutuhan Mendesak
-                    </div>
-                    <label class="flex items-center gap-3 p-3 rounded-xl border border-red-500/20 bg-red-500/5 cursor-pointer mb-4 hover:bg-red-500/10 transition-all">
-                        <input type="checkbox" id="logistic_stock_critical" name="logistic_stock_critical" class="w-4 h-4 accent-red-600 rounded">
-                        <span class="text-xs font-bold text-red-400 uppercase tracking-wide flex items-center gap-1.5">
-                            <i class="fas fa-exclamation-circle"></i> Stok Logistik Kritis — Tidak ada makanan, air bersih, atau obat-obatan
-                        </span>
-                    </label>
+                
+                <!-- Bencana & Kerusakan -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="form-label"><i class="fas fa-list-ul text-slate-400"></i> Kebutuhan Mendesak</label>
-                        <input type="text" name="kebutuhan_mendesak" placeholder="Contoh: Selimut hangat, popok bayi, air mineral, dapur umum" class="form-input">
+                        <label class="text-xs font-bold text-slate-600 dark:text-slate-300 block mb-2 uppercase tracking-wide">Jenis Bencana</label>
+                        <select name="jenis_bencana" required class="w-full px-4 py-2.5 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-sm">
+                            <option value="">Pilih Jenis Bencana</option>
+                            <option value="Banjir">Banjir</option>
+                            <option value="Tanah Longsor">Tanah Longsor</option>
+                            <option value="Gempa Bumi">Gempa Bumi</option>
+                            <option value="Kebakaran Hutan/Pemukiman">Kebakaran Hutan/Pemukiman</option>
+                            <option value="Angin Puting Beliung/Topan">Angin Puting Beliung/Topan</option>
+                            <option value="Gunung Meletus">Gunung Meletus</option>
+                            <option value="Tsunami">Tsunami</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-600 dark:text-slate-300 block mb-2 uppercase tracking-wide">Tingkat Kerusakan</label>
+                        <select name="tingkat_kerusakan" id="tingkat_kerusakan" required class="w-full px-4 py-2.5 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-sm">
+                            <option value="">Pilih Tingkat Kerusakan</option>
+                            <option value="Rendah">Rendah (Kerusakan Minimal)</option>
+                            <option value="Sedang">Sedang (Bisa dihuni, butuh perbaikan)</option>
+                            <option value="Tinggi">Tinggi (Rusak parah, membahayakan)</option>
+                            <option value="Hancur Total">Hancur Total (Rata dengan tanah)</option>
+                        </select>
                     </div>
                 </div>
 
-                <!-- Section 4: Deskripsi & Foto -->
-                <div class="form-section">
-                    <div class="form-section-title">
-                        <i class="fas fa-align-left text-blue-400"></i> Deskripsi &amp; Dokumentasi
+                <!-- Korban & Keluarga -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="text-xs font-bold text-slate-600 dark:text-slate-300 block mb-2 uppercase tracking-wide">Jumlah Jiwa Terdampak / Korban</label>
+                        <input type="number" name="jumlah_korban" min="0" value="0" required class="w-full px-4 py-2.5 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-sm">
                     </div>
-                    <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-slate-600 dark:text-slate-300 block mb-2 uppercase tracking-wide">Total Anggota Keluarga Terlibat</label>
+                        <input type="number" name="family_members" min="0" value="0" required class="w-full px-4 py-2.5 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-sm">
+                    </div>
+                </div>
+
+                <!-- Vulnerable Metrics -->
+                <div class="p-5 rounded-2xl bg-white dark:bg-white/[0.02] border border-slate-200 dark:border-white/5">
+                    <h4 class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-widest mb-4 flex items-center gap-1.5">
+                        <i class="fas fa-users text-red-500"></i> Kelompok Rentan Terdampak <span class="text-slate-400 font-normal tracking-normal capitalize">(Opsional)</span>
+                    </h4>
+                    <div class="grid grid-cols-3 gap-4">
                         <div>
-                            <label class="form-label"><i class="fas fa-comment-alt text-slate-400"></i> Deskripsi Kondisi Lapangan</label>
-                            <textarea name="deskripsi_kondisi" required rows="3" placeholder="Ceritakan detail kerusakan, kebutuhan mendesak, atau kondisi akses transportasi saat ini..." class="form-input" style="resize:vertical;"></textarea>
+                            <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">Bayi / Balita</label>
+                            <input type="number" name="infants_count" min="0" value="0" required class="w-full px-3 py-1.5 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-center">
                         </div>
                         <div>
-                            <label class="form-label"><i class="fas fa-camera text-slate-400"></i> Foto Kondisi / Kerusakan</label>
-                            <input type="file" name="foto" accept="image/*" class="form-input text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-red-500/15 file:text-red-400 hover:file:bg-red-500/25">
+                            <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">Lansia (60+ th)</label>
+                            <input type="number" name="elderly_count" min="0" value="0" required class="w-full px-3 py-1.5 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-center">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">Disabilitas</label>
+                            <input type="number" name="disabled_count" min="0" value="0" required class="w-full px-3 py-1.5 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-center">
                         </div>
                     </div>
                 </div>
 
-                <!-- Section 5: GPS Lokasi -->
-                <div class="form-section">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="form-section-title" style="margin-bottom:0">
-                            <i class="fas fa-map-marked-alt text-green-400"></i> Koordinat Lokasi Kejadian
-                        </div>
-                        <button type="button" onclick="detectGPSLocation()" class="gps-btn">
-                            <i class="fas fa-location-arrow"></i> <span id="gps-btn-text">Deteksi GPS Saya</span>
+                <!-- Logistic Status & Needs -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="logistic_stock_critical" name="logistic_stock_critical" class="w-4.5 h-4.5 text-red-600 border-slate-300 dark:border-slate-700 rounded focus:ring-red-500">
+                        <label for="logistic_stock_critical" class="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-wide cursor-pointer flex items-center gap-1.5">
+                            <i class="fas fa-boxes"></i> Stok Logistik Kritis? (Tidak ada makanan, air bersih, obat-obatan)
+                        </label>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-600 dark:text-slate-300 block mb-2 uppercase tracking-wide">Kebutuhan Mendesak (Sembako, tenda, obat dll)</label>
+                        <input type="text" name="kebutuhan_mendesak" placeholder="Contoh: Selimut hangat, popok bayi, air mineral, dapur umum" class="w-full px-4 py-2.5 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-sm">
+                    </div>
+                </div>
+
+                <!-- Description & Foto -->
+                <div class="grid grid-cols-1 gap-6">
+                    <div>
+                        <label class="text-xs font-bold text-slate-600 dark:text-slate-300 block mb-2 uppercase tracking-wide">Deskripsi Kondisi Lapangan</label>
+                        <textarea name="deskripsi_kondisi" required rows="3" placeholder="Ceritakan detail kerusakan rumah, kebutuhan mendesak, atau akses transportasi saat ini..." class="w-full px-4 py-2.5 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-sm"></textarea>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-600 dark:text-slate-300 block mb-2 uppercase tracking-wide">Foto Kondisi / Kerusakan</label>
+                        <input type="file" name="foto" accept="image/*" class="w-full px-4 py-2 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-red-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-red-500/10 file:text-red-500">
+                    </div>
+                </div>
+
+                <!-- Geolocation GPS Picker -->
+                <div class="p-5 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-widest flex items-center gap-1.5">
+                            <i class="fas fa-map-marked-alt text-red-500"></i> Koordinat Geografis Kejadian
+                        </h4>
+                        <button type="button" onclick="detectGPSLocation()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase rounded-lg shadow transition-colors flex items-center gap-1.5">
+                            <i class="fas fa-gps"></i> <span id="gps-btn-text">Deteksi Lokasi GPS Saya</span>
                         </button>
                     </div>
-                    <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="form-label">Latitude</label>
-                            <input type="text" name="latitude" id="geo-latitude" required placeholder="-6.9147" class="form-input text-center">
+                            <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">Latitude (Garis Lintang)</label>
+                            <input type="text" name="latitude" id="geo-latitude" required placeholder="-6.9147" class="w-full px-3 py-2 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-center">
                         </div>
                         <div>
-                            <label class="form-label">Longitude</label>
-                            <input type="text" name="longitude" id="geo-longitude" required placeholder="107.6098" class="form-input text-center">
+                            <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1">Longitude (Garis Bujur)</label>
+                            <input type="text" name="longitude" id="geo-longitude" required placeholder="107.6098" class="w-full px-3 py-2 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-center">
                         </div>
                     </div>
-                    <div id="gps-accuracy-alert" class="hidden mb-3 text-[11px] text-green-400 font-semibold flex items-center gap-1.5 px-3 py-2 rounded-lg bg-green-500/10">
-                        <i class="fas fa-satellite-dish"></i> Lokasi berhasil terdeteksi dengan akurasi tinggi!
+                    <div id="gps-accuracy-alert" class="text-[10px] text-green-500 font-semibold hidden flex items-center gap-1">
+                        <i class="fas fa-satellite"></i> Lokasi terdeteksi dengan akurasi tinggi!
                     </div>
                     <div>
-                        <label class="form-label"><i class="fas fa-map-pin text-red-400"></i> Alamat Lengkap Kejadian</label>
-                        <textarea name="alamat_lengkap" id="geo-address" rows="2" placeholder="Nama jalan, RT/RW, nomor rumah, kelurahan, kecamatan, kota..." class="form-input" style="resize:vertical;"></textarea>
+                        <label class="text-xs font-bold text-slate-600 dark:text-slate-300 block mb-2 uppercase tracking-wide">Alamat Lengkap Kejadian</label>
+                        <textarea name="alamat_lengkap" id="geo-address" rows="2" placeholder="Tuliskan nama jalan, RT/RW, nomor rumah, kelurahan, kecamatan, dan kota..." class="w-full px-4 py-2.5 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-sm"></textarea>
                     </div>
                 </div>
 
-                <!-- Submit Footer -->
-                <div class="flex items-center justify-between gap-3 pt-2 border-t border-white/10">
-                    <button type="button" onclick="closeReportModal()" class="px-5 py-2.5 rounded-xl border border-white/15 text-slate-400 hover:text-white hover:border-white/30 text-xs font-bold uppercase tracking-wide transition-all">
-                        <i class="fas fa-times mr-1"></i> Batal
-                    </button>
-                    <button id="submit-btn" type="submit" class="px-7 py-2.5 rounded-xl text-white text-xs font-black uppercase tracking-wide transition-all flex items-center gap-2" style="background:linear-gradient(135deg,#f97316,#dc2626); box-shadow:0 4px 16px rgba(220,38,38,0.4);">
-                        <i id="submit-icon" class="fas fa-paper-plane"></i>
-                        <span id="submit-text">Kirim Laporan Darurat</span>
-                    </button>
+                <!-- Submit & Cancel -->
+                <div class="flex justify-end gap-3 border-t border-slate-200 dark:border-white/10 pt-4 flex-shrink-0">
+                    <button type="button" onclick="closeReportModal()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 text-xs font-bold uppercase rounded-xl border border-slate-200 dark:border-white/5">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase rounded-xl shadow-lg transition-transform transform hover:scale-[1.02]">Kirim Laporan Darurat</button>
                 </div>
             </form>
         </div>
@@ -653,46 +552,19 @@
         }
 
         function openReportModal(isSos = false) {
-            const modal      = document.getElementById('report-modal');
-            const title      = document.getElementById('report-modal-title');
-            const subtitle   = document.getElementById('report-modal-subtitle');
-            const header     = document.getElementById('report-modal-header');
-            const iconWrap   = document.getElementById('modal-icon-wrap');
-            const icon       = document.getElementById('modal-header-icon');
-            const banner     = document.getElementById('sos-alert-banner');
+            const modal = document.getElementById('report-modal');
+            const title = document.getElementById('report-modal-title');
             const damageSelect = document.getElementById('tingkat_kerusakan');
-            const logisticChk  = document.getElementById('logistic_stock_critical');
-            const submitBtn  = document.getElementById('submit-btn');
-            const submitText = document.getElementById('submit-text');
-            const submitIcon = document.getElementById('submit-icon');
-            const form       = document.getElementById('report-form');
+            const isSosAlert = document.getElementById('logistic_stock_critical');
 
             if (isSos) {
-                title.textContent    = '🚨 Laporan SOS Darurat';
-                subtitle.textContent = 'Mode darurat — Prioritas tertinggi, bantuan dikirim segera';
-                header.className     = 'modal-header-sos px-6 py-5 flex justify-between items-center flex-shrink-0';
-                iconWrap.style.background = 'linear-gradient(135deg,#dc2626,#7f1d1d)';
-                icon.className       = 'fas fa-sos';
-                banner.classList.remove('hidden');
-                damageSelect.value   = 'Hancur Total';
-                logisticChk.checked  = true;
-                submitBtn.style.background = 'linear-gradient(135deg,#dc2626,#7f1d1d)';
-                submitBtn.style.boxShadow  = '0 0 20px rgba(220,38,38,0.6)';
-                submitText.textContent = '🚨 KIRIM SOS DARURAT';
-                form.classList.add('sos-mode-form');
+                title.textContent = '🚨 SOS LAPORAN CRITICAL DARURAT';
+                damageSelect.value = 'Hancur Total';
+                isSosAlert.checked = true;
             } else {
-                title.textContent    = 'Buat Laporan Krisis Baru';
-                subtitle.textContent = 'Laporkan kejadian bencana untuk penanganan cepat';
-                header.className     = 'modal-header-normal px-6 py-5 flex justify-between items-center flex-shrink-0';
-                iconWrap.style.background = 'linear-gradient(135deg,#f97316,#dc2626)';
-                icon.className       = 'fas fa-file-medical-alt';
-                banner.classList.add('hidden');
-                damageSelect.value   = '';
-                logisticChk.checked  = false;
-                submitBtn.style.background = 'linear-gradient(135deg,#f97316,#dc2626)';
-                submitBtn.style.boxShadow  = '0 4px 16px rgba(220,38,38,0.4)';
-                submitText.textContent = 'Kirim Laporan Darurat';
-                form.classList.remove('sos-mode-form');
+                title.textContent = 'Buat Laporan Krisis Baru';
+                damageSelect.value = '';
+                isSosAlert.checked = false;
             }
 
             modal.classList.remove('hidden');
