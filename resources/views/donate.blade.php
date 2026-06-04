@@ -451,7 +451,11 @@
                 </div>
                 <div class="mt-4 p-4 glass rounded-xl border border-green-500/20">
                     <div class="flex items-center gap-2 mb-2">
-                        <i class="fas fa-shield-alt text-green-600 dark:text-green-400 text-sm"></i>
+                        <img
+                            src="{{ asset('images/logo.png') }}"
+                            alt="CrisisHub"
+                            class="w-10 h-10 object-contain"
+                        />
                         <span class="text-green-600 dark:text-green-400 text-sm font-bold">Jaminan Transparansi CrisisHub</span>
                     </div>
                     <p class="text-slate-600 dark:text-slate-400 text-xs">Semua distribusi diverifikasi tim lapangan, difoto, dan dilaporkan dalam 24 jam ke platform. Donatur mendapat notifikasi otomatis.</p>

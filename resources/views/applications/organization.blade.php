@@ -124,7 +124,11 @@
                     <div class="w-24 h-24 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-500/20 relative">
                         <i class="fas fa-handshake-angle text-5xl"></i>
                         <span class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center border-4 border-white dark:border-[#0a0f1e] text-xs">
-                            <i class="fas fa-shield"></i>
+                            <img
+                                src="{{ asset('images/logo.png') }}"
+                                alt="CrisisHub"
+                                class="w-10 h-10 object-contain"
+                            />
                         </span>
                     </div>
                     
@@ -212,7 +216,11 @@
                 </div>
 
                 <h4 class="text-xs font-black text-slate-950 dark:text-white uppercase tracking-widest border-b border-slate-200 dark:border-white/10 pb-2 mb-4 pt-4 flex items-center gap-1.5">
-                    <i class="fas fa-shield text-emerald-500"></i> Dokumen & Legalitas
+                    <img
+    src="{{ asset('images/logo.png') }}"
+    alt="CrisisHub"
+    class="w-10 h-10 object-contain"
+/> Dokumen & Legalitas
                 </h4>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

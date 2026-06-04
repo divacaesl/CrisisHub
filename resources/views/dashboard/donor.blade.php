@@ -91,7 +91,11 @@
                 </div>
             </div>
             <div class="text-xs text-green-600 dark:text-green-400 font-semibold flex items-center gap-1">
-                <i class="fas fa-shield-alt"></i> Terverifikasi Transparan
+                <img
+    src="{{ asset('images/logo.png') }}"
+    alt="CrisisHub"
+    class="w-10 h-10 object-contain"
+/> Terverifikasi Transparan
             </div>
         </div>
     </div>

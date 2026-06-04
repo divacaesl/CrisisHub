@@ -254,7 +254,11 @@
                     @forelse($myReports as $rep)
                         <div class="p-4 rounded-2xl bg-white/50 dark:bg-white/5 border border-slate-100 dark:border-white/5 flex flex-col sm:flex-row gap-4 sm:items-center hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-all">
                             <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-red-100 text-red-600 dark:bg-red-950/30 dark:text-red-400">
-                                <i class="fas fa-user-shield text-xl"></i>
+                                <img
+    src="{{ asset('images/logo.png') }}"
+    alt="CrisisHub"
+    class="w-10 h-10 object-contain"
+/>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <h4 class="text-base font-bold text-slate-900 dark:text-white truncate">{{ $rep->jenis_bencana }} Saya</h4>
