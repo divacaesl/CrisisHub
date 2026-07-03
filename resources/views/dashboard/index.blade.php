@@ -309,22 +309,47 @@
                         @foreach($donations as $don)
                         <div class="p-5 rounded-2xl bg-white/60 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-all hover:scale-[1.01] hover:shadow-sm">
                             <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-500/10 text-orange-600 flex justify-center items-center flex-shrink-0">
-                                    <i class="fas fa-gift text-xl"></i>
+                                <div class="w-12 h-12 rounded-full {{ $don->type == 'Barang' ? 'bg-blue-100 dark:bg-blue-500/10 text-blue-600' : 'bg-orange-100 dark:bg-orange-500/10 text-orange-600' }} flex justify-center items-center flex-shrink-0">
+                                    <i class="fas {{ $don->type == 'Barang' ? 'fa-box-open' : 'fa-gift' }} text-xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-slate-900 dark:text-white">Donasi Kemanusiaan</h4>
-                                    <p class="text-xs text-slate-500">{{ $don->created_at->format('d M Y') }} • {{ $don->payment_method }}</p>
+                                    <h4 class="font-bold text-slate-900 dark:text-white">Donasi {{ $don->type == 'Barang' ? 'Logistik' : 'Kemanusiaan' }}</h4>
+                                    <p class="text-xs text-slate-500">{{ $don->created_at->format('d M Y') }} • {{ $don->type == 'Barang' ? 'Resi: ' . $don->resi_pengiriman : $don->payment_method }}</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
                                 <div class="text-right">
+                                    @if($don->type == 'Barang')
+                                    <p class="font-black text-slate-900 dark:text-white text-sm max-w-[150px] truncate" title="{{ $don->items }}">{{ $don->items }}</p>
+                                    @else
                                     <p class="font-black text-slate-900 dark:text-white text-lg">Rp {{ number_format($don->amount, 0, ',', '.') }}</p>
+                                    @endif
+                                    
+                                    @if($don->status == 'Verified')
                                     <p class="text-[10px] font-bold text-green-500 uppercase tracking-wider"><i class="fas fa-check-circle"></i> Berhasil</p>
+                                    @elseif($don->status == 'Rejected')
+                                    <p class="text-[10px] font-bold text-red-500 uppercase tracking-wider"><i class="fas fa-times-circle"></i> Ditolak</p>
+                                    @else
+                                    <p class="text-[10px] font-bold text-yellow-500 uppercase tracking-wider"><i class="fas fa-clock"></i> Diproses</p>
+                                    @endif
                                 </div>
+                                @if($don->type == 'Barang' && $don->admin_proof_image)
+                                <div class="flex flex-col gap-2">
+                                    <button onclick="openProofModalGlobal('{{ asset('storage/' . $don->admin_proof_image) }}')" class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-200 transition-colors flex justify-center items-center" title="Lihat Foto Bukti Terima">
+                                        <i class="fas fa-image"></i>
+                                    </button>
+                                </div>
+                                @elseif($don->type == 'Barang')
+                                <div class="flex flex-col gap-2">
+                                    <button onclick="openTrackModal('{{ $don->resi_pengiriman }}', '{{ $don->status }}', '{{ $don->created_at->format('d M Y, H:i') }}', '{{ $don->verified_at ? \Carbon\Carbon::parse($don->verified_at)->format('d M Y, H:i') : '' }}', '{{ $don->admin_proof_image ? asset('storage/' . $don->admin_proof_image) : '' }}')" class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 transition-colors flex justify-center items-center" title="Lacak Barang">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </button>
+                                </div>
+                                @else
                                 <a href="{{ route('donate.receipt', $don->id) }}" target="_blank" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 hover:text-slate-900 flex justify-center items-center transition-colors" title="Lihat E-Kuitansi">
                                     <i class="fas fa-file-pdf"></i>
                                 </a>
+                                @endif
                             </div>
                         </div>
                         @endforeach
@@ -538,6 +563,37 @@
         </div>
     </div>
 
+    <!-- Image Proof Modal -->
+    <div id="proof-modal-global" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden overflow-y-auto" onclick="closeProofModalGlobal()">
+        <div class="relative max-w-lg w-full p-4 mx-4 my-auto flex flex-col" onclick="event.stopPropagation()">
+            <button onclick="closeProofModalGlobal()" class="absolute top-2 right-6 text-white text-3xl font-bold hover:text-gray-300 focus:outline-none">&times;</button>
+            <div class="card-glass rounded-2xl overflow-hidden p-2 border border-white/10 bg-white dark:bg-slate-800">
+                <img id="proof-image-global" src="" alt="Bukti Terima" class="w-full h-auto max-h-[75vh] object-contain rounded-xl">
+            </div>
+            <p class="text-center text-white font-bold text-sm mt-4">Bukti Penerimaan Logistik oleh Admin</p>
+        </div>
+    </div>
+
+    <!-- Tracking Modal -->
+    <div id="track-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden overflow-y-auto">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 mx-4 my-auto">
+            <div class="px-6 py-5 border-b border-slate-200 dark:border-white/10 flex justify-between items-center">
+                <h3 class="font-bold text-slate-900 dark:text-white text-lg flex items-center gap-2">
+                    <i class="fas fa-truck text-blue-500"></i> Pelacakan Logistik
+                </h3>
+                <button onclick="closeTrackModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 hover:text-slate-900 dark:hover:text-white flex justify-center items-center transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-6 tracking-wide">NO RESI: <span id="track-resi" class="font-bold text-slate-900 dark:text-white font-mono text-sm"></span></p>
+                
+                <div class="relative pl-6 border-l-2 border-slate-200 dark:border-slate-700 space-y-8" id="track-timeline">
+                    <!-- Steps will be dynamically injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
@@ -578,6 +634,88 @@
         function closeReportModal() {
             const modal = document.getElementById('report-modal');
             modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function openProofModalGlobal(url) {
+            document.getElementById('proof-image-global').src = url;
+            document.getElementById('proof-modal-global').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeProofModalGlobal() {
+            document.getElementById('proof-modal-global').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function openTrackModal(resi, status, createdAt, verifiedAt, proofUrl) {
+            document.getElementById('track-resi').textContent = resi;
+            
+            let timelineHtml = '';
+            
+            // Step 1: Didaftarkan (Always active)
+            timelineHtml += `
+                <div class="relative">
+                    <div class="absolute -left-[31px] w-4 h-4 rounded-full bg-blue-500 border-4 border-white dark:border-[#0f172a]"></div>
+                    <p class="text-sm font-bold text-slate-900 dark:text-white">Resi Didaftarkan</p>
+                    <p class="text-xs text-slate-500 mt-1">Donasi logistik tercatat dalam sistem CrisisHub.</p>
+                    <p class="text-xs font-semibold text-blue-500 mt-1">${createdAt}</p>
+                </div>
+            `;
+
+            // Step 2: Dalam Pengiriman
+            let step2Active = status !== 'Rejected';
+            timelineHtml += `
+                <div class="relative">
+                    <div class="absolute -left-[31px] w-4 h-4 rounded-full ${step2Active ? 'bg-blue-500' : 'bg-slate-300 dark:bg-slate-700'} border-4 border-white dark:border-[#0f172a]"></div>
+                    <p class="text-sm font-bold ${step2Active ? 'text-slate-900 dark:text-white' : 'text-slate-400'}">Sedang Dalam Pengiriman</p>
+                    <p class="text-xs text-slate-500 mt-1">Logistik sedang diantar oleh kurir/pihak pengirim.</p>
+                </div>
+            `;
+
+            // Step 3: Diterima
+            let step3Active = status === 'Verified';
+            let step3Rejected = status === 'Rejected';
+            
+            if (step3Active) {
+                timelineHtml += `
+                    <div class="relative">
+                        <div class="absolute -left-[31px] w-4 h-4 rounded-full bg-green-500 border-4 border-white dark:border-[#0f172a]"></div>
+                        <p class="text-sm font-bold text-green-600 dark:text-green-400">Diterima di Posko</p>
+                        <p class="text-xs text-slate-500 mt-1">Admin telah memverifikasi dan menerima barang.</p>
+                        <p class="text-xs font-semibold text-green-500 mt-1">${verifiedAt}</p>
+                        ${proofUrl ? `
+                        <button onclick="openProofModalGlobal('${proofUrl}'); closeTrackModal();" class="mt-2 px-3 py-1.5 bg-green-100 text-green-700 hover:bg-green-200 text-xs font-bold rounded-lg transition-colors inline-flex items-center gap-1.5">
+                            <i class="fas fa-image"></i> Lihat Foto Bukti
+                        </button>` : ''}
+                    </div>
+                `;
+            } else if (step3Rejected) {
+                timelineHtml += `
+                    <div class="relative">
+                        <div class="absolute -left-[31px] w-4 h-4 rounded-full bg-red-500 border-4 border-white dark:border-[#0f172a]"></div>
+                        <p class="text-sm font-bold text-red-600 dark:text-red-400">Pengiriman Ditolak / Gagal</p>
+                        <p class="text-xs text-slate-500 mt-1">Barang tidak sampai atau resi tidak valid.</p>
+                    </div>
+                `;
+            } else {
+                // Pending
+                timelineHtml += `
+                    <div class="relative opacity-50">
+                        <div class="absolute -left-[31px] w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-700 border-4 border-white dark:border-[#0f172a]"></div>
+                        <p class="text-sm font-bold text-slate-400">Menunggu Verifikasi Posko</p>
+                        <p class="text-xs text-slate-500 mt-1">Menunggu barang tiba dan difoto oleh Admin.</p>
+                    </div>
+                `;
+            }
+
+            document.getElementById('track-timeline').innerHTML = timelineHtml;
+            document.getElementById('track-modal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeTrackModal() {
+            document.getElementById('track-modal').classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
         }
 

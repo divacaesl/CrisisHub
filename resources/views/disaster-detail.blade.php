@@ -86,27 +86,35 @@
 
             <!-- Sidebar Actions -->
             <div class="space-y-5">
-                <div class="glass rounded-2xl p-6 border border-orange-500/20">
-                    <h3 class="text-white font-bold mb-4">Bantu Korban Sekarang</h3>
-                    @auth
-                    <button onclick="openDonasiModalDetail()" class="block w-full text-center py-3.5 bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold rounded-xl mb-3 transition-all hover:opacity-90 hover:scale-[1.02]">
-                        <i class="fas fa-heart mr-2"></i>Donasi Sekarang
-                    </button>
-                    <button onclick="openVolunteerModal()" class="block w-full text-center py-3.5 glass border border-white/10 text-white font-medium rounded-xl transition-all hover:bg-white/10 hover:scale-[1.02]">
-                        <i class="fas fa-hard-hat mr-2"></i>Jadi Relawan
-                    </button>
-                    @else
-                    <a href="{{ route('login') }}" class="block w-full text-center py-3.5 bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold rounded-xl mb-3 transition-all hover:opacity-90">
-                        <i class="fas fa-heart mr-2"></i>Donasi Sekarang
-                    </a>
-                    <a href="{{ route('login') }}" class="block w-full text-center py-3.5 glass border border-white/10 text-white font-medium rounded-xl transition-all hover:bg-white/10">
-                        <i class="fas fa-hard-hat mr-2"></i>Jadi Relawan
-                    </a>
-                    @endauth
+                <div class="glass bg-white/80 dark:bg-transparent rounded-2xl p-6 border border-slate-200 dark:border-orange-500/20 shadow-xl dark:shadow-none">
+                    <h3 class="text-slate-900 dark:text-white font-bold mb-4">Bantu Korban Sekarang</h3>
+                    <div class="space-y-3">
+                        @auth
+                        <button onclick="openDonasiModalDetail()" class="block w-full text-center py-3.5 bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold rounded-xl transition-all hover:opacity-90 hover:scale-[1.02] shadow-md">
+                            <i class="fas fa-hand-holding-usd mr-2"></i>Donasi Uang
+                        </button>
+                        <button onclick="openLogistikModal()" class="block w-full text-center py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl transition-all hover:opacity-90 hover:scale-[1.02] shadow-md">
+                            <i class="fas fa-box-open mr-2"></i>Donasi Logistik
+                        </button>
+                        <button onclick="openVolunteerModal()" class="block w-full text-center py-3.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white font-medium rounded-xl transition-all hover:bg-slate-200 dark:hover:bg-white/10 hover:scale-[1.02]">
+                            <i class="fas fa-hard-hat mr-2"></i>Jadi Relawan
+                        </button>
+                        @else
+                        <a href="{{ route('login') }}" class="block w-full text-center py-3.5 bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold rounded-xl transition-all hover:opacity-90 shadow-md">
+                            <i class="fas fa-hand-holding-usd mr-2"></i>Donasi Uang
+                        </a>
+                        <a href="{{ route('login') }}" class="block w-full text-center py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl transition-all hover:opacity-90 shadow-md">
+                            <i class="fas fa-box-open mr-2"></i>Donasi Logistik
+                        </a>
+                        <a href="{{ route('login') }}" class="block w-full text-center py-3.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white font-medium rounded-xl transition-all hover:bg-slate-200 dark:hover:bg-white/10">
+                            <i class="fas fa-hard-hat mr-2"></i>Jadi Relawan
+                        </a>
+                        @endauth
+                    </div>
                 </div>
 
-                <div class="glass rounded-2xl p-6 border border-white/7">
-                    <h3 class="text-white font-bold mb-4">Informasi Posko</h3>
+                <div class="glass bg-white/80 dark:bg-transparent rounded-2xl p-6 border border-slate-200 dark:border-white/7 shadow-xl dark:shadow-none">
+                    <h3 class="text-slate-900 dark:text-white font-bold mb-4">Informasi Posko</h3>
                     <div class="space-y-3 text-sm">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-map-marker-alt text-red-400 w-4"></i>
@@ -206,6 +214,61 @@
         </form>
     </div>
 </div>
+
+{{-- ==================== LOGISTIK MODAL ==================== --}}
+@auth
+<div id="logistik-modal" class="fixed inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm hidden p-4" style="z-index: 99998;" onclick="if(event.target===this) closeLogistikModal()">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-lg shadow-2xl relative flex flex-col max-h-[90vh]">
+        <!-- Modal Header -->
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900 rounded-t-3xl shrink-0">
+            <div>
+                <p class="text-blue-500 dark:text-blue-400 text-xs font-bold uppercase tracking-widest mb-1">Kirim Bantuan Logistik</p>
+                <h2 class="text-2xl font-black text-slate-900 dark:text-white">📦 Donasi Barang</h2>
+            </div>
+            <button onclick="closeLogistikModal()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:bg-red-100 hover:text-red-500 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Modal Body (Form) -->
+        <div class="p-6 md:p-8 overflow-y-auto flex-1">
+            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-6">
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2"><i class="fas fa-info-circle text-blue-500 mr-2"></i>Panduan Logistik</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mb-2">Silakan kirimkan barang donasi Anda menggunakan jasa ekspedisi/kurir ke alamat posko berikut:</p>
+                <div class="text-xs font-bold text-slate-900 dark:text-white bg-white dark:bg-slate-800 p-2 rounded border border-slate-200 dark:border-slate-700">
+                    📍 {{ $disaster['posko'] }} <br>
+                    📞 {{ $disaster['phone'] }}
+                </div>
+            </div>
+
+            <form action="{{ route('donate.logistik') }}" method="POST" id="form-logistik" class="space-y-4">
+                @csrf
+                <input type="hidden" name="campaign_title" value="{{ $disaster['title'] }}">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Jenis Barang & Estimasi Jumlah/Berat <span class="text-red-500">*</span></label>
+                    <textarea name="items" rows="3" required class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" placeholder="Contoh: 1 Dus Mie Instan, 5 Kg Beras, 10 Pakaian Layak Pakai"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Nomor Resi Pengiriman (JNE/JNT/SiCepat/Gojek/dll) <span class="text-red-500">*</span></label>
+                    <input type="text" name="resi_pengiriman" required class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-slate-900 dark:text-white text-sm font-bold placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" placeholder="Contoh: JNAC-123456789">
+                    <p class="text-[10px] text-slate-500 mt-1">Kami memerlukan nomor resi agar admin dapat mencocokkan barang yang sampai di posko.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Catatan (Opsional)</label>
+                    <input type="text" name="notes" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" placeholder="Contoh: Paket atas nama Budi">
+                </div>
+
+                <button type="submit" class="w-full mt-4 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black rounded-xl transition-all hover:scale-[1.02] shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2">
+                    <i class="fas fa-paper-plane"></i> Daftarkan Resi & Kirim
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+@endauth
 
 {{-- ==================== VOLUNTEER MODAL ==================== --}}
 <div id="volunteer-modal-detail" class="fixed inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm hidden p-4" style="z-index: 99998;">
@@ -367,6 +430,14 @@ function openVolunteerModal() {
 }
 function closeVolunteerModal() {
     document.getElementById('volunteer-modal-detail').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+function openLogistikModal() {
+    document.getElementById('logistik-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+function closeLogistikModal() {
+    document.getElementById('logistik-modal').classList.add('hidden');
     document.body.style.overflow = '';
 }
 function selectNominalDetail(amount, btn) {

@@ -279,10 +279,25 @@ class AdminDashboardController extends Controller
     public function verifyDonation(Request $request, $id)
     {
         $donation = Donation::findOrFail($id);
+        
+        $request->validate([
+            'action' => 'required|string',
+            'admin_proof_image' => 'nullable|image|max:4096'
+        ]);
+
         $updateData = ['status' => $request->action];
+        
         if ($request->action === 'Verified') {
+            if ($donation->type === 'Barang' && !$request->hasFile('admin_proof_image')) {
+                return back()->with('error', 'Donasi barang wajib menyertakan foto bukti penerimaan saat diverifikasi.');
+            }
+            
+            if ($request->hasFile('admin_proof_image')) {
+                $updateData['admin_proof_image'] = $request->file('admin_proof_image')->store('admin_proofs', 'public');
+            }
             $updateData['verified_at'] = now();
         }
+        
         $donation->update($updateData);
         return back()->with('success', "Donasi berhasil di-{$request->action}.");
     }

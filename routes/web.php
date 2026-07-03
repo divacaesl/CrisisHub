@@ -165,6 +165,7 @@ Route::get('/donate/campaign/{id}', [\App\Http\Controllers\DonationController::c
 Route::middleware(['auth'])->group(function () {
     Route::get('/donate/form', [\App\Http\Controllers\DonationController::class, 'create'])->name('donate.form');
     Route::post('/donate/form', [\App\Http\Controllers\DonationController::class, 'store'])->name('donate.store');
+    Route::post('/donate/logistik', [\App\Http\Controllers\DonationController::class, 'storeLogistik'])->name('donate.logistik');
     Route::get('/donate/{id}/receipt', [\App\Http\Controllers\DonationController::class, 'receipt'])->name('donate.receipt');
 });
 

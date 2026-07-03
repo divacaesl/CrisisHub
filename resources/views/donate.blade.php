@@ -38,8 +38,8 @@
             </p>
             <!-- Donation stats -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-5 mt-10">
-                <div class="glass rounded-2xl p-4 lg:p-5 border border-white/10 flex flex-col justify-center">
-                    <div class="text-xl lg:text-2xl xl:text-3xl font-black text-orange-400 mb-1 grand-total-counter tracking-tighter" data-target="{{ 42000000000 + $totalDonationsInDb }}" data-prefix="Rp " data-suffix="">Rp {{ number_format(42000000000 + $totalDonationsInDb, 0, ',', '.') }}</div>
+                <div class="glass rounded-2xl p-4 lg:p-5 border border-white/10 flex flex-col justify-center overflow-hidden">
+                    <div class="text-[10px] min-[360px]:text-xs sm:text-xl lg:text-2xl xl:text-3xl font-black text-orange-400 mb-1 grand-total-counter tracking-tighter" data-target="{{ 42000000000 + $totalDonationsInDb }}" data-prefix="Rp " data-suffix="">Rp {{ number_format(42000000000 + $totalDonationsInDb, 0, ',', '.') }}</div>
                     <div class="text-slate-400 text-xs font-semibold">Total Donasi</div>
                 </div>
                 <div class="glass rounded-2xl p-4 lg:p-5 border border-white/10 flex flex-col justify-center">
@@ -81,7 +81,7 @@
             </select>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @foreach($campaigns as $i => $c)
             <div class="campaign-card premium-card-glow fade-up" data-campaign-title="{{ $c['title'] }}" style="animation-delay: {{ $i * 0.1 }}s">
                 <div class="relative h-48 overflow-hidden">
@@ -103,9 +103,9 @@
                         <span class="text-slate-300 text-xs font-semibold">{{ $c['location'] }}</span>
                     </div>
                 </div>
-                <div class="p-6">
-                    <h3 class="text-slate-900 dark:text-white font-bold text-base leading-snug mb-2">{{ $c['title'] }}</h3>
-                    <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed mb-4">{{ $c['desc'] }}</p>
+                <div class="p-5">
+                    <h3 class="text-slate-900 dark:text-white font-bold text-sm leading-snug mb-2 truncate">{{ $c['title'] }}</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed mb-4 line-clamp-2">{{ $c['desc'] }}</p>
                     <div class="mb-4">
                         <div class="flex justify-between text-xs mb-2">
                             <span class="text-slate-500 dark:text-slate-400">Terkumpul: <strong class="text-slate-950 dark:text-white card-collected">Rp {{ number_format($c['collected'], 0, ',', '.') }}</strong></span>
@@ -119,20 +119,33 @@
                             <span class="card-donors" data-donors-raw="{{ $c['donors'] }}">{{ number_format($c['donors'], 0, ',', '.') }} donatur</span>
                         </div>
                     </div>
-                    <div class="flex items-center gap-1 text-orange-600 dark:text-orange-400 text-xs font-semibold mb-5">
+                    <div class="flex items-center gap-1 text-orange-600 dark:text-orange-400 text-[11px] font-semibold mb-4">
                         <i class="fas fa-clock"></i> {{ $c['deadline'] }}
                     </div>
                     @auth
-                    <button
-                        onclick="openDonasiModal('{{ $c['id'] }}', '{{ addslashes($c['title']) }}', '{{ $c['emoji'] }}')"
-                        class="block w-full text-center py-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold rounded-xl transition-all hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30 shimmer-btn">
-                        <i class="fas fa-heart mr-2"></i>Donasi Sekarang
-                    </button>
+                    <div class="space-y-2">
+                        <button
+                            onclick="openDonasiModal('{{ $c['id'] }}', '{{ addslashes($c['title']) }}', '{{ $c['emoji'] }}')"
+                            class="block w-full text-center py-2.5 bg-gradient-to-r from-orange-600 to-red-600 text-white text-xs font-bold rounded-lg transition-all hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30">
+                            <i class="fas fa-hand-holding-usd mr-1"></i> Uang
+                        </button>
+                        <button
+                            onclick="openLogistikModalGlobal('{{ addslashes($c['title']) }}')"
+                            class="block w-full text-center py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold rounded-lg transition-all hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30">
+                            <i class="fas fa-box-open mr-1"></i> Barang
+                        </button>
+                    </div>
                     @else
-                    <a href="{{ route('login') }}"
-                        class="block w-full text-center py-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold rounded-xl transition-all hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30 flex items-center justify-center shimmer-btn">
-                        <i class="fas fa-heart mr-2"></i>Donasi Sekarang
-                    </a>
+                    <div class="space-y-2">
+                        <a href="{{ route('login') }}"
+                            class="block w-full text-center py-2.5 bg-gradient-to-r from-orange-600 to-red-600 text-white text-xs font-bold rounded-lg transition-all hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30 flex items-center justify-center">
+                            <i class="fas fa-hand-holding-usd mr-1"></i> Uang
+                        </a>
+                        <a href="{{ route('login') }}"
+                            class="block w-full text-center py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold rounded-lg transition-all hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30 flex items-center justify-center">
+                            <i class="fas fa-box-open mr-1"></i> Barang
+                        </a>
+                    </div>
                     @endauth
                 </div>
             </div>
@@ -344,38 +357,11 @@
 
             <!-- Tab: Barang -->
             <div id="tab-barang" data-group-content="donasi" class="hidden p-8 md:p-10">
-                <form id="donasiBarangForm" action="#" method="POST">
+                <form id="donasiBarangForm" action="{{ route('donate.logistik') }}" method="POST">
                     @csrf
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label class="form-label">Nama Donatur *</label>
-                            <input type="text" name="nama" class="form-input" placeholder="Nama Anda" id="db-nama">
-                        </div>
-                        <div>
-                            <label class="form-label">Nomor HP *</label>
-                            <input type="tel" name="phone" class="form-input" placeholder="+62 812 xxxx xxxx" id="db-phone">
-                        </div>
-                    </div>
-                    <div class="mb-6">
-                        <label class="form-label">Jenis Barang *</label>
-                        <select name="jenis" class="form-select" id="db-jenis">
-                            <option value="">Pilih Jenis Barang</option>
-                            <option>Makanan & Minuman (Sembako)</option>
-                            <option>Pakaian & Selimut</option>
-                            <option>Obat-obatan & P3K</option>
-                            <option>Peralatan Masak</option>
-                            <option>Tenda & Terpal</option>
-                            <option>Mainan Anak</option>
-                            <option>Lainnya</option>
-                        </select>
-                    </div>
-                    <div class="mb-6">
-                        <label class="form-label">Estimasi Jumlah / Berat *</label>
-                        <input type="text" name="jumlah" class="form-input" placeholder="Contoh: 50 kg, 100 pcs, 5 karton" id="db-jumlah">
-                    </div>
                     <div class="mb-6">
                         <label class="form-label">Untuk Campaign *</label>
-                        <select name="campaign" class="form-select" id="db-campaign">
+                        <select name="campaign_title" class="form-select" id="db-campaign" required>
                             <option value="">Pilih Campaign Tujuan</option>
                             @foreach($campaigns as $c)
                             <option value="{{ $c['title'] }}">{{ $c['title'] }}</option>
@@ -383,12 +369,21 @@
                             <option value="Donasi Umum">Donasi Umum</option>
                         </select>
                     </div>
+                    <div class="mb-6">
+                        <label class="form-label">Jenis Barang & Estimasi Jumlah/Berat *</label>
+                        <textarea name="items" rows="3" required class="form-input resize-none" placeholder="Contoh: 1 Dus Mie Instan, 5 Kg Beras, 10 Pakaian Layak Pakai" id="db-items"></textarea>
+                    </div>
+                    <div class="mb-6">
+                        <label class="form-label">Nomor Resi Pengiriman (JNE/JNT/SiCepat/Gojek/dll) *</label>
+                        <input type="text" name="resi_pengiriman" class="form-input" placeholder="Contoh: JNAC-123456789" id="db-resi" required>
+                        <p class="text-[10px] text-slate-500 mt-1">Kami memerlukan nomor resi agar admin dapat mencocokkan barang yang sampai di posko.</p>
+                    </div>
                     <div class="mb-8">
-                        <label class="form-label">Lokasi Pengiriman / Antar Jemput</label>
-                        <input type="text" name="lokasi" class="form-input" placeholder="Alamat Anda untuk penjemputan barang" id="db-lokasi">
+                        <label class="form-label">Catatan (Opsional)</label>
+                        <input type="text" name="notes" class="form-input" placeholder="Contoh: Paket atas nama Budi" id="db-notes">
                     </div>
                     <button type="submit" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-lg rounded-2xl transition-all shimmer-btn">
-                        <i class="fas fa-box mr-2"></i>Daftarkan Donasi Barang
+                        <i class="fas fa-box mr-2"></i>Daftarkan Resi & Kirim
                     </button>
                 </form>
             </div>
@@ -554,6 +549,29 @@ function closeDonasiModal() {
     modal.classList.add('hidden');
     modal.classList.remove('flex');
     document.body.style.overflow = '';
+}
+
+function openLogistikModalGlobal(title) {
+    // Scroll to the main donation form section
+    document.getElementById('form-donasi').scrollIntoView({ behavior: 'smooth' });
+    
+    // Switch to barang tab
+    document.querySelectorAll('.tab-btn').forEach(b => {
+        if (b.dataset.tab === 'tab-barang') {
+            b.click(); // trigger the existing tab switch logic
+        }
+    });
+
+    // Auto-select the campaign in the dropdown
+    const select = document.getElementById('db-campaign');
+    if (select) {
+        for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].value === title) {
+                select.selectedIndex = i;
+                break;
+            }
+        }
+    }
 }
 
 // Close on Escape key
@@ -908,27 +926,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Intercept Bottom Donasi Barang Form
-    const bottomBarangForm = document.getElementById('donasiBarangForm');
-    if (bottomBarangForm) {
-        bottomBarangForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const nama = document.getElementById('db-nama').value;
-            const phone = document.getElementById('db-phone').value;
-            const jenis = document.getElementById('db-jenis').value;
-            const jumlah = document.getElementById('db-jumlah').value;
-            const campaign = document.getElementById('db-campaign').value;
-            
-            if (!nama || !phone || !jenis || !jumlah || !campaign) {
-                alert('Silakan lengkapi semua field bertanda bintang (*).');
-                return;
-            }
-            
-            showDonationToast('Pendaftaran donasi barang berhasil diserahkan! Tim kami akan menghubungi Anda untuk detail penjemputan.');
-            this.reset();
-        });
-    }
 });
 </script>
 @endsection

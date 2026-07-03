@@ -70,6 +70,41 @@ class DonationController extends Controller
         return redirect()->route('donate')->with('donation_success', 'Donasi untuk "' . $request->campaign_title . '" berhasil dikirim! No. Resi: ' . $receiptNumber);
     }
 
+    public function storeLogistik(Request $request)
+    {
+        $request->validate([
+            'campaign_title' => 'required|string',
+            'resi_pengiriman' => 'required|string',
+            'items' => 'required|string',
+            'notes' => 'nullable|string'
+        ]);
+
+        $trackingCode = 'LOG-' . strtoupper(\Illuminate\Support\Str::random(10));
+
+        $donation = Donation::create([
+            'user_id'        => auth()->id(),
+            'type'           => 'Barang',
+            'amount'         => 0, // Not applicable for logistics
+            'items'          => $request->items,
+            'resi_pengiriman'=> $request->resi_pengiriman,
+            'notes'          => $request->notes,
+            'status'         => 'Submitted',
+            'tracking_code'  => $trackingCode,
+            'campaign_title' => $request->campaign_title,
+            // admin_proof_image is null initially
+        ]);
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Donasi barang untuk "' . $request->campaign_title . '" berhasil dicatat dengan resi ' . $request->resi_pengiriman,
+                'tracking_code' => $trackingCode
+            ]);
+        }
+
+        return redirect()->back()->with('donation_success', 'Form donasi barang berhasil dikirim! (Resi Anda: ' . $request->resi_pengiriman . ')');
+    }
+
     public function receipt($id)
     {
         $donation = Donation::where('user_id', auth()->id())->findOrFail($id);

@@ -317,7 +317,7 @@
                     </div>
                     <span class="px-2 py-0.5 bg-yellow-900/40 text-yellow-400 text-xs rounded-full font-medium">Live</span>
                 </div>
-                <div class="text-4xl font-black text-slate-900 dark:text-white mb-1"><span class="grand-total-counter" data-target="{{ 42000000000 + $totalDonationsInDb }}" data-prefix="Rp " data-suffix="">Rp {{ number_format(42000000000 + $totalDonationsInDb, 0, ',', '.') }}</span></div>
+                <div class="text-[10px] min-[360px]:text-xs sm:text-2xl lg:text-3xl xl:text-4xl font-black text-slate-900 dark:text-white mb-1 overflow-hidden"><span class="grand-total-counter" data-target="{{ 42000000000 + $totalDonationsInDb }}" data-prefix="Rp " data-suffix="">Rp {{ number_format(42000000000 + $totalDonationsInDb, 0, ',', '.') }}</span></div>
                 <div class="text-slate-500 dark:text-slate-400 text-sm font-medium">Donasi Terkumpul</div>
                 <div class="mt-3 text-xs text-green-600 dark:text-green-400 flex items-center gap-1"><i class="fas fa-arrow-up text-xs"></i> +Rp 850 jt bulan ini</div>
             </div>
@@ -427,7 +427,7 @@
             </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @php
                 // Merge database reports and mock cases
                 $dbReports = $reports ?? collect();

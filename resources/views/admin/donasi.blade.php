@@ -116,11 +116,15 @@
                 <td class="px-6 py-4 text-right">
                     @if($s == 'Submitted')
                     <div class="flex items-center justify-end gap-1.5">
+                        @if($d->type === 'Barang')
+                        <button type="button" onclick="openVerifyLogistikModal('{{ route('admin.donasi.verify', $d->id) }}')" class="px-2.5 py-1 text-[9px] font-black uppercase rounded bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 transition-all">Verify</button>
+                        @else
                         <form method="POST" action="{{ route('admin.donasi.verify', $d->id) }}" class="inline">
                             @csrf
                             <input type="hidden" name="action" value="Verified">
                             <button type="submit" class="px-2.5 py-1 text-[9px] font-black uppercase rounded bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 transition-all">Verify</button>
                         </form>
+                        @endif
                         <form method="POST" action="{{ route('admin.donasi.verify', $d->id) }}" class="inline">
                             @csrf
                             <input type="hidden" name="action" value="Rejected">
@@ -157,6 +161,26 @@
     </div>
 </div>
 
+<!-- Verify Logistik Modal -->
+<div id="verify-logistik-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden" onclick="closeVerifyLogistikModal()">
+    <div class="relative max-w-lg w-full p-6 card-glass rounded-2xl border border-white/10" onclick="event.stopPropagation()">
+        <button onclick="closeVerifyLogistikModal()" class="absolute top-4 right-6 text-gray-400 hover:text-white">&times;</button>
+        <h3 class="text-lg font-bold text-white mb-4">Verifikasi Donasi Barang</h3>
+        <p class="text-xs text-gray-400 mb-4">Unggah foto bukti penerimaan barang di posko sebelum memverifikasi donasi ini.</p>
+        <form id="verify-logistik-form" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="action" value="Verified">
+            <div class="mb-4">
+                <input type="file" name="admin_proof_image" accept="image/*" required class="w-full text-xs text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-green-500/10 file:text-green-400 hover:file:bg-green-500/20 cursor-pointer">
+            </div>
+            <div class="flex justify-end gap-2 mt-6">
+                <button type="button" onclick="closeVerifyLogistikModal()" class="px-4 py-2 text-xs font-bold text-gray-400 hover:text-white transition-colors">Batal</button>
+                <button type="submit" class="px-4 py-2 text-xs font-bold bg-green-600 hover:bg-green-500 text-white rounded-lg transition-colors">Upload & Verifikasi</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
     function viewProof(url) {
         document.getElementById('proof-image').src = url;
@@ -165,6 +189,15 @@
 
     function closeProof() {
         document.getElementById('proof-modal').classList.add('hidden');
+    }
+
+    function openVerifyLogistikModal(actionUrl) {
+        document.getElementById('verify-logistik-form').action = actionUrl;
+        document.getElementById('verify-logistik-modal').classList.remove('hidden');
+    }
+
+    function closeVerifyLogistikModal() {
+        document.getElementById('verify-logistik-modal').classList.add('hidden');
     }
 </script>
 @endsection

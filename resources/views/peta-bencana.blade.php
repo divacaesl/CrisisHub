@@ -18,30 +18,62 @@
         top: 16px;
         left: 16px;
         z-index: 1000;
-        background: rgba(15, 23, 42, 0.92);
+        background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(14px);
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid rgba(0, 0, 0, 0.08);
         border-radius: 16px;
         padding: 16px 20px;
         min-width: 220px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+    .dark #map-overlay-panel {
+        background: rgba(15, 23, 42, 0.92);
+        border: 1px solid rgba(255,255,255,0.1);
         box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
 
+    /* Text styling */
+    .panel-title { color: #1e293b; }
+    .dark .panel-title { color: #f1f5f9; }
+    .panel-num { color: #0f172a; }
+    .dark .panel-num { color: white; }
+    .panel-desc { color: #64748b; }
+    .dark .panel-desc { color: #94a3b8; }
+    .panel-link { color: #475569; }
+    .dark .panel-link { color: #94a3b8; }
+    .popup-title { color: #1e293b; }
+    .dark .popup-title { color: #f1f5f9; }
+    .popup-desc { color: #475569; }
+    .dark .popup-desc { color: #94a3b8; }
+
     /* Leaflet popup override */
     .leaflet-popup-content-wrapper {
+        background: #ffffff !important;
+        color: #1e293b !important;
+        border: 1px solid rgba(239,68,68,0.2) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+        transition: all 0.3s ease;
+    }
+    .dark .leaflet-popup-content-wrapper {
         background: #1e293b !important;
         color: #e2e8f0 !important;
         border: 1px solid rgba(239,68,68,0.3) !important;
-        border-radius: 12px !important;
         box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
     }
-    .leaflet-popup-tip { background: #1e293b !important; }
+    .leaflet-popup-tip { background: #ffffff !important; }
+    .dark .leaflet-popup-tip { background: #1e293b !important; }
     .leaflet-popup-content { margin: 12px 16px !important; }
 
     /* Custom map container */
     #public-map {
         width: 100%;
         height: 100%;
+        background: #f1f5f9;
+        transition: background 0.3s ease;
+    }
+    .dark #public-map {
         background: #0f172a;
     }
 
@@ -52,15 +84,24 @@
         left: 50%;
         transform: translateX(-50%);
         z-index: 1000;
-        background: rgba(15, 23, 42, 0.9);
+        background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(12px);
-        border: 1px solid rgba(255,255,255,0.08);
+        border: 1px solid rgba(0,0,0,0.08);
         border-radius: 50px;
         padding: 8px 20px;
         display: flex;
         gap: 16px;
         align-items: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
     }
+    .dark #map-legend {
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: none;
+    }
+    .legend-text { color: #334155; }
+    .dark class-legend-text, .dark .legend-text { color: #cbd5e1; }
     .legend-dot {
         width: 10px;
         height: 10px;
@@ -80,10 +121,10 @@
     <div id="map-overlay-panel">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
             <div style="width:8px;height:8px;border-radius:50%;background:#ef4444;box-shadow:0 0 8px #ef4444;animation: ping 2s infinite;"></div>
-            <span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#f1f5f9;">Live Disaster Map</span>
+            <span class="panel-title" style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;">Live Disaster Map</span>
         </div>
-        <div style="font-size:22px;font-weight:900;color:white;line-height:1.1;" id="total-count">{{ $reports->count() }}</div>
-        <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px;">Laporan Terverifikasi</div>
+        <div class="panel-num" style="font-size:22px;font-weight:900;line-height:1.1;" id="total-count">{{ $reports->count() }}</div>
+        <div class="panel-desc" style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px;">Laporan Terverifikasi</div>
 
         @php
             $hancurTotal = $reports->where('tingkat_kerusakan','Hancur Total')->count();
@@ -96,35 +137,35 @@
             <div style="display:flex;justify-content:space-between;align-items:center;">
                 <div style="display:flex;align-items:center;gap:6px;">
                     <span style="width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block;box-shadow:0 0 6px #ef4444;"></span>
-                    <span style="font-size:10px;color:#94a3b8;">Hancur Total</span>
+                    <span class="panel-desc" style="font-size:10px;">Hancur Total</span>
                 </div>
                 <span style="font-size:11px;font-weight:700;color:#ef4444;">{{ $hancurTotal }}</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;">
                 <div style="display:flex;align-items:center;gap:6px;">
                     <span style="width:8px;height:8px;border-radius:50%;background:#f97316;display:inline-block;box-shadow:0 0 6px #f97316;"></span>
-                    <span style="font-size:10px;color:#94a3b8;">Tinggi</span>
+                    <span class="panel-desc" style="font-size:10px;">Tinggi</span>
                 </div>
                 <span style="font-size:11px;font-weight:700;color:#f97316;">{{ $tinggi }}</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;">
                 <div style="display:flex;align-items:center;gap:6px;">
                     <span style="width:8px;height:8px;border-radius:50%;background:#facc15;display:inline-block;box-shadow:0 0 6px #facc15;"></span>
-                    <span style="font-size:10px;color:#94a3b8;">Sedang</span>
+                    <span class="panel-desc" style="font-size:10px;">Sedang</span>
                 </div>
                 <span style="font-size:11px;font-weight:700;color:#facc15;">{{ $sedang }}</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;">
                 <div style="display:flex;align-items:center;gap:6px;">
                     <span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;box-shadow:0 0 6px #22c55e;"></span>
-                    <span style="font-size:10px;color:#94a3b8;">Rendah</span>
+                    <span class="panel-desc" style="font-size:10px;">Rendah</span>
                 </div>
                 <span style="font-size:11px;font-weight:700;color:#22c55e;">{{ $rendah }}</span>
             </div>
         </div>
 
-        <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);">
-            <a href="{{ route('home') }}" style="font-size:10px;color:#94a3b8;text-decoration:none;display:flex;align-items:center;gap:4px;">
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(128,128,128,0.15);">
+            <a class="panel-link" href="{{ route('home') }}" style="font-size:10px;text-decoration:none;display:flex;align-items:center;gap:4px;">
                 ← Kembali ke Beranda
             </a>
         </div>
@@ -149,11 +190,38 @@
 
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    // Dark tile layer
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19,
-        subdomains: 'abcd'
-    }).addTo(map);
+    // Define light and dark map tile layers
+    const lightTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '©OpenStreetMap ©CartoDB',
+        subdomains: 'abcd',
+        maxZoom: 19
+    });
+    const darkTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '©OpenStreetMap ©CartoDB',
+        subdomains: 'abcd',
+        maxZoom: 19
+    });
+
+    // Load initial map tile based on theme state
+    const isInitialDark = document.documentElement.classList.contains('dark') || localStorage.getItem('darkMode') === 'true';
+    if (isInitialDark) {
+        darkTile.addTo(map);
+    } else {
+        lightTile.addTo(map);
+    }
+
+    // Set up MutationObserver to switch layers in real time when toggled
+    const themeObserver = new MutationObserver(() => {
+        const isCurrentDark = document.documentElement.classList.contains('dark');
+        if (isCurrentDark) {
+            map.removeLayer(lightTile);
+            darkTile.addTo(map);
+        } else {
+            map.removeLayer(darkTile);
+            lightTile.addTo(map);
+        }
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
     // Reports data from server
     const reports = @json($reports);

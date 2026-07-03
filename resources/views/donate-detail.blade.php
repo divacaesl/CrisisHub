@@ -3,7 +3,7 @@
 @section('title', $campaign->title . ' — CrisisHub')
 
 @section('content')
-<div class="pt-28 pb-20 min-h-screen bg-slate-50 dark:bg-[#0a0f1e] transition-colors duration-300">
+<div class="pt-32 pb-20 min-h-screen bg-slate-50 dark:bg-[#0a0f1e] transition-colors duration-300">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Breadcrumb -->
@@ -117,7 +117,7 @@
 
             <!-- Kanan: Widget Donasi (Sticky) -->
             <div class="lg:col-span-1">
-                <div class="sticky top-28 space-y-6">
+                <div class="sticky top-32 space-y-6">
                     <!-- Donation Box -->
                     <div class="glass-panel p-6 rounded-3xl shadow-xl border-t border-white/20 overflow-hidden relative">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl pointer-events-none"></div>
